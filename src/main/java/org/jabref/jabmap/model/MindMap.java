@@ -14,6 +14,15 @@ public class MindMap {
         return this.nodes;
     }
 
+    public MindMapNode getNode(String nodeId){
+        for(MindMapNode node : this.nodes){
+            if(node.getId().equals(nodeId)){
+                return node;
+            }
+        }
+        return null;
+    }
+
     public void addNode(MindMapNode node){
         this.nodes.add(node);
     }

@@ -2,15 +2,25 @@ package org.jabref.jabmap.model;
 
 import org.jabref.model.entry.BibEntry;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class MindMapNode {
 
     private String id;
-    private List<MindMapNode> children;
+    private ArrayList<String> children;
     private String text;
-    private BibEntry bibEntry;
-    private List<NodeIcon> icons;
+    private String bibEntry;
+    private ArrayList<String> icons;
+
+    public MindMapNode(){}
+
+    public MindMapNode(String id, ArrayList<String> children, String text, String bibEntry, ArrayList<String> icons){
+        this.id = id;
+        this.children = children;
+        this.text = text;
+        this.bibEntry = bibEntry;
+        this.icons = icons;
+    }
 
     public String getId() {
         return id;
@@ -20,11 +30,11 @@ public class MindMapNode {
         this.id = id;
     }
 
-    public List<MindMapNode> getChildren() {
+    public ArrayList<String> getChildren() {
         return children;
     }
 
-    private void addChild(MindMapNode node){
+    private void addChild(String node){
         this.children.add(node);
     }
 
@@ -32,7 +42,7 @@ public class MindMapNode {
         this.children.remove(node);
     }
 
-    public void setChildren(List<MindMapNode> children) {
+    public void setChildren(ArrayList<String> children) {
         this.children = children;
     }
 
@@ -44,27 +54,27 @@ public class MindMapNode {
         this.text = text;
     }
 
-    public BibEntry getBibEntry() {
+    public String getBibEntry() {
         return bibEntry;
     }
 
-    public void setBibEntry(BibEntry bibEntry) {
+    public void setBibEntry(String bibEntry) {
         this.bibEntry = bibEntry;
     }
 
-    public List<NodeIcon> getIcons() {
+    public ArrayList<String> getIcons() {
         return icons;
     }
 
-    public void addIcon(NodeIcon icon){
+    public void addIcon(String icon){
         this.icons.add(icon);
     }
 
-    public void removeIcon(NodeIcon icon){
+    public void removeIcon(String icon){
         this.icons.remove(icon);
     }
 
-    public void setIcons(List<NodeIcon> icons) {
+    public void setIcons(ArrayList<String> icons) {
         this.icons = icons;
     }
 }

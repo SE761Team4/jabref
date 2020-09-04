@@ -8,6 +8,11 @@ public class MindMapEdge {
     private MindMapNode parent;
     private MindMapNode child;
 
+    public MindMapEdge(MindMapNode parent, MindMapNode child){
+        this.parent = parent;
+        this.child = child;
+    }
+
     public MindMapNode getParent() {
         return parent;
     }
