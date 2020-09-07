@@ -95,6 +95,7 @@ import org.jabref.gui.importer.NewEntryAction;
 import org.jabref.gui.importer.actions.OpenDatabaseAction;
 import org.jabref.gui.importer.fetcher.LookupIdentifierAction;
 import org.jabref.gui.integrity.IntegrityCheckAction;
+import org.jabref.gui.jabmap.JabMapAction;
 import org.jabref.gui.journals.AbbreviateAction;
 import org.jabref.gui.journals.ManageJournalsAction;
 import org.jabref.gui.keyboard.CustomizeKeyBindingAction;
@@ -871,7 +872,11 @@ public class JabRefFrame extends BorderPane {
                 new SeparatorMenuItem(),
 
                 factory.createMenuItem(StandardActions.SEND_AS_EMAIL, new SendAsEMailAction(dialogService, stateManager)),
-                pushToApplicationMenuItem
+                pushToApplicationMenuItem,
+
+                new SeparatorMenuItem(),
+
+                factory.createMenuItem(StandardActions.LAUNCH_JABMAP, new JabMapAction(stateManager, dialogService))
         );
 
         SidePaneComponent webSearch = sidePaneManager.getComponent(SidePaneType.WEB_SEARCH);
