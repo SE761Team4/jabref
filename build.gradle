@@ -211,8 +211,8 @@ dependencies {
     //implementation 'org.glassfish.jersey.media:jersey-media-json-jackson:2.31'
     implementation 'org.glassfish.jersey.core:jersey-common:2.31'
     //implementation 'com.fasterxml.jackson.core:jackson-core:2.11.2'
-    // implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.2'
-    // implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.2'
+    //implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.2'
+    //implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.2'
 
     testImplementation 'io.github.classgraph:classgraph:4.8.89'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.6.2'

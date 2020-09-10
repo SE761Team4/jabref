@@ -7,12 +7,12 @@ import org.jabref.gui.actions.SimpleCommand;
 import org.jabref.gui.copyfiles.CopyFilesDialogView;
 import org.jabref.gui.copyfiles.CopyFilesResultItemViewModel;
 import org.jabref.gui.copyfiles.CopyFilesResultListDependency;
+import org.jabref.logic.jabmap.MindMapManager;
 import org.jabref.logic.l10n.Localization;
 import org.jabref.model.entry.BibEntry;
 import java.util.List;
 import static org.jabref.gui.actions.ActionHelper.needsDatabase;
 import static org.jabref.gui.actions.ActionHelper.needsEntriesSelected;
-//import javax.ws.rs.*;
 
 public class JabMapAction extends SimpleCommand {
 
@@ -37,10 +37,10 @@ public class JabMapAction extends SimpleCommand {
 
     @Override
     public void execute() {
-        //TODO: Note to self, fix
-        ObservableList<BibEntry> var = stateManager.getActiveDatabase().get().getDatabase().getEntries();
-        for(BibEntry entry : var) {
-            System.out.println(entry);
+        if(stateManager.getActiveDatabase().isPresent()) {
+            ObservableList<BibEntry> var = stateManager.getActiveDatabase().get().getDatabase().getEntries();
+            MindMapManager manager = MindMapManager.instance();
+            manager.setEntries(var);
         }
         //Call commandline to start TomCat server
         //Import resource class
