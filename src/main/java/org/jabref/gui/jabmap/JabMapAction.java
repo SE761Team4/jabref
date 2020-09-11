@@ -7,6 +7,7 @@ import org.jabref.gui.actions.SimpleCommand;
 import org.jabref.gui.copyfiles.CopyFilesDialogView;
 import org.jabref.gui.copyfiles.CopyFilesResultItemViewModel;
 import org.jabref.gui.copyfiles.CopyFilesResultListDependency;
+import org.jabref.logic.jabmap.BibTeXMindMapAdapter;
 import org.jabref.logic.jabmap.MindMapManager;
 import org.jabref.logic.l10n.Localization;
 import org.jabref.model.entry.BibEntry;
@@ -37,13 +38,15 @@ public class JabMapAction extends SimpleCommand {
 
     @Override
     public void execute() {
-        if(stateManager.getActiveDatabase().isPresent()) {
+        if (stateManager.getActiveDatabase().isPresent()) {
             ObservableList<BibEntry> var = stateManager.getActiveDatabase().get().getDatabase().getEntries();
+            BibTeXMindMapAdapter adapter = BibTeXMindMapAdapter.instance();
             MindMapManager manager = MindMapManager.instance();
             manager.setEntries(var);
+            adapter.bibTeX2MindMap(manager.getMapEntries());
         }
-        //Call commandline to start TomCat server
-        //Import resource class
-        //Instantiate with database
+        // Call commandline to start TomCat server
+        // Import resource class
+        // Instantiate with database
     }
 }
