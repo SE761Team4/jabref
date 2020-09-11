@@ -1,4 +1,4 @@
-package org.jabref.jabmap.model;
+package org.jabref.model.jabmap;
 
 import java.util.List;
 
@@ -10,44 +10,42 @@ public class MindMap {
     private List<MindMapNode> nodes;
     private List<MindMapEdge> edges;
 
-    public List<MindMapNode> getNodes(){
+    public List<MindMapNode> getNodes() {
         return this.nodes;
     }
 
-    public MindMapNode getNode(String nodeId){
-        for(MindMapNode node : this.nodes){
-            if(node.getId().equals(nodeId)){
+    public MindMapNode getNode(String nodeId) {
+        for (MindMapNode node : this.nodes) {
+            if (node.getId().equals(nodeId)) {
                 return node;
             }
         }
         return null;
     }
 
-    public void addNode(MindMapNode node){
+    public void addNode(MindMapNode node) {
         this.nodes.add(node);
     }
 
-    public void removeNode(MindMapNode node){
+    public void removeNode(MindMapNode node) {
         this.nodes.remove(node);
 
-        for (MindMapEdge edge : edges){
-            if(edge.getParent().getId().equals(node.getId())){
+        for (MindMapEdge edge : edges) {
+            if (edge.getParent().getId().equals(node.getId())) {
                 this.edges.remove(edge);
             }
         }
     }
 
-    public List<MindMapEdge> getEdges(){
+    public List<MindMapEdge> getEdges() {
         return this.edges;
     }
 
-    public void addEdge(MindMapEdge edge){
+    public void addEdge(MindMapEdge edge) {
         this.edges.add(edge);
     }
 
-    public void removeEdge(MindMapEdge edge){
+    public void removeEdge(MindMapEdge edge) {
         this.edges.remove(edge);
     }
-
-
 }

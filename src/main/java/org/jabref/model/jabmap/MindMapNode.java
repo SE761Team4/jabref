@@ -1,6 +1,4 @@
-package org.jabref.jabmap.model;
-
-import org.jabref.model.entry.BibEntry;
+package org.jabref.model.jabmap;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package org.jabref.jabmap.model;
+package org.jabref.model.jabmap;
 
 /**
  * This class is a model for a mind map edge object
