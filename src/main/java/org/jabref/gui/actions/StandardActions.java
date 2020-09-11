@@ -9,6 +9,7 @@ import org.jabref.logic.l10n.Localization;
 
 public enum StandardActions implements Action {
 
+    LAUNCH_JABMAP(Localization.lang("Launch JabMap"), IconTheme.JabRefIcons.BOOK, KeyBinding.LAUNCH_JABMAP),
     COPY_MORE(Localization.lang("Copy") + "..."),
     COPY_TITLE(Localization.lang("Copy title"), KeyBinding.COPY_TITLE),
     COPY_KEY(Localization.lang("Copy citation key"), KeyBinding.COPY_CITATION_KEY),
