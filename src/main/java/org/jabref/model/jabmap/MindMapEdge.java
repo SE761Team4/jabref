@@ -2,32 +2,31 @@ package org.jabref.model.jabmap;
 
 /**
  * This class is a model for a mind map edge object
+ * Refs to other mind map data objects are kept as strings to simplify serialisation to JSON
  */
 public class MindMapEdge {
 
-    private MindMapNode parent;
-    private MindMapNode child;
+    private String parent;
+    private String child;
 
-    public MindMapEdge(MindMapNode parent, MindMapNode child){
+    public MindMapEdge(String parent, String child) {
         this.parent = parent;
         this.child = child;
     }
 
-    public MindMapNode getParent() {
+    public String getParent() {
         return parent;
     }
 
-    public void setParent(MindMapNode parent) {
+    public void setParent(String parent) {
         this.parent = parent;
     }
 
-    public MindMapNode getChild() {
+    public String getChild() {
         return child;
     }
 
-    public void setChild(MindMapNode child) {
+    public void setChild(String child) {
         this.child = child;
     }
-
-
 }
