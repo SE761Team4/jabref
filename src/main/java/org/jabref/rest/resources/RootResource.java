@@ -2,6 +2,8 @@ package org.jabref.rest.resources;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSerializer;
+import com.google.gson.reflect.TypeToken;
 import org.jabref.logic.jabmap.MindMapManager;
 import org.jabref.model.entry.BibEntry;
 import org.jabref.model.entry.BibEntrySerializer;
@@ -11,6 +13,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 @Path("/root")
@@ -22,7 +26,7 @@ public class RootResource {
     public String getEntries() {
         List<BibEntry> entries = MindMapManager.instance().getBibEntries();
         Gson gson = new GsonBuilder().registerTypeAdapter(BibEntry.class, new BibEntrySerializer()).create();
-        return gson.toJson(entries.get(0));
+        return gson.toJson(entries);
     }
 }
 

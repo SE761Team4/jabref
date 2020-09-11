@@ -100,7 +100,7 @@ public class JabRefMain extends Application {
 
     private void startHttpEndPoint() {
         Server server = this.createHttpServer();
-        //Starts server to http://localhost:9898/root/test
+        //Starts server to http://localhost:9898/root/entries
 
         try {
             server.start();
