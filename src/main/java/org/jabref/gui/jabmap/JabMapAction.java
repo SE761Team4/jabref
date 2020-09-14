@@ -43,7 +43,6 @@ public class JabMapAction extends SimpleCommand {
             BibTeXMindMapAdapter adapter = BibTeXMindMapAdapter.instance();
             MindMapManager manager = MindMapManager.instance();
             manager.setEntries(var);
-            adapter.bibTeX2MindMap(manager.getMapEntries());
         }
         // Call commandline to start TomCat server
         // Import resource class

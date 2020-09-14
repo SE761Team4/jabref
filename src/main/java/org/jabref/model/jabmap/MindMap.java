@@ -17,6 +17,7 @@ public class MindMap {
     }
 
     public MindMap(MindMapNode node) {
+        nodes = new ArrayList<>();
         this.nodes.add(node);
         for (String child : node.getChildren()) {
             this.addEdge(new MindMapEdge(node.getId(), child));
