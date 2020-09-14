@@ -16,19 +16,19 @@ html, body, #root, .App {
 
 .App-header {
   background-color: #FFFFFF;
-  min-height: 100vh;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  flex-direction: row;
+  padding-left: 0px; 
+
 }
 
 .Reference-proportions {
-	width: 30%;
-	height: 100%; 
-	margin: 0px;
+	width: 40%;
+	
+	  display: flex;
+  flex-direction: row;
+  	font-size: small; 
+
 }
 
 .App-link {
