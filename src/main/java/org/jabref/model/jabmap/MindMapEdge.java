@@ -6,32 +6,33 @@ package org.jabref.model.jabmap;
  */
 public class MindMapEdge {
 
-    private String parent;
-    private String child;
+    //Node 1 and 2 are
+    private Long node1_Id;
+    private Long node2_Id;
     private String label;
     private EdgeDirection direction;
 
-    public MindMapEdge(String parent, String child, String label, EdgeDirection direction) {
-        this.parent = parent;
-        this.child = child;
+    public MindMapEdge(Long node1_Id, Long node2_Id, String label, EdgeDirection direction) {
+        this.node1_Id = node1_Id;
+        this.node2_Id = node2_Id;
         this.label = label;
         this.direction = direction;
     }
 
-    public String getParent() {
-        return parent;
+    public Long getNode1_Id() {
+        return node1_Id;
     }
 
-    public void setParent(String parent) {
-        this.parent = parent;
+    public void setNode1_Id(Long node1_Id) {
+        this.node1_Id = node1_Id;
     }
 
-    public String getChild() {
-        return child;
+    public Long getNode2_Id() {
+        return node2_Id;
     }
 
-    public void setChild(String child) {
-        this.child = child;
+    public void setNode2_Id(Long node2_Id) {
+        this.node2_Id = node2_Id;
     }
 
     public String getLabel() {

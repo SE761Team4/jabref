@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class MindMapNode {
 
-    private String id;
+    private Long id;
     private String text;
     private String bibEntry;
     private List<NodeIcon> icons;
@@ -20,7 +20,7 @@ public class MindMapNode {
 
     }
 
-    public MindMapNode(String id, String text, String bibEntry, List<NodeIcon> icons, int x_pos, int y_pos) {
+    public MindMapNode(Long id, String text, String bibEntry, List<NodeIcon> icons, int x_pos, int y_pos) {
         this.id = id;
         this.text = text;
         this.bibEntry = bibEntry;
@@ -29,11 +29,11 @@ public class MindMapNode {
         this.y_pos = y_pos;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
