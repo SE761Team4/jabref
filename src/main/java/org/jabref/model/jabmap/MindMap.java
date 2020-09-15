@@ -18,6 +18,7 @@ public class MindMap {
 
     public MindMap(MindMapNode node) {
         nodes = new ArrayList<>();
+        edges = new ArrayList<>();
         this.nodes.add(node);
     }
 

@@ -1,7 +1,17 @@
 package org.jabref.gui;
 
-import com.google.common.eventbus.Subscribe;
-import com.tobiasdiez.easybind.EasyBind;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.TimerTask;
+
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -9,15 +19,33 @@ import javafx.concurrent.Task;
 import javafx.geometry.Orientation;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.Separator;
+import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.SplitPane;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.ToolBar;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.skin.TabPaneSkin;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import org.controlsfx.control.PopOver;
-import org.controlsfx.control.TaskProgressView;
+
 import org.jabref.gui.actions.ActionFactory;
 import org.jabref.gui.actions.ActionHelper;
 import org.jabref.gui.actions.SimpleCommand;
@@ -35,10 +63,21 @@ import org.jabref.gui.desktop.JabRefDesktop;
 import org.jabref.gui.dialogs.AutosaveUiManager;
 import org.jabref.gui.documentviewer.ShowDocumentViewerAction;
 import org.jabref.gui.duplicationFinder.DuplicateSearch;
-import org.jabref.gui.edit.*;
+import org.jabref.gui.edit.CopyMoreAction;
+import org.jabref.gui.edit.EditAction;
+import org.jabref.gui.edit.ManageKeywordsAction;
+import org.jabref.gui.edit.MassSetFieldsAction;
+import org.jabref.gui.edit.OpenBrowserAction;
+import org.jabref.gui.edit.ReplaceStringAction;
 import org.jabref.gui.entryeditor.OpenEntryEditorAction;
 import org.jabref.gui.entryeditor.PreviewSwitchAction;
-import org.jabref.gui.exporter.*;
+import org.jabref.gui.exporter.ExportCommand;
+import org.jabref.gui.exporter.ExportToClipboardAction;
+import org.jabref.gui.exporter.ManageCustomExportsAction;
+import org.jabref.gui.exporter.SaveAction;
+import org.jabref.gui.exporter.SaveAllAction;
+import org.jabref.gui.exporter.SaveDatabaseAction;
+import org.jabref.gui.exporter.WriteXMPAction;
 import org.jabref.gui.externalfiles.AutoLinkFilesAction;
 import org.jabref.gui.externalfiles.DownloadFullTextAction;
 import org.jabref.gui.externalfiles.FindUnlinkedFilesAction;
@@ -48,7 +87,11 @@ import org.jabref.gui.help.AboutAction;
 import org.jabref.gui.help.ErrorConsoleAction;
 import org.jabref.gui.help.HelpAction;
 import org.jabref.gui.help.SearchForUpdateAction;
-import org.jabref.gui.importer.*;
+import org.jabref.gui.importer.ImportCommand;
+import org.jabref.gui.importer.ImportEntriesDialog;
+import org.jabref.gui.importer.ManageCustomImportsAction;
+import org.jabref.gui.importer.NewDatabaseAction;
+import org.jabref.gui.importer.NewEntryAction;
 import org.jabref.gui.importer.actions.OpenDatabaseAction;
 import org.jabref.gui.importer.fetcher.LookupIdentifierAction;
 import org.jabref.gui.integrity.IntegrityCheckAction;
@@ -98,13 +141,13 @@ import org.jabref.model.entry.field.StandardField;
 import org.jabref.model.entry.types.StandardEntryType;
 import org.jabref.preferences.JabRefPreferences;
 import org.jabref.preferences.LastFocusedTabPreferences;
+
+import com.google.common.eventbus.Subscribe;
+import com.tobiasdiez.easybind.EasyBind;
+import org.controlsfx.control.PopOver;
+import org.controlsfx.control.TaskProgressView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.*;
 
 /**
  * The main window of the application.
@@ -297,9 +340,9 @@ public class JabRefFrame extends BorderPane {
         if (panel.getBibDatabaseContext().getLocation() == DatabaseLocation.LOCAL) {
             String changeFlag = panel.isModified() && !isAutosaveEnabled ? "*" : "";
             String databaseFile = panel.getBibDatabaseContext()
-                    .getDatabasePath()
-                    .map(Path::toString)
-                    .orElse(Localization.lang("untitled"));
+                                       .getDatabasePath()
+                                       .map(Path::toString)
+                                       .orElse(Localization.lang("untitled"));
             // setTitle(FRAME_TITLE + " - " + databaseFile + changeFlag + modeInfo);
         } else if (panel.getBibDatabaseContext().getLocation() == DatabaseLocation.SHARED) {
             // setTitle(FRAME_TITLE + " - " + panel.getBibDatabaseContext().getDBMSSynchronizer().getDBName() + " ["
@@ -992,8 +1035,8 @@ public class JabRefFrame extends BorderPane {
         } else {
             // only add tab if DB is not already open
             Optional<BasePanel> panel = getBasePanelList().stream()
-                    .filter(p -> p.getBibDatabaseContext().getDatabasePath().equals(parserResult.getPath()))
-                    .findFirst();
+                                                          .filter(p -> p.getBibDatabaseContext().getDatabasePath().equals(parserResult.getPath()))
+                                                          .findFirst();
 
             if (panel.isPresent()) {
                 tabbedPane.getSelectionModel().select(getTab(panel.get()));
@@ -1077,7 +1120,7 @@ public class JabRefFrame extends BorderPane {
                 new SeparatorMenuItem(),
                 factory.createMenuItem(StandardActions.OPEN_DATABASE_FOLDER, new OpenDatabaseFolder()),
                 factory.createMenuItem(StandardActions.OPEN_CONSOLE, new OpenConsoleAction(stateManager))
-        );
+                );
 
         return contextMenu;
     }
@@ -1196,10 +1239,10 @@ public class JabRefFrame extends BorderPane {
      */
     private boolean confirmClose(BasePanel panel) {
         String filename = panel.getBibDatabaseContext()
-                .getDatabasePath()
-                .map(Path::toAbsolutePath)
-                .map(Path::toString)
-                .orElse(Localization.lang("untitled"));
+                               .getDatabasePath()
+                               .map(Path::toAbsolutePath)
+                               .map(Path::toString)
+                               .orElse(Localization.lang("untitled"));
 
         ButtonType saveChanges = new ButtonType(Localization.lang("Save changes"), ButtonBar.ButtonData.YES);
         ButtonType discardChanges = new ButtonType(Localization.lang("Discard changes"), ButtonBar.ButtonData.NO);

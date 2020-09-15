@@ -10,7 +10,8 @@ import java.util.List;
 public class MindMapNode {
 
     private Long id;
-    private String text;
+    private String name;
+    //Citation key of bib entry to act as id
     private String bibEntry;
     private List<NodeIcon> icons;
     private int x_pos;
@@ -20,9 +21,14 @@ public class MindMapNode {
 
     }
 
-    public MindMapNode(Long id, String text, String bibEntry, List<NodeIcon> icons, int x_pos, int y_pos) {
+    public MindMapNode(Long id, String name) {
         this.id = id;
-        this.text = text;
+        this.name = name;
+    }
+
+    public MindMapNode(Long id, String name, String bibEntry, List<NodeIcon> icons, int x_pos, int y_pos) {
+        this.id = id;
+        this.name = name;
         this.bibEntry = bibEntry;
         this.icons = icons;
         this.x_pos = x_pos;
@@ -37,12 +43,12 @@ public class MindMapNode {
         this.id = id;
     }
 
-    public String getText() {
-        return text;
+    public String getName() {
+        return name;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getBibEntry() {
