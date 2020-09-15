@@ -10,21 +10,23 @@ import java.util.List;
 public class MindMapNode {
 
     private String id;
-    private List<String> children;
     private String text;
     private String bibEntry;
-    private List<String> icons;
+    private List<NodeIcon> icons;
+    private int x_pos;
+    private int y_pos;
 
     public MindMapNode() {
 
     }
 
-    public MindMapNode(String id, List<String> children, String text, String bibEntry, List<String> icons) {
+    public MindMapNode(String id, String text, String bibEntry, List<NodeIcon> icons, int x_pos, int y_pos) {
         this.id = id;
-        this.children = children;
         this.text = text;
         this.bibEntry = bibEntry;
         this.icons = icons;
+        this.x_pos = x_pos;
+        this.y_pos = y_pos;
     }
 
     public String getId() {
@@ -33,22 +35,6 @@ public class MindMapNode {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public List<String> getChildren() {
-        return children;
-    }
-
-    private void addChild(String node) {
-        this.children.add(node);
-    }
-
-    private void removeChild(MindMapNode node) {
-        this.children.remove(node);
-    }
-
-    public void setChildren(ArrayList<String> children) {
-        this.children = children;
     }
 
     public String getText() {
@@ -67,11 +53,11 @@ public class MindMapNode {
         this.bibEntry = bibEntry;
     }
 
-    public List<String> getIcons() {
+    public List<NodeIcon> getIcons() {
         return icons;
     }
 
-    public void addIcon(String icon) {
+    public void addIcon(NodeIcon icon) {
         this.icons.add(icon);
     }
 
@@ -79,7 +65,23 @@ public class MindMapNode {
         this.icons.remove(icon);
     }
 
-    public void setIcons(ArrayList<String> icons) {
+    public void setIcons(ArrayList<NodeIcon> icons) {
         this.icons = icons;
+    }
+
+    public int getX_pos() {
+        return x_pos;
+    }
+
+    public void setX_pos(int x_pos) {
+        this.x_pos = x_pos;
+    }
+
+    public int getY_pos() {
+        return y_pos;
+    }
+
+    public void setY_pos(int y_pos) {
+        this.y_pos = y_pos;
     }
 }

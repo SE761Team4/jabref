@@ -8,10 +8,14 @@ public class MindMapEdge {
 
     private String parent;
     private String child;
+    private String label;
+    private EdgeDirection direction;
 
-    public MindMapEdge(String parent, String child) {
+    public MindMapEdge(String parent, String child, String label, EdgeDirection direction) {
         this.parent = parent;
         this.child = child;
+        this.label = label;
+        this.direction = direction;
     }
 
     public String getParent() {
@@ -28,5 +32,21 @@ public class MindMapEdge {
 
     public void setChild(String child) {
         this.child = child;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public EdgeDirection getDirection() {
+        return direction;
+    }
+
+    public void setDirection(EdgeDirection direction) {
+        this.direction = direction;
     }
 }

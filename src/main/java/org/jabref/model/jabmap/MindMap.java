@@ -19,9 +19,6 @@ public class MindMap {
     public MindMap(MindMapNode node) {
         nodes = new ArrayList<>();
         this.nodes.add(node);
-        for (String child : node.getChildren()) {
-            this.addEdge(new MindMapEdge(node.getId(), child));
-        }
     }
 
     public MindMap(ArrayList<MindMapNode> nodes, ArrayList<MindMapEdge> edges) {
@@ -35,9 +32,6 @@ public class MindMap {
 
     public void addNode(MindMapNode node) {
         this.nodes.add(node);
-        for (String child : node.getChildren()) {
-            this.addEdge(new MindMapEdge(node.getId(), child));
-        }
     }
 
     public List<MindMapEdge> getEdges() {
