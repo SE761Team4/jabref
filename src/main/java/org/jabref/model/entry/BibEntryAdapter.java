@@ -7,10 +7,12 @@ import org.jabref.logic.TypedBibEntry;
 import org.jabref.model.database.BibDatabaseMode;
 import org.jabref.model.entry.field.Field;
 import org.jabref.model.entry.field.InternalField;
-
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * Used to convert a bibentry object between POJO and JSON
+ */
 public class BibEntryAdapter extends TypeAdapter<BibEntry> {
 
     @Override
@@ -26,7 +28,7 @@ public class BibEntryAdapter extends TypeAdapter<BibEntry> {
         writer.name("key").value(entry.getCiteKeyOptional().orElse(""));
         writer.endObject();
 
-        //Grab field entries and place in map
+        // Grab field entries and place in map
         Map<String, String> mapFieldToValue = new HashMap<>();
         // determine sorted fields -- all fields lower case
         SortedSet<String> sortedFields = new TreeSet<>();
@@ -41,7 +43,7 @@ public class BibEntryAdapter extends TypeAdapter<BibEntry> {
             }
         }
 
-        //Add to writer
+        // Add to writer
         for (String fieldName : sortedFields) {
             writer.name(fieldName).value(String.valueOf(mapFieldToValue.get(fieldName)).replaceAll("\\r\\n", "\n"));
         }

@@ -5,23 +5,21 @@ import com.google.gson.GsonBuilder;
 import javafx.collections.ObservableList;
 import org.jabref.gui.Globals;
 import org.jabref.gui.StateManager;
+import org.jabref.logic.jabmap.BibtexMindMapAdapter;
+import org.jabref.logic.jabmap.MindMapWriter;
 import org.jabref.model.database.BibDatabase;
-import org.jabref.model.database.BibDatabaseContext;
 import org.jabref.model.entry.BibEntry;
 import org.jabref.model.entry.BibEntryAdapter;
-import org.jabref.model.entry.types.MapEntryType;
 import org.jabref.model.jabmap.MindMap;
-import org.jabref.model.jabmap.MindMapNode;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
+import static org.jabref.model.jabmap.MindMapEdge.MAP_EDGE_ENTRY_NAME;
+import static org.jabref.model.jabmap.MindMapNode.MAP_NODE_ENTRY_NAME;
 
 @Path("/")
 public class RootResource {
@@ -33,7 +31,8 @@ public class RootResource {
         List<BibEntry> bibEntries = new ArrayList<>();
         ObservableList<BibEntry> observableList = getActiveDatabase().getEntries();
         for (BibEntry b : observableList) {
-            if (!b.getType().getName().equals("Map")) {
+            // Get all bib entries that aren't storing maps or nodes
+            if (!b.getType().getDisplayName().equals(MAP_NODE_ENTRY_NAME) && !b.getType().getDisplayName().equals(MAP_EDGE_ENTRY_NAME)) {
                 bibEntries.add(b);
             }
         }
@@ -47,14 +46,27 @@ public class RootResource {
     @Path("libraries/current/map")
     @Produces(MediaType.APPLICATION_JSON)
     public Response createBlankMap() {
-        insertEntry();
         Gson gson = new GsonBuilder().create();
-        Response.ResponseBuilder builder = Response.ok(gson.toJson(new MindMap(new MindMapNode((long) 1, getActiveDatabaseName()))));
+        // Retrieve mind map object from database
+        BibtexMindMapAdapter adapter = new BibtexMindMapAdapter();
+        // Attempt to get a map saved in the current database
+        MindMap map = adapter.bibtex2MindMap(getActiveDatabase());
+        Response.ResponseBuilder builder = Response.ok(gson.toJson(map));
         return builder.build();
+
     }
 
-    private void insertEntry() {
-
+    @POST
+    @Path("libraries/current/map")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response saveMindMap(MindMap mindMap) {
+        // Get adapter to convert to bib entries
+        BibtexMindMapAdapter adapter = new BibtexMindMapAdapter();
+        List<BibEntry> bibEntries = adapter.mindMap2Bibtex(mindMap);
+        // Write entries to current database
+        MindMapWriter.instance().writeMindMap(bibEntries);
+        Response.ResponseBuilder builder = Response.ok();
+        return builder.build();
     }
 
     /**
@@ -67,20 +79,6 @@ public class RootResource {
         } else {
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }
-    }
-
-    /**
-     * Helper method to get active database name as string or empty string otherwise
-     */
-    private String getActiveDatabaseName() {
-        StateManager stateManager = Globals.stateManager;
-        if (stateManager.getActiveDatabase().isPresent()) {
-            Optional<java.nio.file.Path> temp = stateManager.getActiveDatabase().get().getDatabasePath();
-            if (temp.isPresent()) {
-                return temp.get().toAbsolutePath().toFile().getName().replaceFirst("[.][^.]+$", ""); //TODO regex won't work if filename has dots in it
-            }
-        }
-        return "";
     }
 }
 

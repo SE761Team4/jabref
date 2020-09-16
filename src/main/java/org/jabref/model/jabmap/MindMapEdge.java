@@ -6,11 +6,21 @@ package org.jabref.model.jabmap;
  */
 public class MindMapEdge {
 
+    // Strings of how these entries are stored in bibtex
+    public static final transient String MAP_EDGE_ENTRY_NAME = "Mapedge";
+    public static final transient String MAP_EDGE_NODE1_ID = "node1_id";
+    public static final transient String MAP_EDGE_NODE2_ID = "node2_id";
+    public static final transient String MAP_EDGE_LABEL = "label";
+    public static final transient String MAP_EDGE_DIRECTION = "direction";
+
     //Node 1 and 2 are
     private Long node1_Id;
     private Long node2_Id;
     private String label;
     private EdgeDirection direction;
+
+    public MindMapEdge(){
+    }
 
     public MindMapEdge(Long node1_Id, Long node2_Id, String label, EdgeDirection direction) {
         this.node1_Id = node1_Id;

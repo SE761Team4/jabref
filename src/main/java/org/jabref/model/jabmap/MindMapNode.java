@@ -1,19 +1,23 @@
 package org.jabref.model.jabmap;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * This class is a data object for a mind map node
  * References to BibEntry objects and kept as strings to simplify serialisation to JSON
  */
 public class MindMapNode {
 
+    // Strings of how these entries are stored in bibtex
+    public static final transient String MAP_NODE_ENTRY_NAME = "Mapnode";
+    public static final transient String MAP_NODE_ID = "id";
+    public static final transient String MAP_NODE_NAME = "name";
+    public static final transient String MAP_NODE_BIBENTRY = "bibentry";
+    public static final transient String MAP_NODE_XPOS = "x_pos";
+    public static final transient String MAP_NODE_YPOS = "y_pos";
+
     private Long id;
     private String name;
-    //Citation key of bib entry to act as id
+    // Citation key of bib entry to act as id
     private String bibEntry;
-    private List<NodeIcon> icons;
     private int x_pos;
     private int y_pos;
 
@@ -21,16 +25,14 @@ public class MindMapNode {
 
     }
 
-    public MindMapNode(Long id, String name) {
-        this.id = id;
+    public MindMapNode(String name) {
         this.name = name;
     }
 
-    public MindMapNode(Long id, String name, String bibEntry, List<NodeIcon> icons, int x_pos, int y_pos) {
+    public MindMapNode(Long id, String name, String bibEntry, int x_pos, int y_pos) {
         this.id = id;
         this.name = name;
         this.bibEntry = bibEntry;
-        this.icons = icons;
         this.x_pos = x_pos;
         this.y_pos = y_pos;
     }
@@ -57,22 +59,6 @@ public class MindMapNode {
 
     public void setBibEntry(String bibEntry) {
         this.bibEntry = bibEntry;
-    }
-
-    public List<NodeIcon> getIcons() {
-        return icons;
-    }
-
-    public void addIcon(NodeIcon icon) {
-        this.icons.add(icon);
-    }
-
-    public void removeIcon(String icon) {
-        this.icons.remove(icon);
-    }
-
-    public void setIcons(ArrayList<NodeIcon> icons) {
-        this.icons = icons;
     }
 
     public int getX_pos() {

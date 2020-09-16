@@ -874,7 +874,7 @@ public class JabRefFrame extends BorderPane {
 
                 new SeparatorMenuItem(),
 
-                factory.createMenuItem(StandardActions.LAUNCH_JABMAP, new JabMapAction())
+                factory.createMenuItem(StandardActions.LAUNCH_JABMAP, new JabMapAction(this))
         );
 
         SidePaneComponent webSearch = sidePaneManager.getComponent(SidePaneType.WEB_SEARCH);
