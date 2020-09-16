@@ -7,7 +7,7 @@ import './sidebar.css';
 
 //class='overflow-hidden'
 
-export const ReferenceList = (props) => {
+export const ReferenceList = (references) => {
   return (
     <TableContainer component={Paper} className="Table-proportions" >
       <Table className = "table table-bordered table-striped table-hover" aria-label="simple table" >
@@ -22,18 +22,13 @@ export const ReferenceList = (props) => {
 			<td >Journal</td>
           </tr>
         </thead>
+		{/* Add references.map here when API data is ready */}
         <tbody>
 			<tr>
             <td  >Name</td>
 			<td >A paper with title</td>
 			<td >2010</td>
 			<td >Science things</td>
-          </tr>
-          <tr>
-            <td  >Name</td>
-			<td >A paper </td>
-			<td >2010</td>
-			<td >Science</td>
           </tr>
         </tbody>
       </Table>
