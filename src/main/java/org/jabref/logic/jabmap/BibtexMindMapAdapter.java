@@ -4,6 +4,7 @@ import javafx.collections.ObservableList;
 import org.jabref.model.database.BibDatabase;
 import org.jabref.model.entry.BibEntry;
 import org.jabref.model.entry.field.Field;
+import org.jabref.model.entry.field.InternalField;
 import org.jabref.model.jabmap.EdgeDirection;
 import org.jabref.model.jabmap.MindMap;
 import org.jabref.model.jabmap.MindMapEdge;
@@ -74,11 +75,14 @@ public class BibtexMindMapAdapter {
     private MindMapNode createNodeFromBibEntry(BibEntry entry) throws IllegalArgumentException {
         // TODO: there's definitely a cleaner way to do this
         MindMapNode newNode = new MindMapNode();
+
+        newNode.setId(Long.parseLong(entry.getField(InternalField.KEY_FIELD).get()));
+
         for (Map.Entry<Field, String> field : entry.getFieldMap().entrySet()) {
             Field fieldName = field.getKey();
             String fieldValue = field.getValue();
             switch (fieldName.getName()) {
-                case MAP_NODE_ID -> newNode.setId(Long.parseLong(fieldValue));
+                // case MAP_NODE_ID -> newNode.setId(Long.parseLong(fieldValue));
                 case MAP_NODE_NAME -> newNode.setName(fieldValue);
                 case MAP_NODE_BIBENTRY -> newNode.setBibEntry(fieldValue);
                 case MAP_NODE_XPOS -> newNode.setX_pos(Integer.parseInt(fieldValue));
