@@ -39,7 +39,11 @@ public enum StandardEntryType implements EntryType {
     Dataset("Dataset"),
     SoftwareVersion("SoftwareVersion"),
     SoftwareModule("SoftwareModule"),
-    CodeFragment("CodeFragment");
+    CodeFragment("CodeFragment"),
+
+    // MindMap
+    MindMapNode("MindMapNode"),
+    MindMapEdge("MindMapEdge");
 
     private final String displayName;
 
