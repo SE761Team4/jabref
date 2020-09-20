@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 
 import org.jabref.gui.Globals;
 import org.jabref.gui.StateManager;
+import org.jabref.gui.util.BackgroundTask;
 import org.jabref.model.database.BibDatabase;
 import org.jabref.model.entry.BibEntry;
 import org.jabref.model.entry.field.Field;
@@ -103,7 +104,7 @@ public class BibtexMindMapAdapter {
             newEntry.setField(new UnknownField(MAP_NODE_YPOS), String.valueOf(node.getY_pos()));
 
             // Add entry to database
-            database.insertEntry(newEntry);
+            BackgroundTask.wrap(() -> database.insertEntry(newEntry));
         }
     }
 
