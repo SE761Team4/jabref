@@ -2,9 +2,11 @@ package org.jabref.logic.jabmap;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import javafx.collections.ObservableList;
 
@@ -86,26 +88,30 @@ public class BibtexMindMapAdapter {
         }
 
         // Instantiate appropriate bib entries containing mind map, node, and edge data and return them all to be
-        for (MindMapNode node : mindMap.getNodes()) {
-            BibEntry newEntry = new BibEntry(StandardEntryType.MindMapNode);
-            Random random = new SecureRandom();
-            String token = new BigInteger(130, random).toString(32);
-            newEntry.setField(InternalField.KEY_FIELD, token);
-            // Node will always have an id
-            newEntry.setField(new UnknownField(MAP_NODE_ID), node.getId().toString());
-            if (node.getName() != null) {
-                newEntry.setField(new UnknownField(MAP_NODE_NAME), node.getName());
-            }
-            if (node.getBibEntry() != null) {
-                newEntry.setField(new UnknownField(MAP_NODE_BIBENTRY), node.getBibEntry());
-            }
-            // Node will always have x and y pos
-            newEntry.setField(new UnknownField(MAP_NODE_XPOS), String.valueOf(node.getX_pos()));
-            newEntry.setField(new UnknownField(MAP_NODE_YPOS), String.valueOf(node.getY_pos()));
+        List<BibEntry> newEntries = mindMap
+                .getNodes().stream()
+                .map(node -> {
+                    BibEntry newEntry = new BibEntry(StandardEntryType.MindMapNode);
+                    Random random = new SecureRandom();
+                    String token = new BigInteger(130, random).toString(32);
+                    newEntry.setField(InternalField.KEY_FIELD, token);
+                    // Node will always have an id
+                    newEntry.setField(new UnknownField(MAP_NODE_ID), node.getId().toString());
+                    if (node.getName() != null) {
+                        newEntry.setField(new UnknownField(MAP_NODE_NAME), node.getName());
+                    }
+                    if (node.getBibEntry() != null) {
+                        newEntry.setField(new UnknownField(MAP_NODE_BIBENTRY), node.getBibEntry());
+                    }
+                    // Node will always have x and y pos
+                    newEntry.setField(new UnknownField(MAP_NODE_XPOS), String.valueOf(node.getX_pos()));
+                    newEntry.setField(new UnknownField(MAP_NODE_YPOS), String.valueOf(node.getY_pos()));
+                    return newEntry;
+                })
+                .collect(Collectors.toList());
 
-            // Add entry to database
-            BackgroundTask.wrap(() -> database.insertEntry(newEntry));
-        }
+        // Add entries to database
+        BackgroundTask.wrap(() -> database.insertEntries(newEntries));
     }
 
     /**
