@@ -44,8 +44,8 @@ public class RootResource {
             }
         }
         Gson gson = new GsonBuilder().registerTypeAdapter(BibEntry.class, new BibEntryAdapter()).create();
-        Response.ResponseBuilder builder = Response.ok(gson.toJson(bibEntries));
-        return builder.build();
+        // Response.ResponseBuilder builder = Response.ok(gson.toJson(bibEntries));
+        return Response.status(Response.Status.OK).entity(gson.toJson(bibEntries)).build();
     }
 
     @GET
@@ -57,8 +57,8 @@ public class RootResource {
         BibtexMindMapAdapter adapter = new BibtexMindMapAdapter();
         // Attempt to get a map saved in the current database
         MindMap map = adapter.bibtex2MindMap(getActiveDatabase());
-        Response.ResponseBuilder builder = Response.ok(gson.toJson(map));
-        return builder.build();
+        // Response.ResponseBuilder builder = Response.ok(gson.toJson(map));
+        return Response.status(Response.Status.OK).entity(new Gson().toJson(map)).build();
     }
 
     @PUT
