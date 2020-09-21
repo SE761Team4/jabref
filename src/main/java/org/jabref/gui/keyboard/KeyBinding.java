@@ -56,6 +56,7 @@ public enum KeyBinding {
     NEXT_LIBRARY("Next library", Localization.lang("Next library"), "ctrl+PAGE_DOWN", KeyBindingCategory.VIEW),
     OPEN_CONSOLE("Open terminal here", Localization.lang("Open terminal here"), "ctrl+shift+L", KeyBindingCategory.TOOLS),
     OPEN_DATABASE("Open library", Localization.lang("Open library"), "ctrl+O", KeyBindingCategory.FILE),
+    OPEN_JABMAP("Open JabMap", Localization.lang("Open JabMap"), "ctrl+9", KeyBindingCategory.TOOLS),
     OPEN_FILE("Open file", Localization.lang("Open file"), "F4", KeyBindingCategory.TOOLS),
     OPEN_FOLDER("Open folder", Localization.lang("Open folder"), "ctrl+shift+O", KeyBindingCategory.TOOLS),
     OPEN_OPEN_OFFICE_LIBRE_OFFICE_CONNECTION("Open OpenOffice/LibreOffice connection", Localization.lang("Open OpenOffice/LibreOffice connection"), "alt+0", KeyBindingCategory.TOOLS),
