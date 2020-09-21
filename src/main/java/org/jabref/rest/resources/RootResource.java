@@ -38,7 +38,7 @@ public class RootResource {
         List<BibEntry> bibEntries = new ArrayList<>();
         ObservableList<BibEntry> observableList = getActiveDatabase().getEntries();
         for (BibEntry b : observableList) {
-            // Get all bib entries that aren't storing maps or nodesb
+            // Get all bib entries that aren't storing maps or nodes
             if (!b.getType().getDisplayName().equals(MAP_NODE_ENTRY_NAME) && !b.getType().getDisplayName().equals(MAP_EDGE_ENTRY_NAME)) {
                 bibEntries.add(b);
             }

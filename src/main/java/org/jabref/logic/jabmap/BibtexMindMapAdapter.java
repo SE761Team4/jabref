@@ -4,7 +4,6 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -44,14 +43,14 @@ public class BibtexMindMapAdapter {
     public static final String DEFAULT_MAP_NAME = "New Map";
 
     /**
-     * Method for loading MindMap class from bibtex file. Returns the mindmap object if present, a blank map otherwise
+     * Method for loading MindMap class from bibtex database. Returns the mindmap object if present, a blank map otherwise
      */
     public MindMap bibtex2MindMap(BibDatabase database) {
         ObservableList<BibEntry> observableList = database.getEntries();
         // TODO: Where to handle/generate node & edge citation keys, which JabRef needs to read into database
-        // Retrieve map, nodes, and edges from list of bib entries
-        Optional<BibEntry> optionalMapEntry = observableList.stream().filter(o -> o.getType().getDisplayName().equals("Mapnode")).findFirst();
-        if (optionalMapEntry.isPresent()) {
+        // Retrieve the first mind map node if present, meaning this database contains a mind map
+        boolean containsMap = observableList.stream().anyMatch(entry -> entry.getType().getDisplayName().equals(MAP_NODE_ENTRY_NAME));
+        if (containsMap) {
             // We know this file contains a mind map so...
             MindMap map = new MindMap();
             try {
@@ -65,7 +64,7 @@ public class BibtexMindMapAdapter {
                 }
                 return map;
             } catch (IllegalArgumentException e) {
-                System.out.println("Error parsing map from bibtex, returning clean one instead");
+                System.out.println("Error parsing map from bibtex, returning new one instead");
             }
         }
         // Return blank mind map
@@ -110,8 +109,8 @@ public class BibtexMindMapAdapter {
                 })
                 .collect(Collectors.toList());
 
-        // Add entries to database
-        BackgroundTask.wrap(() -> database.insertEntries(newEntries));
+        // Add entries to database (currently non-functional)
+        BackgroundTask.wrap(() -> database.insertEntries(newEntries)).executeWith(Globals.TASK_EXECUTOR);
     }
 
     /**
