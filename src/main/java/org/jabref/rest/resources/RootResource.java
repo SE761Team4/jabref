@@ -12,6 +12,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 
 import org.jabref.gui.Globals;
@@ -44,7 +45,6 @@ public class RootResource {
             }
         }
         Gson gson = new GsonBuilder().registerTypeAdapter(BibEntry.class, new BibEntryAdapter()).create();
-        // Response.ResponseBuilder builder = Response.ok(gson.toJson(bibEntries));
         return Response.status(Response.Status.OK).entity(gson.toJson(bibEntries)).build();
     }
 
@@ -57,7 +57,6 @@ public class RootResource {
         BibtexMindMapAdapter adapter = new BibtexMindMapAdapter();
         // Attempt to get a map saved in the current database
         MindMap map = adapter.bibtex2MindMap(getActiveDatabase());
-        // Response.ResponseBuilder builder = Response.ok(gson.toJson(map));
         return Response.status(Response.Status.OK).entity(new Gson().toJson(map)).build();
     }
 
@@ -72,9 +71,9 @@ public class RootResource {
 
         // Get adapter to convert to bib entries
         BibtexMindMapAdapter adapter = new BibtexMindMapAdapter();
-        adapter.mindMap2Bibtex(map);
 
-        // MindMapWriter.instance().writeMindMap(bibEntries);
+        addToDatabase(adapter.mindMap2Bibtex(map));
+
         Response.ResponseBuilder builder = Response.ok();
         return builder.build();
     }
@@ -89,6 +88,13 @@ public class RootResource {
         } else {
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private void addToDatabase(List<BibEntry> entries) {
+        Platform.runLater(() ->
+                // Need to run this on the JavaFX thread
+                getActiveDatabase().insertEntries(entries)
+        );
     }
 }
 
