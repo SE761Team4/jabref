@@ -1,7 +1,7 @@
 package org.jabref.rest.resources;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -12,7 +12,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import javafx.collections.ObservableList;
+import javafx.application.Platform;
 
 import org.jabref.gui.Globals;
 import org.jabref.gui.StateManager;
@@ -35,17 +35,12 @@ public class RootResource {
     @Path("libraries/current/entries")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEntries() {
-        List<BibEntry> bibEntries = new ArrayList<>();
-        ObservableList<BibEntry> observableList = getActiveDatabase().getEntries();
-        for (BibEntry b : observableList) {
-            // Get all bib entries that aren't storing maps or nodes
-            if (!b.getType().getDisplayName().equals(MAP_NODE_ENTRY_NAME) && !b.getType().getDisplayName().equals(MAP_EDGE_ENTRY_NAME)) {
-                bibEntries.add(b);
-            }
-        }
+        // Filter out map and edge entries from list
+        List<BibEntry> entries = getActiveDatabase().getEntries().stream().filter(b -> !b.getType().getDisplayName()
+                                                                                         .equals(MAP_NODE_ENTRY_NAME) && !b.getType().getDisplayName()
+                                                                                                                           .equals(MAP_EDGE_ENTRY_NAME)).collect(Collectors.toList());
         Gson gson = new GsonBuilder().registerTypeAdapter(BibEntry.class, new BibEntryAdapter()).create();
-        // Response.ResponseBuilder builder = Response.ok(gson.toJson(bibEntries));
-        return Response.status(Response.Status.OK).entity(gson.toJson(bibEntries)).build();
+        return Response.status(Response.Status.OK).entity(gson.toJson(entries)).build();
     }
 
     @GET
@@ -56,8 +51,7 @@ public class RootResource {
         // Retrieve mind map object from database
         BibtexMindMapAdapter adapter = new BibtexMindMapAdapter();
         // Attempt to get a map saved in the current database
-        MindMap map = adapter.bibtex2MindMap(getActiveDatabase());
-        // Response.ResponseBuilder builder = Response.ok(gson.toJson(map));
+        MindMap map = adapter.convert(getActiveDatabase().getEntries());
         return Response.status(Response.Status.OK).entity(new Gson().toJson(map)).build();
     }
 
@@ -65,16 +59,14 @@ public class RootResource {
     @Path("libraries/current/map")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response saveMindMap(String jsonMindMap) {
-        System.out.println(jsonMindMap);
         Gson gBuilder = new GsonBuilder().create();
         MindMap map = gBuilder.fromJson(jsonMindMap, MindMap.class);
-        System.out.println(map);
 
         // Get adapter to convert to bib entries
         BibtexMindMapAdapter adapter = new BibtexMindMapAdapter();
-        adapter.mindMap2Bibtex(map);
 
-        // MindMapWriter.instance().writeMindMap(bibEntries);
+        addToDatabase(adapter.reverse().convert(map));
+
         Response.ResponseBuilder builder = Response.ok();
         return builder.build();
     }
@@ -89,6 +81,24 @@ public class RootResource {
         } else {
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    /**
+     * Helper method to insert map related entries into database, and remove out of date ones
+     */
+    private void addToDatabase(List<BibEntry> newEntries) {
+        // Get old map entries to remove from database
+        List<BibEntry> oldMapEntries = getActiveDatabase().getEntries().stream().filter(b -> b.getType().getDisplayName()
+                                                                                              .equals(MAP_NODE_ENTRY_NAME) || b.getType().getDisplayName()
+                                                                                                                               .equals(MAP_EDGE_ENTRY_NAME)).collect(Collectors.toList());
+
+        BibDatabase database = getActiveDatabase();
+        Platform.runLater(() -> {
+                    // Need to run this on the JavaFX thread
+                    database.removeEntries(oldMapEntries);
+                    database.insertEntries(newEntries);
+                }
+        );
     }
 }
 

@@ -7,10 +7,10 @@ public class MindMapEdge {
 
     // Strings of how these entries are stored in bibtex
     public static final transient String MAP_EDGE_ENTRY_NAME = "MindMapEdge";
-    public static final transient String MAP_EDGE_NODE1_ID = "node1_id";
-    public static final transient String MAP_EDGE_NODE2_ID = "node2_id";
     public static final transient String MAP_EDGE_LABEL = "label";
     public static final transient String MAP_EDGE_DIRECTION = "direction";
+    private static final transient String EDGE_KEY_PART1 = "mindmapedge_from_";
+    private static final transient String EDGE_KEY_PART2 = "_to_";
 
     // Node 1 and 2 are
     private Long node1_Id;
@@ -58,5 +58,14 @@ public class MindMapEdge {
 
     public void setDirection(EdgeDirection direction) {
         this.direction = direction;
+    }
+
+    public void setDirection(String direction) {
+        direction = direction.toUpperCase();
+        this.direction = EdgeDirection.valueOf(direction);
+    }
+
+    public static String getCitationKeyFromIds(Long id1, Long id2) {
+        return EDGE_KEY_PART1 + id1 + EDGE_KEY_PART2 + id2;
     }
 }
