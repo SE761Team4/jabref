@@ -1,5 +1,8 @@
 package org.jabref.model.jabmap;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * This class is a data object for a mind map node
  * References to BibEntry objects and kept as strings to simplify serialisation to JSON
@@ -11,6 +14,7 @@ public class MindMapNode {
     public static final transient String MAP_NODE_ID = "id";
     public static final transient String MAP_NODE_NAME = "name";
     public static final transient String MAP_NODE_BIBENTRY = "bibentry";
+    public static final transient String MAP_NODE_ICONS = "icons";
     public static final transient String MAP_NODE_XPOS = "x_pos";
     public static final transient String MAP_NODE_YPOS = "y_pos";
 
@@ -18,11 +22,11 @@ public class MindMapNode {
     private String name;
     // Citation key of bib entry to act as id
     private String bibEntry;
+    private List<NodeIcon> icons = new ArrayList<>();
     private int x_pos;
     private int y_pos;
 
     public MindMapNode() {
-
     }
 
     public MindMapNode(String name) {
@@ -59,6 +63,22 @@ public class MindMapNode {
 
     public void setBibEntry(String bibEntry) {
         this.bibEntry = bibEntry;
+    }
+
+    public List<NodeIcon> getIcons() {
+        return icons;
+    }
+
+    public void setIcons(ArrayList<NodeIcon> icons) {
+        this.icons = icons;
+    }
+
+    public void setIcons(List<String> icons) {
+
+        for (String icon : icons ) {
+            NodeIcon newIcon = NodeIcon.valueOf(icon.toUpperCase());
+            this.icons.add(newIcon);
+        }
     }
 
     public int getX_pos() {

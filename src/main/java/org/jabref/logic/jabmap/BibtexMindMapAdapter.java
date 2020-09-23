@@ -2,6 +2,7 @@ package org.jabref.logic.jabmap;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -29,6 +30,7 @@ import static org.jabref.model.jabmap.MindMapEdge.MAP_EDGE_NODE1_ID;
 import static org.jabref.model.jabmap.MindMapEdge.MAP_EDGE_NODE2_ID;
 import static org.jabref.model.jabmap.MindMapNode.MAP_NODE_BIBENTRY;
 import static org.jabref.model.jabmap.MindMapNode.MAP_NODE_ENTRY_NAME;
+import static org.jabref.model.jabmap.MindMapNode.MAP_NODE_ICONS;
 import static org.jabref.model.jabmap.MindMapNode.MAP_NODE_ID;
 import static org.jabref.model.jabmap.MindMapNode.MAP_NODE_NAME;
 import static org.jabref.model.jabmap.MindMapNode.MAP_NODE_XPOS;
@@ -125,6 +127,7 @@ public class BibtexMindMapAdapter {
                 case MAP_NODE_ID -> newNode.setId(Long.parseLong(fieldValue));
                 case MAP_NODE_NAME -> newNode.setName(fieldValue);
                 case MAP_NODE_BIBENTRY -> newNode.setBibEntry(fieldValue);
+                case MAP_NODE_ICONS -> newNode.setIcons(Arrays.asList(fieldValue.split(",")));
                 case MAP_NODE_XPOS -> newNode.setX_pos(Integer.parseInt(fieldValue));
                 case MAP_NODE_YPOS -> newNode.setY_pos(Integer.parseInt(fieldValue));
             }
