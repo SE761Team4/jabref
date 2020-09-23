@@ -1,7 +1,6 @@
 package org.jabref.rest.resources;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.ws.rs.Consumes;
@@ -52,7 +51,7 @@ public class RootResource {
         // Retrieve mind map object from database
         BibtexMindMapAdapter adapter = new BibtexMindMapAdapter();
         // Attempt to get a map saved in the current database
-        MindMap map = adapter.bibtex2MindMap(getActiveDatabase());
+        MindMap map = adapter.convert(getActiveDatabase().getEntries());
         return Response.status(Response.Status.OK).entity(new Gson().toJson(map)).build();
     }
 
@@ -66,7 +65,7 @@ public class RootResource {
         // Get adapter to convert to bib entries
         BibtexMindMapAdapter adapter = new BibtexMindMapAdapter();
 
-        addToDatabase(adapter.mindMap2Bibtex(map));
+        addToDatabase(adapter.reverse().convert(map));
 
         Response.ResponseBuilder builder = Response.ok();
         return builder.build();
@@ -85,7 +84,7 @@ public class RootResource {
     }
 
     /**
-     * Helper method to insert entries into database
+     * Helper method to insert map related entries into database, and remove out of date ones
      */
     private void addToDatabase(List<BibEntry> newEntries) {
         // Get old map entries to remove from database
@@ -100,13 +99,6 @@ public class RootResource {
                     database.insertEntries(newEntries);
                 }
         );
-    }
-
-    /**
-     * Helper method to determine if a list of bib entries contains an entry with a certain key
-     */
-    private Optional<BibEntry> containsEntry(final List<BibEntry> list, final String key) {
-        return list.stream().filter(b -> b.getCiteKeyOptional().orElse("").equals(key)).findFirst();
     }
 }
 

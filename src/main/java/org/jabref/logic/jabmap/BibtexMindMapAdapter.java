@@ -6,9 +6,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import javafx.collections.ObservableList;
-
-import org.jabref.model.database.BibDatabase;
 import org.jabref.model.entry.BibEntry;
 import org.jabref.model.entry.field.Field;
 import org.jabref.model.entry.field.InternalField;
@@ -18,6 +15,8 @@ import org.jabref.model.jabmap.EdgeDirection;
 import org.jabref.model.jabmap.MindMap;
 import org.jabref.model.jabmap.MindMapEdge;
 import org.jabref.model.jabmap.MindMapNode;
+
+import com.google.common.base.Converter;
 
 import static org.jabref.model.jabmap.MindMapEdge.MAP_EDGE_DIRECTION;
 import static org.jabref.model.jabmap.MindMapEdge.MAP_EDGE_ENTRY_NAME;
@@ -29,24 +28,24 @@ import static org.jabref.model.jabmap.MindMapNode.MAP_NODE_XPOS;
 import static org.jabref.model.jabmap.MindMapNode.MAP_NODE_YPOS;
 
 /**
- * This class handles converting data from BibTeX format, which is stored in the database, to MindMap to be sent to JapMap It also does the reverse, converting JSON to BibTeX to be stored.
+ * This class handles converting data from BibTeX format, which is stored in the database, to MindMap java data model, and back again. Follows Google's abstract Converter format
  */
-public class BibtexMindMapAdapter {
+public class BibtexMindMapAdapter extends Converter<List<BibEntry>, MindMap> {
 
     public static final String DEFAULT_MAP_NAME = "New Map";
 
     /**
      * Method for loading MindMap class from bibtex database. Returns the mindmap object if present, a blank map otherwise
      */
-    public MindMap bibtex2MindMap(BibDatabase database) {
-        ObservableList<BibEntry> observableList = database.getEntries();
+    @Override
+    protected MindMap doForward(List<BibEntry> bibEntries) {
         // Retrieve the first mind map node if present, meaning this database contains a mind map
-        boolean containsMap = observableList.stream().anyMatch(entry -> entry.getType().getDisplayName().equals(MAP_NODE_ENTRY_NAME));
+        boolean containsMap = bibEntries.stream().anyMatch(entry -> entry.getType().getDisplayName().equals(MAP_NODE_ENTRY_NAME));
         if (containsMap) {
             // We know this file contains a mind map so...
             MindMap map = new MindMap();
             try {
-                for (BibEntry b : observableList) {
+                for (BibEntry b : bibEntries) {
                     switch (b.getType().getDisplayName()) {
                         case MAP_NODE_ENTRY_NAME -> // Instantiate MindMapNode object and add to MindMap nodes
                                 map.addNode(createNodeFromBibEntry(b));
@@ -68,7 +67,8 @@ public class BibtexMindMapAdapter {
     /**
      * Method to convert MindMap class to bibtex entries that can then be saved in the database
      */
-    public List<BibEntry> mindMap2Bibtex(MindMap mindMap) {
+    @Override
+    protected List<BibEntry> doBackward(MindMap mindMap) {
         // Instantiate appropriate bib entries containing mind map, node, and edge data and return them all to be
         List<BibEntry> nodeEntries = mindMap
                 .getNodes().stream()
@@ -145,6 +145,7 @@ public class BibtexMindMapAdapter {
     }
 
     private String[] getNodeIdsFromEdgeKey(String key) {
+        // Regex to extract node ids from citation key format
         Pattern pattern = Pattern.compile(".*(\\d+)_to_(\\d+)");
         Matcher matcher = pattern.matcher(key);
         if (matcher.find()) {
@@ -157,6 +158,7 @@ public class BibtexMindMapAdapter {
     }
 
     private String getNodeIdFromNodeKey(String key) {
+        // Regex to extract node id from citation key format
         Pattern pattern = Pattern.compile(".*(\\d+)");
         Matcher matcher = pattern.matcher(key);
         if (matcher.find()) {
