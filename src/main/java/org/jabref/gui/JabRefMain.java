@@ -98,12 +98,13 @@ public class JabRefMain extends Application {
 
     private void startHttpEndPoint() {
         Server server = this.createHttpServer();
-        //Starts server to http://localhost:9898/libraries/current/entries
 
         try {
+            // Starts server to http://localhost:9898/
+            // The current implementation serves libraries/current/entries
             server.start();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Problem starting HTTP Server", e);
         }
     }
 
