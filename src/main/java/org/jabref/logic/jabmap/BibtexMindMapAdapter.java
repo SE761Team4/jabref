@@ -26,7 +26,6 @@ import static org.jabref.model.jabmap.MindMapEdge.MAP_EDGE_LABEL;
 import static org.jabref.model.jabmap.MindMapNode.MAP_NODE_BIBENTRY;
 import static org.jabref.model.jabmap.MindMapNode.MAP_NODE_ENTRY_NAME;
 import static org.jabref.model.jabmap.MindMapNode.MAP_NODE_ICONS;
-import static org.jabref.model.jabmap.MindMapNode.MAP_NODE_ID;
 import static org.jabref.model.jabmap.MindMapNode.MAP_NODE_NAME;
 import static org.jabref.model.jabmap.MindMapNode.MAP_NODE_XPOS;
 import static org.jabref.model.jabmap.MindMapNode.MAP_NODE_YPOS;
