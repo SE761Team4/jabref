@@ -5,15 +5,10 @@ import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import javafx.collections.ObservableList;
-
-import org.jabref.gui.Globals;
-import org.jabref.gui.StateManager;
-import org.jabref.gui.util.BackgroundTask;
-import org.jabref.model.database.BibDatabase;
 import org.jabref.model.entry.BibEntry;
 import org.jabref.model.entry.field.Field;
 import org.jabref.model.entry.field.InternalField;
@@ -23,11 +18,11 @@ import org.jabref.model.jabmap.MindMap;
 import org.jabref.model.jabmap.MindMapEdge;
 import org.jabref.model.jabmap.MindMapNode;
 
+import com.google.common.base.Converter;
+
 import static org.jabref.model.jabmap.MindMapEdge.MAP_EDGE_DIRECTION;
 import static org.jabref.model.jabmap.MindMapEdge.MAP_EDGE_ENTRY_NAME;
 import static org.jabref.model.jabmap.MindMapEdge.MAP_EDGE_LABEL;
-import static org.jabref.model.jabmap.MindMapEdge.MAP_EDGE_NODE1_ID;
-import static org.jabref.model.jabmap.MindMapEdge.MAP_EDGE_NODE2_ID;
 import static org.jabref.model.jabmap.MindMapNode.MAP_NODE_BIBENTRY;
 import static org.jabref.model.jabmap.MindMapNode.MAP_NODE_ENTRY_NAME;
 import static org.jabref.model.jabmap.MindMapNode.MAP_NODE_ICONS;
@@ -37,25 +32,24 @@ import static org.jabref.model.jabmap.MindMapNode.MAP_NODE_XPOS;
 import static org.jabref.model.jabmap.MindMapNode.MAP_NODE_YPOS;
 
 /**
- * This class handles converting data from BibTeX format, which is stored in the database, to MindMap to be sent to JapMap It also does the reverse, converting JSON to BibTeX to be stored.
+ * This class handles converting data from BibTeX format, which is stored in the database, to MindMap java data model, and back again. Follows Google's abstract Converter format
  */
-public class BibtexMindMapAdapter {
+public class BibtexMindMapAdapter extends Converter<List<BibEntry>, MindMap> {
 
     public static final String DEFAULT_MAP_NAME = "New Map";
 
     /**
      * Method for loading MindMap class from bibtex database. Returns the mindmap object if present, a blank map otherwise
      */
-    public MindMap bibtex2MindMap(BibDatabase database) {
-        ObservableList<BibEntry> observableList = database.getEntries();
-        // TODO: Where to handle/generate node & edge citation keys, which JabRef needs to read into database
+    @Override
+    protected MindMap doForward(List<BibEntry> bibEntries) {
         // Retrieve the first mind map node if present, meaning this database contains a mind map
-        boolean containsMap = observableList.stream().anyMatch(entry -> entry.getType().getDisplayName().equals(MAP_NODE_ENTRY_NAME));
+        boolean containsMap = bibEntries.stream().anyMatch(entry -> entry.getType().getDisplayName().equals(MAP_NODE_ENTRY_NAME));
         if (containsMap) {
             // We know this file contains a mind map so...
             MindMap map = new MindMap();
             try {
-                for (BibEntry b : observableList) {
+                for (BibEntry b : bibEntries) {
                     switch (b.getType().getDisplayName()) {
                         case MAP_NODE_ENTRY_NAME -> // Instantiate MindMapNode object and add to MindMap nodes
                                 map.addNode(createNodeFromBibEntry(b));
@@ -77,26 +71,14 @@ public class BibtexMindMapAdapter {
     /**
      * Method to convert MindMap class to bibtex entries that can then be saved in the database
      */
-    public void mindMap2Bibtex(MindMap mindMap) {
-        // Get active database to insert bib entries into
-        StateManager stateManager = Globals.stateManager;
-        BibDatabase database;
-        if (stateManager.getActiveDatabase().isPresent()) {
-            database = stateManager.getActiveDatabase().get().getDatabase();
-        } else {
-            return;
-        }
-
+    @Override
+    protected List<BibEntry> doBackward(MindMap mindMap) {
         // Instantiate appropriate bib entries containing mind map, node, and edge data and return them all to be
-        List<BibEntry> newEntries = mindMap
+        List<BibEntry> nodeEntries = mindMap
                 .getNodes().stream()
                 .map(node -> {
                     BibEntry newEntry = new BibEntry(StandardEntryType.MindMapNode);
-                    Random random = new SecureRandom();
-                    String token = new BigInteger(130, random).toString(32);
-                    newEntry.setField(InternalField.KEY_FIELD, token);
-                    // Node will always have an id
-                    newEntry.setField(new UnknownField(MAP_NODE_ID), node.getId().toString());
+                    newEntry.setField(InternalField.KEY_FIELD, MindMapNode.getCitationKeyFromId(node.getId()));
                     if (node.getName() != null) {
                         newEntry.setField(new UnknownField(MAP_NODE_NAME), node.getName());
                     }
@@ -110,21 +92,33 @@ public class BibtexMindMapAdapter {
                 })
                 .collect(Collectors.toList());
 
-        // Add entries to database (currently non-functional)
-        BackgroundTask.wrap(() -> database.insertEntries(newEntries)).executeWith(Globals.TASK_EXECUTOR);
+        List<BibEntry> edgeEntries = mindMap
+                .getEdges().stream()
+                .map(edge -> {
+                    BibEntry newEntry = new BibEntry(StandardEntryType.MindMapEdge);
+                    newEntry.setField(InternalField.KEY_FIELD, MindMapEdge.getCitationKeyFromIds(edge.getNode1_Id(), edge.getNode2_Id()));
+                    newEntry.setField(new UnknownField(MAP_EDGE_LABEL), edge.getLabel());
+                    newEntry.setField(new UnknownField(MAP_EDGE_DIRECTION), edge.getDirection().toString());
+                    return newEntry;
+                })
+                .collect(Collectors.toList());
+
+        nodeEntries.addAll(edgeEntries);
+        return nodeEntries;
     }
 
     /**
      * Helper method that takes a bib entry and iteratively converts the fields & values to those of a MindMapNode
      */
     private MindMapNode createNodeFromBibEntry(BibEntry entry) throws IllegalArgumentException {
-        // TODO: there's definitely a cleaner way to do this
         MindMapNode newNode = new MindMapNode();
+        // Create id field from citation key of Bibtex entry
+        String id = getNodeIdFromNodeKey(entry.getCiteKeyOptional().orElse(""));
+        newNode.setId(Long.parseLong(id));
         for (Map.Entry<Field, String> field : entry.getFieldMap().entrySet()) {
             Field fieldName = field.getKey();
             String fieldValue = field.getValue();
             switch (fieldName.getName()) {
-                case MAP_NODE_ID -> newNode.setId(Long.parseLong(fieldValue));
                 case MAP_NODE_NAME -> newNode.setName(fieldValue);
                 case MAP_NODE_BIBENTRY -> newNode.setBibEntry(fieldValue);
                 case MAP_NODE_ICONS -> newNode.setIcons(Arrays.asList(fieldValue.split(",")));
@@ -140,16 +134,41 @@ public class BibtexMindMapAdapter {
      */
     private MindMapEdge createEdgeFromBibEntry(BibEntry entry) throws IllegalArgumentException {
         MindMapEdge newEdge = new MindMapEdge();
+        // Create id fields from citation key ids
+        String[] ids = getNodeIdsFromEdgeKey(entry.getCiteKeyOptional().orElse(""));
+        newEdge.setNode1_Id(Long.parseLong(ids[0]));
+        newEdge.setNode2_Id(Long.parseLong(ids[1]));
         for (Map.Entry<Field, String> field : entry.getFieldMap().entrySet()) {
             Field fieldName = field.getKey();
             String fieldValue = field.getValue();
             switch (fieldName.getName()) {
-                case MAP_EDGE_NODE1_ID -> newEdge.setNode1_Id(Long.parseLong(fieldValue));
-                case MAP_EDGE_NODE2_ID -> newEdge.setNode2_Id(Long.parseLong(fieldValue));
                 case MAP_EDGE_LABEL -> newEdge.setLabel(fieldValue);
                 case MAP_EDGE_DIRECTION -> newEdge.setDirection(fieldValue);
             }
         }
         return newEdge;
+    }
+
+    private String[] getNodeIdsFromEdgeKey(String key) {
+        // Regex to extract node ids from citation key format
+        Pattern pattern = Pattern.compile(".*(\\d+)_to_(\\d+)");
+        Matcher matcher = pattern.matcher(key);
+        if (matcher.find()) {
+            String[] ids = new String[2];
+            ids[0] = matcher.group(1);
+            ids[1] = matcher.group(2);
+            return ids;
+        }
+        return new String[2];
+    }
+
+    private String getNodeIdFromNodeKey(String key) {
+        // Regex to extract node id from citation key format
+        Pattern pattern = Pattern.compile(".*(\\d+)");
+        Matcher matcher = pattern.matcher(key);
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+        return "";
     }
 }

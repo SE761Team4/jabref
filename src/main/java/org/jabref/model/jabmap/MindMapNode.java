@@ -11,12 +11,12 @@ public class MindMapNode {
 
     // Strings of how these entries are stored in bibtex
     public static final transient String MAP_NODE_ENTRY_NAME = "MindMapNode";
-    public static final transient String MAP_NODE_ID = "id";
     public static final transient String MAP_NODE_NAME = "name";
     public static final transient String MAP_NODE_BIBENTRY = "bibentry";
     public static final transient String MAP_NODE_ICONS = "icons";
     public static final transient String MAP_NODE_XPOS = "x_pos";
     public static final transient String MAP_NODE_YPOS = "y_pos";
+    private static final transient String NODE_KEY_PART = "mindmapnode_";
 
     private Long id;
     private String name;
@@ -95,5 +95,9 @@ public class MindMapNode {
 
     public void setY_pos(int y_pos) {
         this.y_pos = y_pos;
+    }
+
+    public static String getCitationKeyFromId(Long id) {
+        return NODE_KEY_PART + id;
     }
 }
