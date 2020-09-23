@@ -59,4 +59,10 @@ public class MindMapEdge {
     public void setDirection(EdgeDirection direction) {
         this.direction = direction;
     }
+
+    public void setDirection(String direction) {
+        direction = direction.toUpperCase();
+
+        this.direction = EdgeDirection.valueOf(direction);
+    }
 }

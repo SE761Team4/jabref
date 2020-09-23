@@ -145,7 +145,7 @@ public class BibtexMindMapAdapter {
                 case MAP_EDGE_NODE1_ID -> newEdge.setNode1_Id(Long.parseLong(fieldValue));
                 case MAP_EDGE_NODE2_ID -> newEdge.setNode2_Id(Long.parseLong(fieldValue));
                 case MAP_EDGE_LABEL -> newEdge.setLabel(fieldValue);
-                case MAP_EDGE_DIRECTION -> newEdge.setDirection(EdgeDirection.valueOf(fieldValue));
+                case MAP_EDGE_DIRECTION -> newEdge.setDirection(fieldValue);
             }
         }
         return newEdge;
