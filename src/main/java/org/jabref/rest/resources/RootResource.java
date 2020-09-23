@@ -1,7 +1,8 @@
 package org.jabref.rest.resources;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -13,7 +14,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 
 import org.jabref.gui.Globals;
 import org.jabref.gui.StateManager;
@@ -36,16 +36,12 @@ public class RootResource {
     @Path("libraries/current/entries")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEntries() {
-        List<BibEntry> bibEntries = new ArrayList<>();
-        ObservableList<BibEntry> observableList = getActiveDatabase().getEntries();
-        for (BibEntry b : observableList) {
-            // Get all bib entries that aren't storing maps or nodes
-            if (!b.getType().getDisplayName().equals(MAP_NODE_ENTRY_NAME) && !b.getType().getDisplayName().equals(MAP_EDGE_ENTRY_NAME)) {
-                bibEntries.add(b);
-            }
-        }
+        // Filter out map and edge entries from list
+        List<BibEntry> entries = getActiveDatabase().getEntries().stream().filter(b -> !b.getType().getDisplayName()
+                                                                                         .equals(MAP_NODE_ENTRY_NAME) && !b.getType().getDisplayName()
+                                                                                                                           .equals(MAP_EDGE_ENTRY_NAME)).collect(Collectors.toList());
         Gson gson = new GsonBuilder().registerTypeAdapter(BibEntry.class, new BibEntryAdapter()).create();
-        return Response.status(Response.Status.OK).entity(gson.toJson(bibEntries)).build();
+        return Response.status(Response.Status.OK).entity(gson.toJson(entries)).build();
     }
 
     @GET
@@ -64,10 +60,8 @@ public class RootResource {
     @Path("libraries/current/map")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response saveMindMap(String jsonMindMap) {
-        System.out.println(jsonMindMap);
         Gson gBuilder = new GsonBuilder().create();
         MindMap map = gBuilder.fromJson(jsonMindMap, MindMap.class);
-        System.out.println(map);
 
         // Get adapter to convert to bib entries
         BibtexMindMapAdapter adapter = new BibtexMindMapAdapter();
@@ -90,11 +84,29 @@ public class RootResource {
         }
     }
 
-    private void addToDatabase(List<BibEntry> entries) {
-        Platform.runLater(() ->
-                // Need to run this on the JavaFX thread
-                getActiveDatabase().insertEntries(entries)
+    /**
+     * Helper method to insert entries into database
+     */
+    private void addToDatabase(List<BibEntry> newEntries) {
+        // Get old map entries to remove from database
+        List<BibEntry> oldMapEntries = getActiveDatabase().getEntries().stream().filter(b -> b.getType().getDisplayName()
+                                                                                              .equals(MAP_NODE_ENTRY_NAME) || b.getType().getDisplayName()
+                                                                                                                               .equals(MAP_EDGE_ENTRY_NAME)).collect(Collectors.toList());
+
+        BibDatabase database = getActiveDatabase();
+        Platform.runLater(() -> {
+                    // Need to run this on the JavaFX thread
+                    database.removeEntries(oldMapEntries);
+                    database.insertEntries(newEntries);
+                }
         );
+    }
+
+    /**
+     * Helper method to determine if a list of bib entries contains an entry with a certain key
+     */
+    private Optional<BibEntry> containsEntry(final List<BibEntry> list, final String key) {
+        return list.stream().filter(b -> b.getCiteKeyOptional().orElse("").equals(key)).findFirst();
     }
 }
 
