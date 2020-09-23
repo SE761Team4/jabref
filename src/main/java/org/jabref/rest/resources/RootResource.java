@@ -20,13 +20,11 @@ import org.jabref.logic.jabmap.BibtexMindMapAdapter;
 import org.jabref.model.database.BibDatabase;
 import org.jabref.model.entry.BibEntry;
 import org.jabref.model.entry.BibEntryAdapter;
+import org.jabref.model.entry.types.MindMapEntryType;
 import org.jabref.model.jabmap.MindMap;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import static org.jabref.model.jabmap.MindMapEdge.MAP_EDGE_ENTRY_NAME;
-import static org.jabref.model.jabmap.MindMapNode.MAP_NODE_ENTRY_NAME;
 
 @Path("/")
 public class RootResource {
@@ -36,9 +34,10 @@ public class RootResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEntries() {
         // Filter out map and edge entries from list
-        List<BibEntry> entries = getActiveDatabase().getEntries().stream().filter(b -> !b.getType().getDisplayName()
-                                                                                         .equals(MAP_NODE_ENTRY_NAME) && !b.getType().getDisplayName()
-                                                                                                                           .equals(MAP_EDGE_ENTRY_NAME)).collect(Collectors.toList());
+        List<BibEntry> entries = getActiveDatabase()
+                .getEntries().stream()
+                .filter(b -> !(b.getType() == MindMapEntryType.Node) && !(b.getType() == MindMapEntryType.Edge))
+                .collect(Collectors.toList());
         Gson gson = new GsonBuilder().registerTypeAdapter(BibEntry.class, new BibEntryAdapter()).create();
         return Response.status(Response.Status.OK).entity(gson.toJson(entries)).build();
     }
@@ -88,13 +87,16 @@ public class RootResource {
      */
     private void addToDatabase(List<BibEntry> newEntries) {
         // Get old map entries to remove from database
-        List<BibEntry> oldMapEntries = getActiveDatabase().getEntries().stream().filter(b -> b.getType().getDisplayName()
-                                                                                              .equals(MAP_NODE_ENTRY_NAME) || b.getType().getDisplayName()
-                                                                                                                               .equals(MAP_EDGE_ENTRY_NAME)).collect(Collectors.toList());
+        List<BibEntry> oldMapEntries = getActiveDatabase()
+                .getEntries().stream()
+                .filter(b -> (b.getType() == MindMapEntryType.Node) || (b.getType() == MindMapEntryType.Edge))
+                .collect(Collectors.toList());
 
         BibDatabase database = getActiveDatabase();
         Platform.runLater(() -> {
                     // Need to run this on the JavaFX thread
+                    // We opted to remove the old entries and insert the updated entries returned by JabMap rather than updating them as the code
+                    // to do so is complicated
                     database.removeEntries(oldMapEntries);
                     database.insertEntries(newEntries);
                 }

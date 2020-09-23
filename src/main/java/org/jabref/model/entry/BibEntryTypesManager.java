@@ -82,8 +82,7 @@ public class BibEntryTypesManager {
     }
 
     /**
-     * For a given database mode, determine all custom entry types, i.e. types that are not overwritten standard types but real custom types.
-     * For example, a modified "article" type will not be included in the list, but an entry type like "MyCustomType" will be included.
+     * For a given database mode, determine all custom entry types, i.e. types that are not overwritten standard types but real custom types. For example, a modified "article" type will not be included in the list, but an entry type like "MyCustomType" will be included.
      *
      * @param mode the BibDatabaseMode to be checked
      * @return the list of all found custom types
@@ -167,8 +166,7 @@ public class BibEntryTypesManager {
         }
 
         /**
-         * This method returns the BibtexEntryType for the name of a type,
-         * or null if it does not exist.
+         * This method returns the BibtexEntryType for the name of a type, or null if it does not exist.
          */
         public Optional<BibEntryType> enrich(EntryType type) {
             Optional<BibEntryType> enrichedType = customOrModifiedType.stream()

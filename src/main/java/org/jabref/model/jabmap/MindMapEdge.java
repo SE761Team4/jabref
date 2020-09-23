@@ -5,23 +5,15 @@ package org.jabref.model.jabmap;
  */
 public class MindMapEdge {
 
-    // Strings of how these entries are stored in bibtex
-    public static final transient String MAP_EDGE_ENTRY_NAME = "MindMapEdge";
-    public static final transient String MAP_EDGE_LABEL = "label";
-    public static final transient String MAP_EDGE_DIRECTION = "direction";
     private static final transient String EDGE_KEY_PART1 = "mindmapedge_from_";
     private static final transient String EDGE_KEY_PART2 = "_to_";
 
-    // Node 1 and 2 are
-    private Long node1_Id;
-    private Long node2_Id;
-    private String label;
-    private EdgeDirection direction;
+    private final Long node1_Id;
+    private final Long node2_Id;
+    private final String label;
+    private final EdgeDirection direction;
 
-    public MindMapEdge() {
-    }
-
-    public MindMapEdge(Long node1_Id, Long node2_Id, String label, EdgeDirection direction) {
+    MindMapEdge(Long node1_Id, Long node2_Id, String label, EdgeDirection direction) {
         this.node1_Id = node1_Id;
         this.node2_Id = node2_Id;
         this.label = label;
@@ -32,37 +24,16 @@ public class MindMapEdge {
         return node1_Id;
     }
 
-    public void setNode1_Id(Long node1_Id) {
-        this.node1_Id = node1_Id;
-    }
-
     public Long getNode2_Id() {
         return node2_Id;
-    }
-
-    public void setNode2_Id(Long node2_Id) {
-        this.node2_Id = node2_Id;
     }
 
     public String getLabel() {
         return label;
     }
 
-    public void setLabel(String label) {
-        this.label = label;
-    }
-
     public EdgeDirection getDirection() {
         return direction;
-    }
-
-    public void setDirection(EdgeDirection direction) {
-        this.direction = direction;
-    }
-
-    public void setDirection(String direction) {
-        direction = direction.toUpperCase();
-        this.direction = EdgeDirection.valueOf(direction);
     }
 
     public static String getCitationKeyFromIds(Long id1, Long id2) {
