@@ -1,0 +1,63 @@
+% Encoding: UTF-8
+@INPROCEEDINGS{aPaper,
+	author={T. {Kim} and S. {Park} and T. {Lee}},
+	booktitle={2017 IEEE International Symposium on Software Reliability Engineering Workshops (ISSREW)}, 
+	title={Applying software reliability engineering process to software development in Korea defense industry}, 
+	year={2017},
+	volume={},
+	number={},
+	pages={81-81},
+}
+
+@INBOOK{aBook,
+	author={D. {Galin}},
+	booktitle={Software Quality: Concepts and Practice}, 
+	title={Software Testing}, 
+	year={2018},
+	volume={},
+	number={},
+	pages={255-317},
+}
+
+@MindMapNode{1,
+	id = {1},
+	name = {a node},
+	bibentry = {aBook},
+	icons = {to_read},
+	x_pos = {2},
+	y_pos = {2},
+}
+
+@MindMapNode{2,
+	id = {2},
+	name = {test number 2},
+	bibEntry = {aPaper},
+	icons = {read,low_priority},
+	x_pos = {3},
+	y_pos = {3},
+}
+
+@MindMapNode{3,
+	id = {3},
+	name = {test number 3},
+	bibEntry = {aPaper},
+	icons = {read,high_priority},
+	x_pos = {1},
+	y_pos = {4},
+}
+
+@MindMapEdge{1,
+	node1_id = {1},
+	node2_id = {2},
+	label = {some edge text},
+	direction = {left}
+}
+
+@MindMapEdge{2,
+	node1_id = {1},
+	node2_id = {3},
+	label = {some more edge text},
+	direction = {right}
+}
+
+@Comment{jabref-meta: databaseType:bibtex;}
