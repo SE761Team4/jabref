@@ -7,7 +7,7 @@ package org.jabref.model.jabmap;
 public class MindMapNode {
 
     // Strings of how these entries are stored in bibtex
-    public static final transient String MAP_NODE_ENTRY_NAME = "Mapnode";
+    public static final transient String MAP_NODE_ENTRY_NAME = "MindMapNode";
     public static final transient String MAP_NODE_ID = "id";
     public static final transient String MAP_NODE_NAME = "name";
     public static final transient String MAP_NODE_BIBENTRY = "bibentry";

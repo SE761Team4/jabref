@@ -1,25 +1,24 @@
 package org.jabref.model.jabmap;
 
 /**
- * This class is a model for a mind map edge object
- * Refs to other mind map data objects are kept as strings to simplify serialisation to JSON
+ * This class is a model for a mind map edge object Refs to other mind map data objects are kept as strings to simplify serialisation to JSON
  */
 public class MindMapEdge {
 
     // Strings of how these entries are stored in bibtex
-    public static final transient String MAP_EDGE_ENTRY_NAME = "Mapedge";
+    public static final transient String MAP_EDGE_ENTRY_NAME = "MindMapEdge";
     public static final transient String MAP_EDGE_NODE1_ID = "node1_id";
     public static final transient String MAP_EDGE_NODE2_ID = "node2_id";
     public static final transient String MAP_EDGE_LABEL = "label";
     public static final transient String MAP_EDGE_DIRECTION = "direction";
 
-    //Node 1 and 2 are
+    // Node 1 and 2 are
     private Long node1_Id;
     private Long node2_Id;
     private String label;
     private EdgeDirection direction;
 
-    public MindMapEdge(){
+    public MindMapEdge() {
     }
 
     public MindMapEdge(Long node1_Id, Long node2_Id, String label, EdgeDirection direction) {

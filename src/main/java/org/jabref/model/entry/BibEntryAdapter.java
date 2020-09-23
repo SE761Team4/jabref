@@ -1,19 +1,29 @@
 package org.jabref.model.entry;
 
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 import org.jabref.logic.TypedBibEntry;
 import org.jabref.model.database.BibDatabaseMode;
 import org.jabref.model.entry.field.Field;
 import org.jabref.model.entry.field.InternalField;
-import java.io.IOException;
-import java.util.*;
+
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 
 /**
  * Used to convert a bibentry object between POJO and JSON
  */
 public class BibEntryAdapter extends TypeAdapter<BibEntry> {
+
+    private static final String JSON_TYPE = "type";
+    private static final String JSON_METADATA = "bibtex_metadata";
+    private static final String JSON_KEY = "key";
 
     @Override
     public void write(JsonWriter writer, BibEntry entry) throws IOException {
@@ -22,10 +32,10 @@ public class BibEntryAdapter extends TypeAdapter<BibEntry> {
             return;
         }
         writer.beginObject();
-        writer.name("bibtex_metadata");
+        writer.name(JSON_TYPE);
         writer.beginObject();
-        writer.name("type").value(new TypedBibEntry(entry, BibDatabaseMode.BIBTEX).getTypeForDisplay());
-        writer.name("key").value(entry.getCiteKeyOptional().orElse(""));
+        writer.name(JSON_METADATA).value(new TypedBibEntry(entry, BibDatabaseMode.BIBTEX).getTypeForDisplay());
+        writer.name(JSON_KEY).value(entry.getCiteKeyOptional().orElse(""));
         writer.endObject();
 
         // Grab field entries and place in map
@@ -52,7 +62,7 @@ public class BibEntryAdapter extends TypeAdapter<BibEntry> {
 
     @Override
     public BibEntry read(JsonReader in) throws IOException {
-        //TODO: implement deserializer
+        // Potential deserializer if required
         return null;
     }
 }

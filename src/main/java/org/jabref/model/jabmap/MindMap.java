@@ -8,24 +8,8 @@ import java.util.List;
  */
 public class MindMap {
 
-    private List<MindMapNode> nodes;
-    private List<MindMapEdge> edges;
-
-    public MindMap() {
-        nodes = new ArrayList<>();
-        edges = new ArrayList<>();
-    }
-
-    public MindMap(MindMapNode node) {
-        nodes = new ArrayList<>();
-        edges = new ArrayList<>();
-        this.nodes.add(node);
-    }
-
-    public MindMap(ArrayList<MindMapNode> nodes, ArrayList<MindMapEdge> edges) {
-        this.nodes = nodes;
-        this.edges = edges;
-    }
+    private List<MindMapNode> nodes = new ArrayList<>();
+    private List<MindMapEdge> edges = new ArrayList<>();
 
     public List<MindMapNode> getNodes() {
         return this.nodes;
