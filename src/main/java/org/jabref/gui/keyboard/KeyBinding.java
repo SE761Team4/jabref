@@ -42,6 +42,7 @@ public enum KeyBinding {
     HELP("Help", Localization.lang("Help"), "F1", KeyBindingCategory.FILE),
     IMPORT_INTO_CURRENT_DATABASE("Import into current library", Localization.lang("Import into current library"), "ctrl+I", KeyBindingCategory.FILE),
     IMPORT_INTO_NEW_DATABASE("Import into new library", Localization.lang("Import into new library"), "ctrl+alt+I", KeyBindingCategory.FILE),
+    LAUNCH_JABMAP("Launch JabMap", Localization.lang("Launch JabMap"), "ctrl+j", KeyBindingCategory.TOOLS),
     NEW_ARTICLE("New article", Localization.lang("New article"), "ctrl+shift+A", KeyBindingCategory.BIBTEX),
     NEW_BOOK("New book", Localization.lang("New book"), "ctrl+shift+B", KeyBindingCategory.BIBTEX),
     NEW_ENTRY("New entry", Localization.lang("New entry"), "ctrl+N", KeyBindingCategory.BIBTEX),
