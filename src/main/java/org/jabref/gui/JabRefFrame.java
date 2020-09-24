@@ -102,6 +102,7 @@ import org.jabref.gui.keyboard.CustomizeKeyBindingAction;
 import org.jabref.gui.keyboard.KeyBinding;
 import org.jabref.gui.keyboard.KeyBindingRepository;
 import org.jabref.gui.libraryproperties.LibraryPropertiesAction;
+import org.jabref.gui.maintable.OpenJabMapAction;
 import org.jabref.gui.menus.FileHistoryMenu;
 import org.jabref.gui.mergeentries.MergeEntriesAction;
 import org.jabref.gui.metadata.BibtexStringEditorAction;
@@ -519,6 +520,12 @@ public class JabRefFrame extends BorderPane {
                         factory.createIconButton(StandardActions.OPEN_LIBRARY, new OpenDatabaseAction(this)),
                         factory.createIconButton(StandardActions.SAVE_LIBRARY, new SaveAction(SaveAction.SaveMethod.SAVE, this, stateManager))),
 
+                new Separator(Orientation.VERTICAL),
+
+                new HBox(
+                        factory.createIconButton(StandardActions.OPEN_JABMAP, new OpenJabMapAction(this, splitPane))
+                ),
+
                 leftSpacer,
 
                 globalSearchBar,
@@ -870,11 +877,10 @@ public class JabRefFrame extends BorderPane {
                 new SeparatorMenuItem(),
 
                 factory.createMenuItem(StandardActions.SEND_AS_EMAIL, new SendAsEMailAction(dialogService, stateManager)),
-                pushToApplicationMenuItem,
 
                 new SeparatorMenuItem(),
-
-                factory.createMenuItem(StandardActions.LAUNCH_JABMAP, new JabMapAction())
+                factory.createMenuItem(StandardActions.OPEN_JABMAP, new OpenJabMapAction(this, splitPane)),
+                pushToApplicationMenuItem
         );
 
         SidePaneComponent webSearch = sidePaneManager.getComponent(SidePaneType.WEB_SEARCH);
@@ -1334,6 +1340,12 @@ public class JabRefFrame extends BorderPane {
 
     public DialogService getDialogService() {
         return dialogService;
+    }
+
+    public void restoreAfterJabMapClosed() {
+        splitPane.getItems().addAll(sidePane, tabbedPane);
+        SplitPane.setResizableWithParent(sidePane, false);
+        setDividerPosition();
     }
 
     /**
