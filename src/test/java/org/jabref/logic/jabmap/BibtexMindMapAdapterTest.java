@@ -37,6 +37,18 @@ class BibtexMindMapAdapterTest {
     }
 
     @Test
+    void getNodeIdFromNodeKeyTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        String key = "mindmapnode_1";
+        BibtexMindMapAdapter adapter = new BibtexMindMapAdapter();
+        Method method = adapter.getClass().getDeclaredMethod("getNodeIdFromNodeKey",String.class);
+        method.setAccessible(true);
+        String result =  (String)method.invoke(adapter,key);
+        String expect = new String("1");
+
+        assertEquals(expect,result);
+    }
+
+    @Test
     void createNodeFromBibEntryTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         List<String> icons = new ArrayList<>();
         icons.add("READ");
