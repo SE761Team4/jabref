@@ -1,5 +1,8 @@
 package org.jabref.logic.jabmap;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jabref.model.entry.BibEntry;
@@ -13,12 +16,41 @@ import org.jabref.model.jabmap.MindMapEdgeBuilder;
 import org.jabref.model.jabmap.MindMapNode;
 import org.jabref.model.jabmap.MindMapNodeBuilder;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 class BibtexMindMapAdapterTest {
+
+    @Test
+    void createNodeFromBibEntryTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        List<String> icons = new ArrayList<>();
+        icons.add("READ");
+        icons.add("HIGH_PRIORITY");
+        String iconstr = "";
+        iconstr  = iconstr+ "READ,HIGH_PRIORITY";
+        BibtexMindMapAdapter adapter = new BibtexMindMapAdapter();
+        Method method = adapter.getClass().getDeclaredMethod("createNodeFromBibEntry",BibEntry.class);
+        method.setAccessible(true);
+        BibEntry node1Entry = new BibEntry(MindMapEntryType.Node)
+                .withField(MindMapField.NODE_LABEL,"node1")
+                .withField(MindMapField.NODE_ICONS,iconstr)
+                .withField(InternalField.KEY_FIELD,MindMapNode.getCitationKeyFromId(1l))
+                .withField(MindMapField.NODE_CITATION_KEY,"cite1")
+                .withField(MindMapField.NODE_XPOS,String.valueOf(50))
+                .withField(MindMapField.NODE_YPOS,String.valueOf(50));
+        MindMapNode newnode = (MindMapNode) method.invoke(adapter,node1Entry);
+
+        MindMapNode node1 = new MindMapNodeBuilder()
+                .withCitationKey("cite1")
+                .withId(1L)
+                .withLabel("node1")
+                .withXPos(50)
+                .withYPos(50).withIcons(icons)
+                .build();
+
+        assertEquals(newnode, node1);
+    }
 
     @Test
     void mindMap2BibtexTest() {
@@ -130,7 +162,7 @@ class BibtexMindMapAdapterTest {
         testMap.addNode(node2);
         testMap.addEdge(edge1);
 
-        assertTrue(testMap.equals(newmap));
+        assertEquals(newmap, testMap);
 
     }
 }

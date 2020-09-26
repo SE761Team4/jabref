@@ -55,4 +55,45 @@ public class MindMapNode {
     public static String getCitationKeyFromId(Long id) {
         return NODE_KEY_PART + id;
     }
+
+    @Override
+    public boolean equals(Object mindMapNode) {
+        if (mindMapNode == null) {
+            return false;
+        }
+
+        if (mindMapNode.getClass() != this.getClass()) {
+            return false;
+        }
+
+        if (!this.getId().equals(((MindMapNode) mindMapNode).getId())) {
+            return false;
+        }
+
+        if (!this.getLabel().equals(((MindMapNode) mindMapNode).getLabel())) {
+            return false;
+        }
+
+        if (this.getX_pos() != ((MindMapNode) mindMapNode).getX_pos()) {
+            return false;
+        }
+
+        if (this.getIcons() != null && ((MindMapNode) mindMapNode).getIcons() != null) {
+            if (!this.getIcons().containsAll(((MindMapNode) mindMapNode).getIcons())) {
+                return false;
+            }
+        } else if (this.getIcons().size() != ((MindMapNode) mindMapNode).getIcons().size()) {
+            return false;
+        } else if (!this.getIcons().containsAll(((MindMapNode) mindMapNode).getIcons())) {
+            return false;
+        }
+
+        return this.getY_pos() == ((MindMapNode) mindMapNode).getY_pos();
+    }
+
+    @Override
+    public int hashCode() {
+        // no need
+        return 0;
+    }
 }

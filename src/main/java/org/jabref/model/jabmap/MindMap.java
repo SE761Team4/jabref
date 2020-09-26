@@ -38,37 +38,23 @@ public class MindMap {
             return false;
         }
 
-        if (this == null) {
-            System.out.println(2);
-            return false;
-        }
-
         if (mindMap.getClass() != MindMap.class) {
-            System.out.println(3);
             return false;
         }
 
         if (this.getEdges().size() != ((MindMap) mindMap).getEdges().size()) {
-            System.out.println(4);
             return false;
         }
 
         if (this.getNodes().size() != ((MindMap) mindMap).getNodes().size()) {
-            System.out.println(5);
             return false;
         }
 
-        if (this.getNodes().equals(((MindMap) mindMap).getNodes())) {
-            System.out.println(6);
+        if (!this.getNodes().containsAll(((MindMap) mindMap).getNodes())) {
             return false;
         }
 
-        if (this.getEdges().equals(((MindMap) mindMap).getEdges())) {
-            System.out.println(7);
-            return false;
-        }
-
-        return true;
+        return this.getEdges().containsAll(((MindMap) mindMap).getEdges());
     }
 
     @Override

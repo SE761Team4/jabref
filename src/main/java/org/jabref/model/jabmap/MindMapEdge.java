@@ -39,4 +39,35 @@ public class MindMapEdge {
     public static String getCitationKeyFromIds(Long id1, Long id2) {
         return EDGE_KEY_PART1 + id1 + EDGE_KEY_PART2 + id2;
     }
+
+    @Override
+    public boolean equals(Object mindMapEdge) {
+        if (mindMapEdge == null) {
+            return false;
+        }
+
+        if (mindMapEdge.getClass() != this.getClass()) {
+            return false;
+        }
+
+        if (!this.getNode1_Id().equals(((MindMapEdge) mindMapEdge).getNode1_Id())) {
+            return false;
+        }
+
+        if (!this.getLabel().equals(((MindMapEdge) mindMapEdge).getLabel())) {
+            return false;
+        }
+
+        if (!this.getNode2_Id().equals(((MindMapEdge) mindMapEdge).getNode2_Id())) {
+            return false;
+        }
+
+        return this.getDirection().equals(((MindMapEdge) mindMapEdge).getDirection());
+    }
+
+    @Override
+    public int hashCode() {
+        // no need
+        return 0;
+    }
 }
