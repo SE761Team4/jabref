@@ -43,7 +43,7 @@ class BibtexMindMapAdapterTest {
         Method method = adapter.getClass().getDeclaredMethod("getNodeIdFromNodeKey",String.class);
         method.setAccessible(true);
         String result =  (String)method.invoke(adapter,key);
-        String expect = new String("1");
+        String expect = "1";
 
         assertEquals(expect,result);
     }
@@ -61,7 +61,7 @@ class BibtexMindMapAdapterTest {
         BibEntry node1Entry = new BibEntry(MindMapEntryType.Node)
                 .withField(MindMapField.NODE_LABEL,"node1")
                 .withField(MindMapField.NODE_ICONS,iconstr)
-                .withField(InternalField.KEY_FIELD,MindMapNode.getCitationKeyFromId(1l))
+                .withField(InternalField.KEY_FIELD,MindMapNode.getCitationKeyFromId(1L))
                 .withField(MindMapField.NODE_CITATION_KEY,"cite1")
                 .withField(MindMapField.NODE_XPOS,String.valueOf(50))
                 .withField(MindMapField.NODE_YPOS,String.valueOf(50));
@@ -76,6 +76,34 @@ class BibtexMindMapAdapterTest {
                 .build();
 
         assertEquals(newnode, node1);
+    }
+
+    @Test
+    void createEdgeFromBibEntryTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+
+        BibtexMindMapAdapter adapter = new BibtexMindMapAdapter();
+        Method method = adapter.getClass().getDeclaredMethod("createEdgeFromBibEntry",BibEntry.class);
+        method.setAccessible(true);
+
+        BibEntry node1Entry = new BibEntry(MindMapEntryType.Edge)
+                .withField(MindMapField.EDGE_LABEL,"edge1")
+                .withField(InternalField.KEY_FIELD,"mindmapedge_from_1_to_2")
+                .withField(MindMapField.EDGE_DIRECTION,String.valueOf(EdgeDirection.DEFAULT));
+
+        Method method1 = adapter.getClass().getDeclaredMethod("getNodeIdsFromEdgeKey",String.class);
+        method1.setAccessible(true);
+
+        MindMapEdge newedge =  (MindMapEdge)method.invoke(adapter,node1Entry);
+
+        MindMapEdge edge1 = new MindMapEdgeBuilder()
+                .withDirection(EdgeDirection.DEFAULT)
+                .withLabel("edge1")
+                .withNode1Id(1L)
+                .withNode2Id(2L)
+                .build();
+
+
+        assertEquals(edge1,newedge);
     }
 
     @Test
@@ -113,14 +141,14 @@ class BibtexMindMapAdapterTest {
 
         BibEntry node1Entry = new BibEntry(MindMapEntryType.Node)
                 .withField(MindMapField.NODE_LABEL,"node1")
-                .withField(InternalField.KEY_FIELD,MindMapNode.getCitationKeyFromId(1l))
+                .withField(InternalField.KEY_FIELD,MindMapNode.getCitationKeyFromId(1L))
                 .withField(MindMapField.NODE_CITATION_KEY,"cite1")
                 .withField(MindMapField.NODE_XPOS,String.valueOf(50))
                 .withField(MindMapField.NODE_YPOS,String.valueOf(50));
 
         BibEntry node2Entry = new BibEntry(MindMapEntryType.Node)
                 .withField(MindMapField.NODE_LABEL,"node2")
-                .withField(InternalField.KEY_FIELD,MindMapNode.getCitationKeyFromId(2l))
+                .withField(InternalField.KEY_FIELD,MindMapNode.getCitationKeyFromId(2L))
                 .withField(MindMapField.NODE_CITATION_KEY,"cite2")
                 .withField(MindMapField.NODE_XPOS,String.valueOf(70))
                 .withField(MindMapField.NODE_YPOS,String.valueOf(70));
@@ -138,14 +166,14 @@ class BibtexMindMapAdapterTest {
 
         BibEntry node1Entry = new BibEntry(MindMapEntryType.Node)
                 .withField(MindMapField.NODE_LABEL,"node1")
-                .withField(InternalField.KEY_FIELD,MindMapNode.getCitationKeyFromId(1l))
+                .withField(InternalField.KEY_FIELD,MindMapNode.getCitationKeyFromId(1L))
                 .withField(MindMapField.NODE_CITATION_KEY,"cite1")
                 .withField(MindMapField.NODE_XPOS,String.valueOf(50))
                 .withField(MindMapField.NODE_YPOS,String.valueOf(50));
 
         BibEntry node2Entry = new BibEntry(MindMapEntryType.Node)
                 .withField(MindMapField.NODE_LABEL,"node2")
-                .withField(InternalField.KEY_FIELD,MindMapNode.getCitationKeyFromId(2l))
+                .withField(InternalField.KEY_FIELD,MindMapNode.getCitationKeyFromId(2L))
                 .withField(MindMapField.NODE_CITATION_KEY,"cite2")
                 .withField(MindMapField.NODE_XPOS,String.valueOf(70))
                 .withField(MindMapField.NODE_YPOS,String.valueOf(70));
