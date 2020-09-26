@@ -37,25 +37,25 @@ class BibtexMindMapAdapterTest {
 
     @BeforeAll
     static void setup() {
-        iconstr  = iconstr+ "READ,HIGH_PRIORITY";
+        iconstr = iconstr + "READ,HIGH_PRIORITY";
         icons.add("READ");
         icons.add("HIGH_PRIORITY");
 
         node1Entry = new BibEntry(MindMapEntryType.Node)
-                .withField(MindMapField.NODE_LABEL,"node1")
-                //.withField(MindMapField.NODE_ICONS,iconstr)
-                .withField(InternalField.KEY_FIELD,MindMapNode.getCitationKeyFromId(1L))
-                .withField(MindMapField.NODE_CITATION_KEY,"cite1")
-                .withField(MindMapField.NODE_XPOS,String.valueOf(50))
-                .withField(MindMapField.NODE_YPOS,String.valueOf(50));
+                .withField(MindMapField.NODE_LABEL, "node1")
+                // .withField(MindMapField.NODE_ICONS,iconstr)
+                .withField(InternalField.KEY_FIELD, MindMapNode.getCitationKeyFromId(1L))
+                .withField(MindMapField.NODE_CITATION_KEY, "cite1")
+                .withField(MindMapField.NODE_XPOS, String.valueOf(50))
+                .withField(MindMapField.NODE_YPOS, String.valueOf(50));
 
 
         node2Entry = new BibEntry(MindMapEntryType.Node)
-                .withField(MindMapField.NODE_LABEL,"node2")
-                .withField(InternalField.KEY_FIELD,MindMapNode.getCitationKeyFromId(2L))
-                .withField(MindMapField.NODE_CITATION_KEY,"cite2")
-                .withField(MindMapField.NODE_XPOS,String.valueOf(70))
-                .withField(MindMapField.NODE_YPOS,String.valueOf(70));
+                .withField(MindMapField.NODE_LABEL, "node2")
+                .withField(InternalField.KEY_FIELD, MindMapNode.getCitationKeyFromId(2L))
+                .withField(MindMapField.NODE_CITATION_KEY, "cite2")
+                .withField(MindMapField.NODE_XPOS, String.valueOf(70))
+                .withField(MindMapField.NODE_YPOS, String.valueOf(70));
 
 
         node1 = new MindMapNodeBuilder()
@@ -64,7 +64,7 @@ class BibtexMindMapAdapterTest {
                 .withLabel("node1")
                 .withXPos(50)
                 .withYPos(50)
-                //.withIcons(icons)
+                // .withIcons(icons)
                 .build();
 
         node2 = new MindMapNodeBuilder()
@@ -82,7 +82,6 @@ class BibtexMindMapAdapterTest {
                 .withNode2Id(2L)
                 .build();
 
-
         edgeEntry = new BibEntry(MindMapEntryType.Edge)
                 .withField(InternalField.KEY_FIELD, "mindmapedge_from_1_to_2")
                 .withField(MindMapField.EDGE_LABEL, "edge1")
@@ -92,11 +91,12 @@ class BibtexMindMapAdapterTest {
         testMap.addNode(node2);
         testMap.addEdge(edge1);
     }
+
     @Test
     void getNodeIdsFromEdgeKeyTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         String key = "mindmapedge_from_1_to_2";
 
-        Method method = adapter.getClass().getDeclaredMethod("getNodeIdsFromEdgeKey",String.class);
+        Method method = adapter.getClass().getDeclaredMethod("getNodeIdsFromEdgeKey", String.class);
         method.setAccessible(true);
         String[] result =  (String[])method.invoke(adapter,key);
         String[] expect = new String[]{"1","2"};
@@ -107,21 +107,21 @@ class BibtexMindMapAdapterTest {
     @Test
     void getNodeIdFromNodeKeyTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         String key = "mindmapnode_1";
-        Method method = adapter.getClass().getDeclaredMethod("getNodeIdFromNodeKey",String.class);
+        Method method = adapter.getClass().getDeclaredMethod("getNodeIdFromNodeKey", String.class);
         method.setAccessible(true);
-        String result =  (String)method.invoke(adapter,key);
+        String result = (String) method.invoke(adapter, key);
         String expect = "1";
 
-        assertEquals(expect,result);
+        assertEquals(expect, result);
     }
 
     @Test
     void createNodeFromBibEntryTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 
-        Method method = adapter.getClass().getDeclaredMethod("createNodeFromBibEntry",BibEntry.class);
+        Method method = adapter.getClass().getDeclaredMethod("createNodeFromBibEntry", BibEntry.class);
         method.setAccessible(true);
 
-        MindMapNode newnode = (MindMapNode) method.invoke(adapter,node1Entry);
+        MindMapNode newnode = (MindMapNode) method.invoke(adapter, node1Entry);
 
         assertEquals(newnode, node1);
     }
@@ -129,15 +129,15 @@ class BibtexMindMapAdapterTest {
     @Test
     void createEdgeFromBibEntryTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 
-        Method method = adapter.getClass().getDeclaredMethod("createEdgeFromBibEntry",BibEntry.class);
+        Method method = adapter.getClass().getDeclaredMethod("createEdgeFromBibEntry", BibEntry.class);
         method.setAccessible(true);
 
-        Method method1 = adapter.getClass().getDeclaredMethod("getNodeIdsFromEdgeKey",String.class);
+        Method method1 = adapter.getClass().getDeclaredMethod("getNodeIdsFromEdgeKey", String.class);
         method1.setAccessible(true);
 
-        MindMapEdge newedge =  (MindMapEdge)method.invoke(adapter,edgeEntry);
+        MindMapEdge newedge = (MindMapEdge) method.invoke(adapter, edgeEntry);
 
-        assertEquals(edge1,newedge);
+        assertEquals(edge1, newedge);
     }
 
     @Test
