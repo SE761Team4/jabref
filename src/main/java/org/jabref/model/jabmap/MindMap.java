@@ -30,4 +30,50 @@ public class MindMap {
     public void removeEdge(MindMapEdge edge) {
         this.edges.remove(edge);
     }
+
+    @Override
+    public boolean equals(Object mindMap) {
+        if (mindMap == null) {
+            System.out.println(1);
+            return false;
+        }
+
+        if (this == null) {
+            System.out.println(2);
+            return false;
+        }
+
+        if (mindMap.getClass() != MindMap.class) {
+            System.out.println(3);
+            return false;
+        }
+
+        if (this.getEdges().size() != ((MindMap) mindMap).getEdges().size()) {
+            System.out.println(4);
+            return false;
+        }
+
+        if (this.getNodes().size() != ((MindMap) mindMap).getNodes().size()) {
+            System.out.println(5);
+            return false;
+        }
+
+        if (this.getNodes().equals(((MindMap) mindMap).getNodes())) {
+            System.out.println(6);
+            return false;
+        }
+
+        if (this.getEdges().equals(((MindMap) mindMap).getEdges())) {
+            System.out.println(7);
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        // no need
+        return 0;
+    }
 }
