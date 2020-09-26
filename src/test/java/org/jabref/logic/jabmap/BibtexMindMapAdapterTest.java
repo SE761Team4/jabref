@@ -24,22 +24,27 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BibtexMindMapAdapterTest {
-    BibtexMindMapAdapter adapter = new BibtexMindMapAdapter();
-    private static List<String> icons = new ArrayList<>();
-    private static String iconstr = "";
+
+    private static List<String> icons;
+    private static String iconstr;
     private static BibEntry node1Entry;
     private static BibEntry node2Entry;
     private static MindMapNode node1;
     private static MindMapNode node2;
-    private static MindMap testMap = new MindMap();
+    private static MindMap testMap;
     private static MindMapEdge edge1;
     private static BibEntry edgeEntry;
 
+    BibtexMindMapAdapter adapter = new BibtexMindMapAdapter();
+
     @BeforeAll
     static void setup() {
+        icons = new ArrayList<>();
+        iconstr = "";
         iconstr = iconstr + "READ,HIGH_PRIORITY";
         icons.add("READ");
         icons.add("HIGH_PRIORITY");
+        testMap = new MindMap();
 
         node1Entry = new BibEntry(MindMapEntryType.Node)
                 .withField(MindMapField.NODE_LABEL, "node1")
@@ -96,7 +101,7 @@ class BibtexMindMapAdapterTest {
 
         Method method = adapter.getClass().getDeclaredMethod("getNodeIdsFromEdgeKey", String.class);
         method.setAccessible(true);
-        String[] result =  (String[]) method.invoke(adapter,key);
+        String[] result = (String[]) method.invoke(adapter, key);
         String[] expect = new String[] {"1", "2"};
 
         assertTrue(Arrays.equals(result, expect));
