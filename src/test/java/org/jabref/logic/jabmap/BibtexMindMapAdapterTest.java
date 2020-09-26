@@ -3,6 +3,7 @@ package org.jabref.logic.jabmap;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.jabref.model.entry.BibEntry;
@@ -19,8 +20,21 @@ import org.jabref.model.jabmap.MindMapNodeBuilder;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BibtexMindMapAdapterTest {
+
+    @Test
+    void getNodeIdsFromEdgeKeyTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        String key = "mindmapedge_from_1_to_2";
+        BibtexMindMapAdapter adapter = new BibtexMindMapAdapter();
+        Method method = adapter.getClass().getDeclaredMethod("getNodeIdsFromEdgeKey",String.class);
+        method.setAccessible(true);
+        String[] result =  (String[])method.invoke(adapter,key);
+        String[] expect = new String[]{"1","2"};
+
+        assertTrue(Arrays.equals(result, expect));
+    }
 
     @Test
     void createNodeFromBibEntryTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
