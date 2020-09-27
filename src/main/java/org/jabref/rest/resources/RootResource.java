@@ -87,7 +87,8 @@ public class RootResource {
      */
     private void addToDatabase(List<BibEntry> newEntries) {
         // Get old map entries to remove from database
-        List<BibEntry> oldMapEntries = getActiveDatabase()
+        BibDatabase bibDatabase = getActiveDatabase();
+        List<BibEntry> oldMapEntries = bibDatabase
                 .getEntries().stream()
                 .filter(b -> (b.getType() == MindMapEntryType.Node) || (b.getType() == MindMapEntryType.Edge))
                 .collect(Collectors.toList());
