@@ -28,13 +28,14 @@ import com.google.gson.GsonBuilder;
 
 @Path("/")
 public class RootResource {
+    public static DatabaseAccess databaseAccess = new DatabaseAccess();
 
     @GET
     @Path("libraries/current/entries")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEntries() {
         // Filter out map and edge entries from list
-        List<BibEntry> entries = getActiveDatabase()
+        List<BibEntry> entries = databaseAccess.getActiveDatabase()
                 .getEntries().stream()
                 .filter(b -> !(b.getType() == MindMapEntryType.Node) && !(b.getType() == MindMapEntryType.Edge))
                 .collect(Collectors.toList());
@@ -50,7 +51,7 @@ public class RootResource {
         // Retrieve mind map object from database
         BibtexMindMapAdapter adapter = new BibtexMindMapAdapter();
         // Attempt to get a map saved in the current database
-        MindMap map = adapter.convert(getActiveDatabase().getEntries());
+        MindMap map = adapter.convert(databaseAccess.getActiveDatabase().getEntries());
         return Response.status(Response.Status.OK).entity(new Gson().toJson(map)).build();
     }
 
@@ -64,7 +65,7 @@ public class RootResource {
         // Get adapter to convert to bib entries
         BibtexMindMapAdapter adapter = new BibtexMindMapAdapter();
 
-        addToDatabase(adapter.reverse().convert(map));
+        databaseAccess.addToDatabase(adapter.reverse().convert(map));
 
         Response.ResponseBuilder builder = Response.ok();
         return builder.build();
@@ -73,35 +74,11 @@ public class RootResource {
     /**
      * Helper method to get the active database and check it's present
      */
-    private BibDatabase getActiveDatabase() {
-        StateManager stateManager = Globals.stateManager;
-        if (stateManager.getActiveDatabase().isPresent()) {
-            return stateManager.getActiveDatabase().get().getDatabase();
-        } else {
-            throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
-        }
-    }
+
 
     /**
      * Helper method to insert map related entries into database, and remove out of date ones
      */
-    private void addToDatabase(List<BibEntry> newEntries) {
-        // Get old map entries to remove from database
-        BibDatabase bibDatabase = getActiveDatabase();
-        List<BibEntry> oldMapEntries = bibDatabase
-                .getEntries().stream()
-                .filter(b -> (b.getType() == MindMapEntryType.Node) || (b.getType() == MindMapEntryType.Edge))
-                .collect(Collectors.toList());
 
-        BibDatabase database = getActiveDatabase();
-        Platform.runLater(() -> {
-                    // Need to run this on the JavaFX thread
-                    // We opted to remove the old entries and insert the updated entries returned by JabMap rather than updating them as the code
-                    // to do so is complicated
-                    database.removeEntries(oldMapEntries);
-                    database.insertEntries(newEntries);
-                }
-        );
-    }
 }
 
