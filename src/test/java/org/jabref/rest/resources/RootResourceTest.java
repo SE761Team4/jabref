@@ -12,6 +12,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.microsoft.applicationinsights.core.dependencies.http.util.EntityUtils;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 
@@ -113,11 +114,37 @@ class RootResourceTest {
     @Test
     void createBlankMap() {
         // TEST CASES
-        //1. Only BibEntries for references
-        //2. Mix of Mindmap bibEntries and reference bibentries
-        //3. Complete mindmap bibentries
-        //4. Single node mindmap
+        //3. Mix of Mindmap bibEntries and reference bibentries
+        //4. Only BibEntries for references
         //5. No bibentries
+    }
+
+
+    @Test
+    void getMindMapSingleNode() {
+        BibEntry expectedBibEntry = setupExpectedForSaveEmptyMap();
+
+        RootResource.databaseAccess = new MockDatabaseAccess();
+
+        Response response = null;
+        try {
+            // Add single node map to the db
+            response = client.target(WEB_SERVICE_URI).path("libraries/current/map").request()
+                    .put(Entity.json("{\"nodes\":[{\"id\":1,\"label\":\"New Map\",\"icons\":[],\"x_pos\":0,\"y_pos\":0}],\"edges\":[]}"));
+
+            // Make get request to retrieve map
+            response = client.target(WEB_SERVICE_URI).path("libraries/current/map").request()
+                    .get();
+
+            assertEquals(200, response.getStatus());
+
+            assertEquals("{\"nodes\":[{\"id\":1,\"label\":\"New Map\",\"icons\":[],\"x_pos\":0,\"y_pos\":0}],\"edges\":[]}",
+                    response.readEntity(String.class));
+
+        } finally {
+            // Close the Response object.
+            response.close();
+        }
     }
 
     @Test
