@@ -126,7 +126,8 @@ class RootResourceTest {
 
     @Test
     void getRequestSingleNodeMindMap() {
-        RootResource.databaseAccess = new MockDatabaseAccess();
+        BibEntry bibEntry = setupExpectedForSaveEmptyMap();
+        RootResource.databaseAccess.getActiveDatabase().insertEntries(bibEntry); // Add single node mindmap to the db
 
         Response response = null;
         try {
@@ -138,10 +139,12 @@ class RootResourceTest {
             response = client.target(WEB_SERVICE_URI).path("libraries/current/map").request()
                     .get();
 
+            String responseBody = response.readEntity(String.class);
+            String expectedJson = "{\"nodes\":[{\"id\":1,\"label\":\"New Map\",\"icons\":[],\"x_pos\":0,\"y_pos\":0}],\"edges\":[]}";
+
             assertEquals(200, response.getStatus());
 
-            assertEquals("{\"nodes\":[{\"id\":1,\"label\":\"New Map\",\"icons\":[],\"x_pos\":0,\"y_pos\":0}],\"edges\":[]}",
-                    response.readEntity(String.class));
+            assertEquals(expectedJson, responseBody);
 
         } finally {
             // Close the Response object.
@@ -151,26 +154,23 @@ class RootResourceTest {
 
     @Test
     void getRequestCompleteMindMap() {
-        RootResource.databaseAccess = new MockDatabaseAccess();
+        List<BibEntry> bibEntries = setupExpectedForSaveCompleteMap();
+        RootResource.databaseAccess.getActiveDatabase().insertEntries(bibEntries); // Add complete mindmap to the db
 
         Response response = null;
         try {
-            // Add complete mindmap to the db
-            response = client.target(WEB_SERVICE_URI).path("libraries/current/map").request()
-                    .put(Entity.json("{\"nodes\":[{\"id\":1,\"label\":\"node 1\",\"icons\":[],\"x_pos\":0,\"y_pos\":0}," +
-                            "{\"id\":2,\"label\":\"node 2\",\"icons\":[],\"x_pos\":10,\"y_pos\":0}]," +
-                            "\"edges\":[{\"node1_Id\":1,\"node2_Id\":2,\"label\":\"test edge\",\"direction\":\"DEFAULT\"}]}"));
-
             // Make get request to retrieve map
             response = client.target(WEB_SERVICE_URI).path("libraries/current/map").request()
                     .get();
 
+            String responseBody = response.readEntity(String.class);
+            String expectedJson = "{\"nodes\":[{\"id\":1,\"label\":\"node 1\",\"icons\":[],\"x_pos\":0,\"y_pos\":0}," +
+                    "{\"id\":2,\"label\":\"node 2\",\"icons\":[],\"x_pos\":10,\"y_pos\":0}]," +
+                    "\"edges\":[{\"node1_Id\":1,\"node2_Id\":2,\"label\":\"test edge\",\"direction\":\"DEFAULT\"}]}";
+
             assertEquals(200, response.getStatus());
 
-            assertEquals("{\"nodes\":[{\"id\":1,\"label\":\"node 1\",\"icons\":[],\"x_pos\":0,\"y_pos\":0}," +
-                            "{\"id\":2,\"label\":\"node 2\",\"icons\":[],\"x_pos\":10,\"y_pos\":0}]," +
-                            "\"edges\":[{\"node1_Id\":1,\"node2_Id\":2,\"label\":\"test edge\",\"direction\":\"DEFAULT\"}]}",
-                    response.readEntity(String.class));
+            assertEquals(expectedJson, responseBody);
 
         } finally {
             // Close the Response object.
@@ -180,32 +180,22 @@ class RootResourceTest {
 
     @Test
     void getRequestBibAndMapEntries() {
-        RootResource.databaseAccess = new MockDatabaseAccess();
+        List<BibEntry> bibEntries = setUpGetMindMapAndReferenceEntries();;
+        RootResource.databaseAccess.getActiveDatabase().insertEntries(bibEntries); // Add reference and mindmap entries to the db
 
         Response response = null;
         try {
-            // Add a reference Bib entry to the db
-            response = client.target(WEB_SERVICE_URI).path("libraries/current/map").request()
-                    .put(Entity.json("[{\"type\":{\"bibtex_metadata\":\"Article\",\"key\":\"article1\"}}," +
-                            "{\"type\":{\"bibtex_metadata\":\"Book\",\"key\":\"book1\"}}," +
-                            "{\"type\":{\"bibtex_metadata\":\"MastersThesis\",\"key\":\"MastersThesis1\"}}]"
-                    ));
-            // Add complete mindmap to the db
-            response = client.target(WEB_SERVICE_URI).path("libraries/current/map").request()
-                    .put(Entity.json("{\"nodes\":[{\"id\":1,\"label\":\"node 1\",\"icons\":[],\"x_pos\":0,\"y_pos\":0}," +
-                            "{\"id\":2,\"label\":\"node 2\",\"icons\":[],\"x_pos\":10,\"y_pos\":0}]," +
-                            "\"edges\":[{\"node1_Id\":1,\"node2_Id\":2,\"label\":\"test edge\",\"direction\":\"DEFAULT\"}]}"));
-
             // Make get request to retrieve map
             response = client.target(WEB_SERVICE_URI).path("libraries/current/map").request()
                     .get();
 
+            String responseBody = response.readEntity(String.class);
+            String expectedJson = "{\"nodes\":[{\"id\":3,\"label\":\"node 3\",\"icons\":[],\"x_pos\":10,\"y_pos\":10}]," +
+                    "\"edges\":[{\"node1_Id\":1,\"node2_Id\":3,\"label\":\"test update edge\",\"direction\":\"LEFT\"}]}";
+
             assertEquals(200, response.getStatus());
 
-            assertEquals("{\"nodes\":[{\"id\":1,\"label\":\"node 1\",\"icons\":[],\"x_pos\":0,\"y_pos\":0}," +
-                            "{\"id\":2,\"label\":\"node 2\",\"icons\":[],\"x_pos\":10,\"y_pos\":0}]," +
-                            "\"edges\":[{\"node1_Id\":1,\"node2_Id\":2,\"label\":\"test edge\",\"direction\":\"DEFAULT\"}]}",
-                    response.readEntity(String.class));
+            assertEquals(expectedJson, responseBody);
 
         } finally {
             // Close the Response object.
@@ -215,18 +205,18 @@ class RootResourceTest {
 
     @Test
     void getRequestNoMindMaps() {
-        RootResource.databaseAccess = new MockDatabaseAccess();
-
         Response response = null;
         try {
             // Make get request to retrieve map
             response = client.target(WEB_SERVICE_URI).path("libraries/current/map").request()
                     .get();
 
+            String responseBody = response.readEntity(String.class);
+            String expectedJson = "{\"nodes\":[{\"label\":\"New Map\",\"icons\":[],\"x_pos\":0,\"y_pos\":0}],\"edges\":[]}";
+
             assertEquals(200, response.getStatus());
 
-            assertEquals("{\"nodes\":[{\"label\":\"New Map\",\"icons\":[],\"x_pos\":0,\"y_pos\":0}],\"edges\":[]}",
-                    response.readEntity(String.class));
+            assertEquals(expectedJson, responseBody);
 
         } finally {
             // Close the Response object.
@@ -236,25 +226,21 @@ class RootResourceTest {
 
     @Test
     void getRequestOnlyBibEntries() {
-        RootResource.databaseAccess = new MockDatabaseAccess();
+        List<BibEntry> bibEntries = setUpEntriesForGetReferenceEntries();
+        RootResource.databaseAccess.getActiveDatabase().insertEntries(bibEntries); // Add reference entries to the db
 
         Response response = null;
         try {
-            // Add a reference Bib entry to the db
-            response = client.target(WEB_SERVICE_URI).path("libraries/current/map").request()
-                    .put(Entity.json("[{\"type\":{\"bibtex_metadata\":\"Article\",\"key\":\"article1\"}}," +
-                            "{\"type\":{\"bibtex_metadata\":\"Book\",\"key\":\"book1\"}}," +
-                            "{\"type\":{\"bibtex_metadata\":\"MastersThesis\",\"key\":\"MastersThesis1\"}}]"
-                    ));
-
             // Make get request to retrieve map
             response = client.target(WEB_SERVICE_URI).path("libraries/current/map").request()
                     .get();
 
+            String responseBody = response.readEntity(String.class);
+            String expectedJson = "{\"nodes\":[{\"label\":\"New Map\",\"icons\":[],\"x_pos\":0,\"y_pos\":0}],\"edges\":[]}";
+
             assertEquals(200, response.getStatus());
 
-            assertEquals("{\"nodes\":[{\"label\":\"New Map\",\"icons\":[],\"x_pos\":0,\"y_pos\":0}],\"edges\":[]}",
-                    response.readEntity(String.class));
+            assertEquals(expectedJson, responseBody);
 
         } finally {
             // Close the Response object.
