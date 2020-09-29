@@ -46,9 +46,7 @@ public class RootResource {
     @GET
     @Path("libraries/current/map")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createBlankMap() {
-        Gson gson = new GsonBuilder().create();
-        // Retrieve mind map object from database
+    public Response getMindMap() {
         BibtexMindMapAdapter adapter = new BibtexMindMapAdapter();
         // Attempt to get a map saved in the current database
         MindMap map = adapter.convert(databaseAccess.getActiveDatabase().getEntries());
@@ -69,7 +67,6 @@ public class RootResource {
         Response.ResponseBuilder builder = Response.ok();
         return builder.build();
     }
-
 
     /**
      * Helper method to insert map related entries into database, and remove out of date ones
