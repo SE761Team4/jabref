@@ -125,14 +125,6 @@ class RootResourceTest {
     }
 
     @Test
-    void createBlankMap() {
-        // TEST CASES
-        //3. Mix of Mindmap bibEntries and reference bibentries
-        //4. Only BibEntries for references
-    }
-
-
-    @Test
     void getRequestSingleNodeMindMap() {
         RootResource.databaseAccess = new MockDatabaseAccess();
 
@@ -163,7 +155,42 @@ class RootResourceTest {
 
         Response response = null;
         try {
-            // Add single node map to the db
+            // Add complete mindmap to the db
+            response = client.target(WEB_SERVICE_URI).path("libraries/current/map").request()
+                    .put(Entity.json("{\"nodes\":[{\"id\":1,\"label\":\"node 1\",\"icons\":[],\"x_pos\":0,\"y_pos\":0}," +
+                            "{\"id\":2,\"label\":\"node 2\",\"icons\":[],\"x_pos\":10,\"y_pos\":0}]," +
+                            "\"edges\":[{\"node1_Id\":1,\"node2_Id\":2,\"label\":\"test edge\",\"direction\":\"DEFAULT\"}]}"));
+
+            // Make get request to retrieve map
+            response = client.target(WEB_SERVICE_URI).path("libraries/current/map").request()
+                    .get();
+
+            assertEquals(200, response.getStatus());
+
+            assertEquals("{\"nodes\":[{\"id\":1,\"label\":\"node 1\",\"icons\":[],\"x_pos\":0,\"y_pos\":0}," +
+                            "{\"id\":2,\"label\":\"node 2\",\"icons\":[],\"x_pos\":10,\"y_pos\":0}]," +
+                            "\"edges\":[{\"node1_Id\":1,\"node2_Id\":2,\"label\":\"test edge\",\"direction\":\"DEFAULT\"}]}",
+                    response.readEntity(String.class));
+
+        } finally {
+            // Close the Response object.
+            response.close();
+        }
+    }
+
+    @Test
+    void getRequestBibAndMapEntries() {
+        RootResource.databaseAccess = new MockDatabaseAccess();
+
+        Response response = null;
+        try {
+            // Add a reference Bib entry to the db
+            response = client.target(WEB_SERVICE_URI).path("libraries/current/map").request()
+                    .put(Entity.json("[{\"type\":{\"bibtex_metadata\":\"Article\",\"key\":\"article1\"}}," +
+                            "{\"type\":{\"bibtex_metadata\":\"Book\",\"key\":\"book1\"}}," +
+                            "{\"type\":{\"bibtex_metadata\":\"MastersThesis\",\"key\":\"MastersThesis1\"}}]"
+                    ));
+            // Add complete mindmap to the db
             response = client.target(WEB_SERVICE_URI).path("libraries/current/map").request()
                     .put(Entity.json("{\"nodes\":[{\"id\":1,\"label\":\"node 1\",\"icons\":[],\"x_pos\":0,\"y_pos\":0}," +
                             "{\"id\":2,\"label\":\"node 2\",\"icons\":[],\"x_pos\":10,\"y_pos\":0}]," +
@@ -192,6 +219,33 @@ class RootResourceTest {
 
         Response response = null;
         try {
+            // Make get request to retrieve map
+            response = client.target(WEB_SERVICE_URI).path("libraries/current/map").request()
+                    .get();
+
+            assertEquals(200, response.getStatus());
+
+            assertEquals("{\"nodes\":[{\"label\":\"New Map\",\"icons\":[],\"x_pos\":0,\"y_pos\":0}],\"edges\":[]}",
+                    response.readEntity(String.class));
+
+        } finally {
+            // Close the Response object.
+            response.close();
+        }
+    }
+
+    @Test
+    void getRequestOnlyBibEntries() {
+        RootResource.databaseAccess = new MockDatabaseAccess();
+
+        Response response = null;
+        try {
+            // Add a reference Bib entry to the db
+            response = client.target(WEB_SERVICE_URI).path("libraries/current/map").request()
+                    .put(Entity.json("[{\"type\":{\"bibtex_metadata\":\"Article\",\"key\":\"article1\"}}," +
+                            "{\"type\":{\"bibtex_metadata\":\"Book\",\"key\":\"book1\"}}," +
+                            "{\"type\":{\"bibtex_metadata\":\"MastersThesis\",\"key\":\"MastersThesis1\"}}]"
+                    ));
 
             // Make get request to retrieve map
             response = client.target(WEB_SERVICE_URI).path("libraries/current/map").request()
