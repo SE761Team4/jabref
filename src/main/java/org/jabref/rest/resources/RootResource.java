@@ -64,21 +64,24 @@ public class RootResource {
 
         // Get adapter to convert to bib entries
         BibtexMindMapAdapter adapter = new BibtexMindMapAdapter();
-
-        databaseAccess.addToDatabase(adapter.reverse().convert(map));
+        addToDatabase(adapter.reverse().convert(map));
 
         Response.ResponseBuilder builder = Response.ok();
         return builder.build();
     }
 
-    /**
-     * Helper method to get the active database and check it's present
-     */
-
 
     /**
      * Helper method to insert map related entries into database, and remove out of date ones
      */
+    private void addToDatabase(List<BibEntry> newMapEntries) {
+        BibDatabase bibDatabase = databaseAccess.getActiveDatabase();
+        List<BibEntry> oldMapEntries = bibDatabase
+                .getEntries().stream()
+                .filter(b -> (b.getType() == MindMapEntryType.Node) || (b.getType() == MindMapEntryType.Edge))
+                .collect(Collectors.toList());
 
+        databaseAccess.replaceEntries(newMapEntries, oldMapEntries, bibDatabase);
+    }
 }
 
