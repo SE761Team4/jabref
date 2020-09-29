@@ -23,16 +23,7 @@ public class MockDatabaseAccess extends DatabaseAccess {
     }
 
     @Override
-    public void addToDatabase(List<BibEntry> newEntries) {
-        // Get old map entries to remove from database
-        List<BibEntry> oldMapEntries = bibDatabase
-                .getEntries().stream()
-                .filter(b -> (b.getType() == MindMapEntryType.Node) || (b.getType() == MindMapEntryType.Edge))
-                .collect(Collectors.toList());
-
-        // Need to run this on the JavaFX thread
-        // We opted to remove the old entries and insert the updated entries returned by JabMap rather than updating them as the code
-        // to do so is complicated
+    public void replaceEntries(List<BibEntry> newEntries, List<BibEntry> oldMapEntries, BibDatabase bibDatabase) {
         bibDatabase.removeEntries(oldMapEntries);
         bibDatabase.insertEntries(newEntries);
     }

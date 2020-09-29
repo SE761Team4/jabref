@@ -24,21 +24,13 @@ public class DatabaseAccess {
         }
     }
 
-    public void addToDatabase(List<BibEntry> newEntries) {
-        // Get old map entries to remove from database
-        BibDatabase bibDatabase = getActiveDatabase();
-        List<BibEntry> oldMapEntries = bibDatabase
-                .getEntries().stream()
-                .filter(b -> (b.getType() == MindMapEntryType.Node) || (b.getType() == MindMapEntryType.Edge))
-                .collect(Collectors.toList());
-
-        BibDatabase database = getActiveDatabase();
+    public void replaceEntries(List<BibEntry> newEntries, List<BibEntry> oldMapEntries, BibDatabase bibDatabase) {
         Platform.runLater(() -> {
                     // Need to run this on the JavaFX thread
                     // We opted to remove the old entries and insert the updated entries returned by JabMap rather than updating them as the code
                     // to do so is complicated
-                    database.removeEntries(oldMapEntries);
-                    database.insertEntries(newEntries);
+                    bibDatabase.removeEntries(oldMapEntries);
+                    bibDatabase.insertEntries(newEntries);
                 }
         );
     }

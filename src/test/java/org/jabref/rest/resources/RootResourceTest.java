@@ -2,9 +2,7 @@ package org.jabref.rest.resources;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -24,66 +22,27 @@ import org.jabref.model.entry.BibEntry;
 import org.jabref.model.entry.field.InternalField;
 import org.jabref.model.entry.field.MindMapField;
 import org.jabref.model.entry.types.MindMapEntryType;
+import org.jabref.model.entry.types.StandardEntryType;
 import org.jabref.model.jabmap.EdgeDirection;
 import org.jabref.model.jabmap.MindMapEdge;
 import org.jabref.model.jabmap.MindMapNode;
 
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.testfx.framework.junit5.Start;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 class RootResourceTest {
 
     private static String WEB_SERVICE_URI = "http://localhost:9898/";
-
     private static Client client;
-
-    private static void startHttpEndPoint() {
-        Server server = createHttpServer();
-
-        try {
-            // Starts server to http://localhost:9898/
-            // The current implementation serves libraries/current/entries
-            server.start();
-        } catch (Exception e) {
-//            LOGGER.error("Problem starting HTTP Server", e);
-        }
-    }
-
-    private static Server createHttpServer() {
-        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        context.setContextPath("/");
-
-        Server server = new Server(9898);
-        server.setHandler(context);
-        addServlet(context);
-        return server;
-    }
-
-    private static void addServlet(ServletContextHandler context) {
-        // this mirrors a webapp/WEB-INF/web.xml
-        ServletHolder jerseyServlet = context.addServlet(
-                org.glassfish.jersey.servlet.ServletContainer.class, "/*");
-        jerseyServlet.setInitOrder(0);
-
-        // Tells the Jersey Servlet which REST service/class to load.
-        jerseyServlet.setInitParameter(
-                "jersey.config.server.provider.classnames",
-                RootResource.class.getCanonicalName());
-    }
 
     @BeforeAll
     static void setUp() {
-        startHttpEndPoint();
+        JabMapHTTPServer.startHttpEndPoint();
         client = ClientBuilder.newClient();
     }
 
@@ -92,23 +51,77 @@ class RootResourceTest {
         client.close();
     }
 
+    @BeforeEach
+    void initMockDatabase() {
+        RootResource.databaseAccess = new MockDatabaseAccess();
+    }
+
     @Test
-    void getEntries() {
-        //Create BibEntries and add to database using addToDataBase(List<BibEntry>) in RootResource.databaseAccess
+    void getReferenceEntries() {
+        List<BibEntry> bibEntries = setUpEntriesForGetReferenceEntries();
+        RootResource.databaseAccess.getActiveDatabase().insertEntries(bibEntries);
 
-//        List<BibEntry> expectedBibEntries = setupExpectedForSaveCompleteMap();
-//        RootResource.databaseAccess = new MockDatabaseAccess();
-//        RootResource.databaseAccess.addToDatabase(expectedBibEntries);
-//
-//        Response response = client.target(WEB_SERVICE_URI).path("libraries/current/map").request().get();
-//        assertEquals(response.getBibEntries());
+        Response response = null;
+        try {
+            response = client.target(WEB_SERVICE_URI).path("libraries/current/entries").request().accept(MediaType.APPLICATION_JSON).get();
+            assertEquals(200, response.getStatus());
+            String responseBody = response.readEntity(String.class);
+            String expectedJson = "[{\"type\":{\"bibtex_metadata\":\"Article\",\"key\":\"article1\"}},{\"type\":{\"bibtex_metadata\":\"Book\",\"key\":\"book1\"}},{\"type\":{\"bibtex_metadata\":\"MastersThesis\",\"key\":\"MastersThesis1\"}}]";
+            assertEquals(expectedJson, responseBody);
+        } finally {
+            response.close();
+        }
+    }
 
+    @Test
+    void getMindMapEntries() {
+        List<BibEntry> bibEntries = setupExpectedForSaveCompleteMap();
+        RootResource.databaseAccess.getActiveDatabase().insertEntries(bibEntries);
 
-        // TEST CASES
-        //1. Only BibEntries for references
-        //2. Mix of Mindmap bibEntries and reference bibentries
-        //3. Only mindmap bibentries
-        //4. No bibentries
+        Response response = null;
+        try {
+            response = client.target(WEB_SERVICE_URI).path("libraries/current/entries").request().accept(MediaType.APPLICATION_JSON).get();
+            assertEquals(200, response.getStatus());
+            String responseBody = response.readEntity(String.class);
+            String expectedJson = "[]";
+            assertEquals(expectedJson, responseBody);
+        } finally {
+            response.close();
+        }
+    }
+
+    @Test
+    void getMindMapAndReferenceEntries() {
+        List<BibEntry> bibEntries = setUpGetMindMapAndReferenceEntries();
+        RootResource.databaseAccess.getActiveDatabase().insertEntries(bibEntries);
+
+        Response response = null;
+        try {
+            response = client.target(WEB_SERVICE_URI).path("libraries/current/entries").request().accept(MediaType.APPLICATION_JSON).get();
+            assertEquals(200, response.getStatus());
+            String responseBody = response.readEntity(String.class);
+            String expectedJson = "[{\"type\":{\"bibtex_metadata\":\"Article\",\"key\":\"article1\"}},{\"type\":{\"bibtex_metadata\":\"Book\",\"key\":\"book1\"}},{\"type\":{\"bibtex_metadata\":\"MastersThesis\",\"key\":\"MastersThesis1\"}}]";
+            assertEquals(expectedJson, responseBody);
+        } finally {
+            response.close();
+        }
+    }
+
+    @Test
+    void getEmptyEntries() {
+        List<BibEntry> bibEntries = new ArrayList<>();
+        RootResource.databaseAccess.getActiveDatabase().insertEntries(bibEntries);
+
+        Response response = null;
+        try {
+            response = client.target(WEB_SERVICE_URI).path("libraries/current/entries").request().accept(MediaType.APPLICATION_JSON).get();
+            assertEquals(200, response.getStatus());
+            String responseBody = response.readEntity(String.class);
+            String expectedJson = "[]";
+            assertEquals(expectedJson, responseBody);
+        } finally {
+            response.close();
+        }
     }
 
     @Test
@@ -199,8 +212,6 @@ class RootResourceTest {
     void saveCompleteMindMap() {
         List<BibEntry> expectedBibEntries = setupExpectedForSaveCompleteMap();
 
-        RootResource.databaseAccess = new MockDatabaseAccess();
-
         Response response = null;
         try {
             // Make an invocation on a Concert URI and specify Java-
@@ -233,11 +244,12 @@ class RootResourceTest {
 
             assertEquals(200, response.getStatus());
 
-            List<BibEntry> actualBibEntries = RootResource.databaseAccess.getActiveDatabase().getEntries();
+            ArrayList<BibEntry> actualBibEntries = new ArrayList<>(RootResource.databaseAccess.getActiveDatabase().getEntries());
 
             assertEquals(expectedBibEntries.size(), actualBibEntries.size());
             for (BibEntry bibEntry : expectedBibEntries) {
                 assertTrue(actualBibEntries.contains(bibEntry));
+                actualBibEntries.remove(bibEntry);
             }
         } finally {
             // Close the Response object.
@@ -248,8 +260,6 @@ class RootResourceTest {
     @Test
     void saveEmptyMap() {
         BibEntry expectedBibEntry = setupExpectedForSaveEmptyMap();
-
-        RootResource.databaseAccess = new MockDatabaseAccess();
 
         Response response = null;
         try {
@@ -283,8 +293,6 @@ class RootResourceTest {
     @Test
     void saveOverrideMap() {
         List<BibEntry> expectedBibEntries = setupExpectedForSaveOverrideMap();
-
-        RootResource.databaseAccess = new MockDatabaseAccess();
 
         Response response = null;
         try {
@@ -356,19 +364,14 @@ class RootResourceTest {
 
             assertEquals(200, response.getStatus());
 
-            List<BibEntry> actualBibEntries = RootResource.databaseAccess.getActiveDatabase().getEntries();
+            ArrayList<BibEntry> actualBibEntries = new ArrayList<>(RootResource.databaseAccess.getActiveDatabase().getEntries());
 
             assertEquals(expectedBibEntries.size(), actualBibEntries.size());
 
             for (BibEntry bibEntry : expectedBibEntries) {
                 assertTrue(actualBibEntries.contains(bibEntry));
-                if (!actualBibEntries.contains(bibEntry)) {
-                    System.out.println(bibEntry);
-                }
+                actualBibEntries.remove(bibEntry);
             }
-//            for (int i = 0; i < expectedBibEntries.size(); i++) {
-//                assertEquals(actualBibEntries.get());
-//            }
         } finally {
             // Close the Response object.
             response.close();
@@ -441,5 +444,43 @@ class RootResourceTest {
                 .withField(MindMapField.EDGE_DIRECTION, String.valueOf(EdgeDirection.DEFAULT));
 
         return Arrays.asList(node1, node2, edge1);
+    }
+
+    private List<BibEntry> setUpEntriesForGetReferenceEntries() {
+        BibEntry entry1 = new BibEntry(StandardEntryType.Article)
+                .withField(InternalField.KEY_FIELD, "article1");
+
+        BibEntry entry2 = new BibEntry(StandardEntryType.Book)
+                .withField(InternalField.KEY_FIELD, "book1");
+
+        BibEntry entry3 = new BibEntry(StandardEntryType.MastersThesis)
+                .withField(InternalField.KEY_FIELD, "MastersThesis1");
+
+        return Arrays.asList(entry1, entry2, entry3);
+    }
+
+    private List<BibEntry> setUpGetMindMapAndReferenceEntries() {
+        BibEntry entry1 = new BibEntry(StandardEntryType.Article)
+                .withField(InternalField.KEY_FIELD, "article1");
+
+        BibEntry entry2 = new BibEntry(StandardEntryType.Book)
+                .withField(InternalField.KEY_FIELD, "book1");
+
+        BibEntry entry3 = new BibEntry(StandardEntryType.MastersThesis)
+                .withField(InternalField.KEY_FIELD, "MastersThesis1");
+
+        BibEntry node3 = new BibEntry(MindMapEntryType.Node)
+                .withField(MindMapField.NODE_LABEL, "node 3")
+                // .withField(MindMapField.NODE_ICONS,iconstr)
+                .withField(InternalField.KEY_FIELD, MindMapNode.getCitationKeyFromId(3L))
+                .withField(MindMapField.NODE_XPOS, String.valueOf(10))
+                .withField(MindMapField.NODE_YPOS, String.valueOf(10));
+
+        BibEntry edge1 = new BibEntry(MindMapEntryType.Edge)
+                .withField(InternalField.KEY_FIELD, MindMapEdge.getCitationKeyFromIds(1L, 3L))
+                .withField(MindMapField.EDGE_LABEL, "test update edge")
+                .withField(MindMapField.EDGE_DIRECTION, String.valueOf(EdgeDirection.LEFT));
+
+        return Arrays.asList(entry1, entry2, entry3, node3, edge1);
     }
 }
