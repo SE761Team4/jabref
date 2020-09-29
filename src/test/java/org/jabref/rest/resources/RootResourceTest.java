@@ -148,6 +148,37 @@ class RootResourceTest {
     }
 
     @Test
+    void getMindMapComplete() {
+        List<BibEntry> expectedBibEntries = setupExpectedForSaveCompleteMap();
+
+        RootResource.databaseAccess = new MockDatabaseAccess();
+
+        Response response = null;
+        try {
+            // Add single node map to the db
+            response = client.target(WEB_SERVICE_URI).path("libraries/current/map").request()
+                    .put(Entity.json("{\"nodes\":[{\"id\":1,\"label\":\"node 1\",\"icons\":[],\"x_pos\":0,\"y_pos\":0}," +
+                            "{\"id\":2,\"label\":\"node 2\",\"icons\":[],\"x_pos\":10,\"y_pos\":0}]," +
+                            "\"edges\":[{\"node1_Id\":1,\"node2_Id\":2,\"label\":\"test edge\",\"direction\":\"DEFAULT\"}]}"));
+
+            // Make get request to retrieve map
+            response = client.target(WEB_SERVICE_URI).path("libraries/current/map").request()
+                    .get();
+
+            assertEquals(200, response.getStatus());
+
+            assertEquals("{\"nodes\":[{\"id\":1,\"label\":\"node 1\",\"icons\":[],\"x_pos\":0,\"y_pos\":0}," +
+                            "{\"id\":2,\"label\":\"node 2\",\"icons\":[],\"x_pos\":10,\"y_pos\":0}]," +
+                            "\"edges\":[{\"node1_Id\":1,\"node2_Id\":2,\"label\":\"test edge\",\"direction\":\"DEFAULT\"}]}",
+                    response.readEntity(String.class));
+
+        } finally {
+            // Close the Response object.
+            response.close();
+        }
+    }
+
+    @Test
     void saveCompleteMindMap() {
         List<BibEntry> expectedBibEntries = setupExpectedForSaveCompleteMap();
 
