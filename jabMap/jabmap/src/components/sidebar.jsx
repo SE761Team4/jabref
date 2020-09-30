@@ -9,34 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import './sidebar.css';
 
-const StyledTableCell = withStyles((theme) => ({
-  head: {
-    fontWeight: 'bold',
-    fontSize: 12,
-  },
-  body: {
-    fontSize: 12,
-    fontFamily: 'Arial',
-    border: 'none',
-  },
-}))(TableCell);
-
-const StyledTableRow = withStyles((theme) => ({
-  root: {
-    height: 25,
-    '&:nth-of-type(even)': {
-      backgroundColor: '#efefef',
-    },
-  },
-}))(TableRow);
-
-const useStyles = makeStyles({
-  table: {
-    minWidth: 100,
-  },
-});
-
-const ReferenceList = ({references}) => {
+export const ReferenceList = ({references}) => {
   const classes = useStyles();
   const [numRows, setNumRows] = useState(10);
 
@@ -72,5 +45,30 @@ const ReferenceList = ({references}) => {
   );
 }
 
-export default ReferenceList;
+const StyledTableCell = withStyles((theme) => ({
+  head: {
+    fontWeight: 'bold',
+    fontSize: 12,
+  },
+  body: {
+    fontSize: 12,
+    fontFamily: 'Arial',
+    border: 'none',
+  },
+}))(TableCell);
 
+const StyledTableRow = withStyles((theme) => ({
+  root: {
+    height: 25,
+    '&:nth-of-type(even)': {
+      backgroundColor: '#efefef',
+    },
+  },
+}))(TableRow);
+
+
+const useStyles = makeStyles({
+  table: {
+    minWidth: 100,
+  },
+});

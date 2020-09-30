@@ -1,16 +1,14 @@
 import React from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
-import './toolbar.css';
 import Paper from '@material-ui/core/Paper';
 import { IconButton } from '@material-ui/core';
-import { Button } from '@material-ui/core';
-import { TextField } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import FormatColorFillIcon from '@material-ui/icons/FormatColorFill';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
+import './editor.css';
 
 export const Editor = (props) =>{
 	return (
