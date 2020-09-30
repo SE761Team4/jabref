@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 //import logo from './logo.svg';
 import "./App.css";
 import Circle from "./components/Circle";
@@ -9,9 +9,8 @@ import * as mmp from 'mmp';
 import { Button } from "@material-ui/core";
 
 
-class App extends Component {
-  state = {
-    references: [
+const App = () => {
+  const references = [
       {
         author: "An author",
         title: "A paper",
@@ -32,8 +31,7 @@ class App extends Component {
         title: "An article",
         year: 2012,
       }
-    ],
-  };
+    ];
 
   // componentDidMount() {
   //   fetch("/libraries/current/entries")
@@ -44,8 +42,7 @@ class App extends Component {
   //     .catch(console.log);
   // }
 
-
-  componentDidMount () {
+  useEffect(() => {
     const d3Script = document.createElement('script');
     const mmpScript = document.createElement('script');
 
@@ -57,48 +54,38 @@ class App extends Component {
     document.body.appendChild(d3Script);
     document.body.appendChild(mmpScript)
 
-  }
+    createMap();
+  }, []);
 
-  createMap () {
+  const createMap = () => {
     mmp.create("map", { rootNode: { name: "Map" } });
   }
 
 
 
-  render() {
-    return (
-      <div className="App">
-        <div className="App-header">
-          <div className="Reference-proportions">
-            {this.state.references && <ReferenceList references={this.state.references} />}
-          </div>
-          <Editor />
-          {/* <MindMap className={styles.map} /> */}
-          {/* <svg
-            viewBox="0 0 400 400" 
-            width="400" 
-            height="400"
-          >
-            <Circle />
-            <Circle />
-          
-          </svg>
-          <MindMap className={styles.map}/> */}
-          <div id="map" style={styles.map}></div>
-          <Button onClick={this.createMap}>
-            Click
-          </Button>
+  return (
+    <div className="App">
+      <div className="App-header">
+        <div className="Reference-proportions">
+          {references && <ReferenceList references={references} />}
         </div>
+        <Editor />
+        <div id="map" style={styles.map}></div>
+        <Button onClick={createMap}>
+          Click
+        </Button>
       </div>
-    );
-  }
+    </div>
+  )
 }
-
 const styles = {
   map: {
     border: '5px solid pink',
     width: 100,
     height: 100
+  },
+  mapContainer: {
+    
   }
 }
 
