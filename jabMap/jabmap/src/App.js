@@ -5,6 +5,9 @@ import Circle from "./components/Circle";
 import MindMap from "./components/MindMap";
 import ReferenceList from "./components/sidebar";
 import { Editor } from "./components/toolbar.jsx";
+import * as mmp from 'mmp';
+import { Button } from "@material-ui/core";
+
 
 class App extends Component {
   state = {
@@ -42,6 +45,25 @@ class App extends Component {
   // }
 
 
+  componentDidMount () {
+    const d3Script = document.createElement('script');
+    const mmpScript = document.createElement('script');
+
+    d3Script.src = "../node_modules/d3/dist/d3.js";
+    d3Script.async = true;
+    mmpScript.src = "../node_modules/mmp/build/mmp.js";
+    mmpScript.async = true;
+
+    document.body.appendChild(d3Script);
+    document.body.appendChild(mmpScript)
+
+  }
+
+  createMap () {
+    mmp.create("map", { rootNode: { name: "Map" } });
+  }
+
+
 
   render() {
     return (
@@ -51,7 +73,8 @@ class App extends Component {
             {this.state.references && <ReferenceList references={this.state.references} />}
           </div>
           <Editor />
-          <svg
+          {/* <MindMap className={styles.map} /> */}
+          {/* <svg
             viewBox="0 0 400 400" 
             width="400" 
             height="400"
@@ -60,7 +83,11 @@ class App extends Component {
             <Circle />
           
           </svg>
-          <MindMap className={styles.map}/>
+          <MindMap className={styles.map}/> */}
+          <div id="map" style={styles.map}></div>
+          <Button onClick={this.createMap}>
+            Click
+          </Button>
         </div>
       </div>
     );
@@ -69,7 +96,9 @@ class App extends Component {
 
 const styles = {
   map: {
-    border: '5px solid pink'
+    border: '5px solid pink',
+    width: 100,
+    height: 100
   }
 }
 

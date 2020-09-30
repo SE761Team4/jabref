@@ -1,63 +1,36 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as mmp from 'mmp';
 
 
 const MindMap = () => {
 
-    const options = {
-        fontFamily: "Arial, Helvetica, sans-serif",
-        centerOnResize: true,
-        drag: false,
-        zoom: false,
-        defaultNode: {
-            name: "Default node name",
-            image: {
-                src: "",
-                size: 60
-            },
-            colors: {
-                name: "#787878",
-                background: "#f9f9f9",
-                branch: "#577a96"
-            },
-            font: {
-                size: 16,
-                style: "normal",
-                weight: "normal"
-            },
-            locked: true
-        },
-        rootNode: {
-            name: "Default root node name",
-            image: {
-                src: "",
-                size: 70
-            },
-            colors: {
-                name: "#787878",
-                background: "#f0f6f5",
-                branch: ""
-            },
-            font: {
-                size: 20,
-                style: "normal",
-                weight: "normal"
-            }
-        }
-    }
+
+    useEffect(() => {
+        const d3Script = document.createElement('script');
+        const mmpScript = document.createElement('script');
+
+        d3Script.src = "node_modules/d3/build/d3.min.js";
+        d3Script.async = true;
+        mmpScript.src = "node_modules/mmp/build/mmp.min.js";
+        mmpScript.async = true;
+
+        document.body.appendChild(d3Script);
+        document.body.appendChild(mmpScript);
+
+    }, []);
+    
 
     const create = () => {
-        let myMap = mmp.create("map", options)
+        mmp.create("map", {rootNode: { name: "Map"}})
     }
+
+    // let myMap = mmp.create("map", {rootNode: { name: "Map"}})
 
     return (
         <div>
             <div id="map"></div>
-            <script src="node_modules/d3/build/d3.min.js"></script>
-            <script src="node_modules/mmp/build/mmp.min.js"></script>
-            <script>
-                {mmp.new()}
-            </script>
+
+            {mmp.create("mmp1", { rootNode: { name: "Map" } })}
         </div>
     )
 }
