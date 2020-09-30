@@ -1,18 +1,10 @@
-package org.jabref.rest.resources;
+package org.jabref.rest.jabmap.resources;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
-
-import javafx.application.Platform;
-
-import org.jabref.gui.Globals;
-import org.jabref.gui.StateManager;
 import org.jabref.model.database.BibDatabase;
 import org.jabref.model.entry.BibEntry;
-import org.jabref.model.entry.types.MindMapEntryType;
+import org.jabref.rest.jabmap.utils.DatabaseAccess;
 
 public class MockDatabaseAccess extends DatabaseAccess {
     private BibDatabase bibDatabase = new BibDatabase();

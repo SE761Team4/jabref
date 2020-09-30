@@ -25,13 +25,9 @@ import org.jabref.logic.util.OS;
 import org.jabref.migrations.PreferencesMigrations;
 import org.jabref.model.database.BibDatabaseMode;
 import org.jabref.preferences.JabRefPreferences;
-import org.jabref.rest.resources.JabMapHTTPServer;
-import org.jabref.rest.resources.RootResource;
+import org.jabref.rest.jabmap.JabMapHTTPServer;
 
 import org.apache.commons.cli.ParseException;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

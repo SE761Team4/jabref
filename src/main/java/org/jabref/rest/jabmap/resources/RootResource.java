@@ -1,4 +1,4 @@
-package org.jabref.rest.resources;
+package org.jabref.rest.jabmap.resources;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,20 +8,16 @@ import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import javafx.application.Platform;
-
-import org.jabref.gui.Globals;
-import org.jabref.gui.StateManager;
 import org.jabref.logic.jabmap.BibtexMindMapAdapter;
 import org.jabref.model.database.BibDatabase;
 import org.jabref.model.entry.BibEntry;
 import org.jabref.model.entry.BibEntryAdapter;
 import org.jabref.model.entry.types.MindMapEntryType;
 import org.jabref.model.jabmap.MindMap;
+import org.jabref.rest.jabmap.utils.DatabaseAccess;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

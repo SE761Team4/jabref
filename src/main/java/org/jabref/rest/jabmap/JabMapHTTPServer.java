@@ -1,6 +1,7 @@
-package org.jabref.rest.resources;
+package org.jabref.rest.jabmap;
 
 import org.jabref.gui.JabRefMain;
+import org.jabref.rest.jabmap.resources.RootResource;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -17,7 +18,6 @@ public class JabMapHTTPServer {
 
         try {
             // Starts server to http://localhost:9898/
-            // The current implementation serves libraries/current/entries
             server.start();
         } catch (Exception e) {
             LOGGER.error("Problem starting HTTP Server", e);

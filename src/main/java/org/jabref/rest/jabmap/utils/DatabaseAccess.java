@@ -1,7 +1,6 @@
-package org.jabref.rest.resources;
+package org.jabref.rest.jabmap.utils;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
@@ -12,7 +11,6 @@ import org.jabref.gui.Globals;
 import org.jabref.gui.StateManager;
 import org.jabref.model.database.BibDatabase;
 import org.jabref.model.entry.BibEntry;
-import org.jabref.model.entry.types.MindMapEntryType;
 
 public class DatabaseAccess {
     public BibDatabase getActiveDatabase() {
