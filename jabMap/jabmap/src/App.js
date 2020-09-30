@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
-import { ReferenceList } from "./components/sidebar";
+import { Sidebar } from "./components/sidebar";
 import { Editor } from "./components/editor.jsx";
+import Paper from '@material-ui/core/Paper';
 import * as mmp from 'mmp';
 import "./App.css";
 
@@ -58,28 +59,19 @@ const App = () => {
   return (
     <div className="app">
       <div className="left-container">
-        <div className="reference-proportions">
-          {references && <ReferenceList references={references} />}
+        <div className="sidebar">
+          {references && <Sidebar references={references} />}
         </div>
       </div>
       <div className="right-container">
         <Editor />
-        <div className="mindmap-container">
-          <div id="map" style={styles.map}></div>
-        </div>
+        <Paper elevation={3} className="mindmap-container" >
+          <div id="map" className='map' ></div>
+        </Paper>
       </div>
     </div>
   )
 }
-const styles = {
-  map: {
-    border: '5px solid pink',
-    width: 500,
-    height: 500
-  },
-  mapContainer: {
-    
-  }
-}
+
 
 export default App;

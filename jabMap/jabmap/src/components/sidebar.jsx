@@ -9,9 +9,9 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import './sidebar.css';
 
-export const ReferenceList = ({references}) => {
+export const Sidebar = ({references}) => {
   const classes = useStyles();
-  const [numRows, setNumRows] = useState(10);
+  const [numRows, setNumRows] = useState(22);
 
   return (
     <TableContainer component={Paper}>

@@ -12,41 +12,41 @@ import './editor.css';
 
 export const Editor = (props) =>{
 	return (
-		<Toolbar className = 'Toolbar-proportions' component = { Paper }>
-			<div style={{  borderRight: '0.1em solid grey', borderRight: '0.1em solid grey', padding: '0.5em' }}>
-				<IconButton size="small" aria-label = "add" > 
+		<Toolbar className = 'toolbar-proportions' component = { Paper }>
+			<div className="divider">
+				<IconButton size="small" aria-label = "add" className='icon-button'> 
 					<AddIcon/>
 				</IconButton>
 			</div>
-			<div style={{ borderRight: '0.1em solid grey', padding: '0.5em' }}>
-				<IconButton size="small"  aria-label = "colour" style={{marginRight: 10}}> 
+			<div className="divider">
+				<IconButton size="small"  aria-label = "colour" className='icon-button'> 
 					<FormatColorFillIcon/>
 				</IconButton>
-				<IconButton size="small" aria-label = "arrow" > 
+				<IconButton size="small" aria-label = "arrow" className='icon-button--second'> 
 					<ArrowForwardIcon/>
 				</IconButton>
 			</div>
-			<div style={{ borderRight: '0.1em solid grey', padding: '0.5em' }}>
-				<IconButton size="small" style={{marginRight: 10}}>
+			<div className="divider">
+				<IconButton size="small" className='icon-button'>
 					<ErrorOutlineIcon/>
 				</IconButton>
-				<IconButton size="small" >
+				<IconButton size="small" className='icon-button--second'>
 					<StarBorderIcon/>
 				</IconButton>	
 			</div>
-				<div style={{ borderRight: '0.1em solid grey', padding: '0.5em' }}>
-				<IconButton size="small" >
+				<div className="divider">
+				<IconButton size="small" className='icon-button'>
 					<DeleteOutlineIcon/>
 				</IconButton>
 			</div>
-			<div style={{ align: "right",  padding: '0.5em' }}>
-				<select style={{ border: 'none', textAlign: 'centre', fontSize: 12, marginRight: 50, marginLeft:30 }} >
+			<div className='search-filter-container'>
+				<select className='filter' >
 				<option value = "noFilter"> No Filter </option>
 					<option value = "highPriority"> High Priority </option>
 					<option value = "favourites"> Low Priority </option>
 					<option value = "favourites"> Favourites </option>
 				</select> 
-				<input type="text" name="search" defaultValue="Search" style={{ textAlign: 'centre', fontSize: 12}}/>
+				<input className='searchbar' type="text" name="search" defaultValue="Search" />
 			</div>
 		</Toolbar> 
 	); 
