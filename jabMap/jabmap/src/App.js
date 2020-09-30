@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 //import logo from './logo.svg';
 import "./App.css";
+import Circle from "./components/Circle";
+import MindMap from "./components/MindMap";
 import ReferenceList from "./components/sidebar";
 import { Editor } from "./components/toolbar.jsx";
 
@@ -49,9 +51,25 @@ class App extends Component {
             {this.state.references && <ReferenceList references={this.state.references} />}
           </div>
           <Editor />
+          <svg
+            viewBox="0 0 400 400" 
+            width="400" 
+            height="400"
+          >
+            <Circle />
+            <Circle />
+          
+          </svg>
+          <MindMap className={styles.map}/>
         </div>
       </div>
     );
+  }
+}
+
+const styles = {
+  map: {
+    border: '5px solid pink'
   }
 }
 
