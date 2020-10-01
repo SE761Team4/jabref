@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from "react";
+import React, { Component, useEffect, useState } from "react";
 //import logo from './logo.svg';
 import "./App.css";
 import Circle from "./components/Circle";
@@ -62,9 +62,21 @@ const App = () => {
   }
 
 
+  const [xStart, setXStart] = useState();
+  const [xEnd, setXEnd] = useState();
+  const [yStart, setYStart] = useState();
+  const [yEnd, setYEnd] = useState();
+
+
 
   return (
     <div className="App">
+      <svg width="500" height="500">
+          <Circle xStart={setXStart} yStart={setYStart}/>
+          <Circle xStart={setXEnd} yStart={setYEnd}/>
+          <line x1={xStart} y1={yStart} x2={xEnd} y2={yEnd} style={{stroke:'rgb(255,0,0)', strokeWidth: 2 }} />
+
+      </svg>
       <div className="App-header">
         <div className="Reference-proportions">
           {references && <ReferenceList references={references} />}
@@ -74,7 +86,9 @@ const App = () => {
         <Button onClick={createMap}>
           Click
         </Button>
+
       </div>
+
     </div>
   )
 }

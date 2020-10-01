@@ -1,7 +1,7 @@
 import React from 'react'; 
 
 
-const Circle = () => {
+const Circle = ({xStart, yStart}) => {
     const [position, setPosition] = React.useState({
       x: 100,
       y: 100,
@@ -28,6 +28,8 @@ const Circle = () => {
       const bbox = e.target.getBoundingClientRect();
       const x = e.clientX - bbox.left;
       const y = e.clientY - bbox.top;
+
+
       if (position.active) {
         setPosition({
           ...position,
@@ -35,14 +37,23 @@ const Circle = () => {
           y: position.y - (position.offset.y - y)
         });
       }
+
+      updatePos();
     };
     const handlePointerUp = e => {
       setPosition({
         ...position,
         active: false
       });
+
+
     };
   
+    const updatePos = () => {
+      xStart(position.x);
+      yStart(position.y);
+    }
+
     return (
       <circle
         cx={position.x}
