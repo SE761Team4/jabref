@@ -1,15 +1,27 @@
-import React from 'react'; 
+import React, { useEffect, useState } from 'react'; 
 
 
-const Circle = ({updateEdges, setSelectedNode, id, x, y}) => {
-    const [position, setPosition] = React.useState({
+const Circle = ({updateEdges, setSelectedNode, id, x, y, selected}) => {
+
+
+    const [position, setPosition] = useState({
       id: id,
       x: x,
       y: y,
       active: false,
       offset: { },
-      selected: false
+      isSelected: selected === id 
     });
+
+    useEffect(() => {
+
+      setPosition({
+        ...position,
+        isSelected: selected == position.id
+      });
+      console.log("pos selected: " + position.id + " " + position.isSelected + " " + selected);
+    }, [selected])
+
   
     const handlePointerDown = e => {
       const el = e.target;
@@ -20,18 +32,25 @@ const Circle = ({updateEdges, setSelectedNode, id, x, y}) => {
       setPosition({
         ...position,
         active: true,
-        selected: !position.selected,
+        isSelected: !position.isSelected,
         offset: {
           x,
           y
         }
       });
-      if(position.selected){
+      if(!position.isSelected){
+        // changeSelected(position.id);
+        console.log("this: " + id + " selected: " + selected )
+
         setSelectedNode(position.id);
       } else {
-        setSelectedNode("");
+        console.log("unselecting " + id)
+        setSelectedNode("none");
+        // changeSelected("none");
       }
     };
+
+
     const handlePointerMove = e => {
       const bbox = e.target.getBoundingClientRect();
       const x = e.clientX - bbox.left;
@@ -44,9 +63,9 @@ const Circle = ({updateEdges, setSelectedNode, id, x, y}) => {
           x: position.x - (position.offset.x - x),
           y: position.y - (position.offset.y - y)
         });
+        updatePos();
       }
 
-      updatePos();
     };
     const handlePointerUp = e => {
       setPosition({
@@ -74,7 +93,7 @@ const Circle = ({updateEdges, setSelectedNode, id, x, y}) => {
           stroke="black"
           stroke-width="3"
           // fill="white"
-          fill={position.selected ? "blue" : "white"}
+          fill={position.isSelected ? "blue" : "white"}
         >
         </circle>
       </g>
