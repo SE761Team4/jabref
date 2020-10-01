@@ -1,34 +1,39 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Sidebar } from "./components/sidebar";
 import { Editor } from "./components/editor.jsx";
 import Paper from '@material-ui/core/Paper';
 import * as mmp from 'mmp';
 import "./App.css";
+import { MindMap } from "./components/mindMap";
 
 const App = () => {
 
-  const references = [
-      {
-        author: "An author",
-        title: "A paper",
-        year: 2010,
-      },
-      {
-        author: "The author",
-        title: "The paper",
-        year: 2011,
-      },
-      {
-        author: "Author 1",
-        title: "A book",
-        year: 2010,
-      },
-      {
-        author: "Famous author",
-        title: "An article",
-        year: 2012,
-      }
-    ];
+  const [mindmap, setMindmap] = useState([]);
+  const [references, setReferences] = useState([]);
+
+
+  // const references = [
+  //     {
+  //       author: "An author",
+  //       title: "A paper",
+  //       year: 2010,
+  //     },
+  //     {
+  //       author: "The author",
+  //       title: "The paper",
+  //       year: 2011,
+  //     },
+  //     {
+  //       author: "Author 1",
+  //       title: "A book",
+  //       year: 2010,
+  //     },
+  //     {
+  //       author: "Famous author",
+  //       title: "An article",
+  //       year: 2012,
+  //     }
+  //   ];
 
   useEffect(() => {
     const d3Script = document.createElement('script');
@@ -45,7 +50,7 @@ const App = () => {
     fetch("/libraries/current/entries")
     .then((res) => res.json())
     .then((data) => {
-      this.setState({ references: data });
+      setReferences(data);
     })
     .catch(console.log);
 
@@ -53,8 +58,32 @@ const App = () => {
   }, []);
 
   const createMap = () => {
-    mmp.create("map", { rootNode: { name: "Map" } });
+    let map = mmp.create("map", { rootNode: { name: "Map" } });
+    setMindmap(map);
   }
+
+  const addNode = () => {
+    mindmap.addNode();
+  }
+
+  const removeNode = () => {
+    mindmap.removeNode();
+  }
+
+  const center = () => {
+    mindmap.center();
+  }
+
+  const redo = () => {
+    mindmap.redo();
+  }
+
+  const undo = () => {
+    mindmap.undo();
+  }
+
+
+
 
   return (
     <div className="app">
@@ -64,10 +93,11 @@ const App = () => {
         </div>
       </div>
       <div className="right-container">
-        <Editor />
+        <Editor addNode={addNode} removeNode={removeNode} center={center} undo={undo} redo={redo} />
         <Paper elevation={3} className="mindmap-container" >
-          <div id="map" className='map' ></div>
+          <div id="map" className='map'></div>
         </Paper>
+        <MindMap addNode={addNode}></MindMap>
       </div>
     </div>
   )
