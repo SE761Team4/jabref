@@ -1,12 +1,14 @@
 import React from 'react'; 
 
 
-const Circle = ({xStart, yStart}) => {
+const Circle = ({updateEdges, setSelectedNode, id, x, y}) => {
     const [position, setPosition] = React.useState({
-      x: 100,
-      y: 100,
+      id: id,
+      x: x,
+      y: y,
       active: false,
-      offset: { }
+      offset: { },
+      selected: false
     });
   
     const handlePointerDown = e => {
@@ -18,11 +20,17 @@ const Circle = ({xStart, yStart}) => {
       setPosition({
         ...position,
         active: true,
+        selected: !position.selected,
         offset: {
           x,
           y
         }
       });
+      if(position.selected){
+        setSelectedNode(position.id);
+      } else {
+        setSelectedNode("");
+      }
     };
     const handlePointerMove = e => {
       const bbox = e.target.getBoundingClientRect();
@@ -50,20 +58,27 @@ const Circle = ({xStart, yStart}) => {
     };
   
     const updatePos = () => {
-      xStart(position.x);
-      yStart(position.y);
+      updateEdges(position.id, position.x, position.y);
     }
 
     return (
-      <circle
-        cx={position.x}
-        cy={position.y}
-        r={50}
-        onPointerDown={handlePointerDown}
-        onPointerUp={handlePointerUp}
-        onPointerMove={handlePointerMove}
-        fill={position.active ? "blue" : "black"}
-      />
+      <g>
+        <text x={position.x} y={position.y} class="small" fill="black">A node</text>
+        <circle
+          cx={position.x}
+          cy={position.y}
+          r={50}
+          onPointerDown={handlePointerDown}
+          onPointerUp={handlePointerUp}
+          onPointerMove={handlePointerMove}
+          stroke="black"
+          stroke-width="3"
+          // fill="white"
+          fill={position.selected ? "blue" : "white"}
+        >
+        </circle>
+      </g>
+
     );
   };
 
