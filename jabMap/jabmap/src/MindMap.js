@@ -1,7 +1,7 @@
 import React, { Component, useContext, useEffect, useState } from "react";
 //import logo from './logo.svg';
 import "./App.css";
-import Circle from "./components/Circle";
+import Node from "./components/Node";
 import Edge from "./components/Edge";
 import ReferenceList from "./components/sidebar";
 import { Editor } from "./components/toolbar.jsx";
@@ -9,6 +9,7 @@ import * as mmp from 'mmp';
 import { Button } from "@material-ui/core";
 import { SelectedContextProvider } from './context/SelectedContext';
 import { SelectedContext } from './context/SelectedContext';
+import { Stage, Layer, Circle, Line } from 'react-konva';
 
 
 
@@ -107,6 +108,7 @@ const MindMap = () => {
   }
 
   const deleteNode = () => {
+    console.log(selected)
     let newNodes = nodes.filter((node) => {return node.id !== selected} );
     setNodes(newNodes);
     setSelected("none");
@@ -189,20 +191,26 @@ const MindMap = () => {
       setLinking(true);
       setSelected("none");
   }
-
-
+  
   return (
     <SelectedContextProvider>
       <div className="App">
-        <svg width="900" height="600">
-          {edges.map((edge) => 
-            <Edge x1={edge.startX} y1={edge.startY} x2={edge.endX} y2={edge.endY}/>
-          )}
-          {nodes.map((node) => 
-            <Circle updateEdges={updateEdges} setSelectedNode={setSelectedNode} id={node.id} x={node.x} y={node.y} selected={selected}/>
-          )}
-
-        </svg>
+        <Stage width="900" height="600" style={styles.map}>
+            <Layer>
+                {edges.map((edge) => 
+                    <Edge x1={edge.startX} y1={edge.startY} x2={edge.endX} y2={edge.endY}/>
+                )}
+                {nodes.map((node) => 
+                    <Node updateEdges={updateEdges} setSelectedNode={setSelectedNode} id={node.id} x={node.x} y={node.y} selected={selected}/>
+                )}
+                {/* {edges.map((edge) => 
+                <Edge x1={edge.startX} y1={edge.startY} x2={edge.endX} y2={edge.endY}/>
+                )}
+                {nodes.map((node) => 
+                <Node updateEdges={updateEdges} setSelectedNode={setSelectedNode} id={node.id} x={node.x} y={node.y} selected={selected}/>
+                )} */}
+            </Layer>
+        </Stage>
 
         <div className="App-header">
           <div className="Reference-proportions">
@@ -213,7 +221,7 @@ const MindMap = () => {
           <Button onClick={addNode}>
             Add
           </Button>
-          <Button onClick={() => deleteNode()}>
+          <Button onClick={deleteNode}>
             Delete
           </Button>
           <Button onClick={startLinking}>
@@ -229,8 +237,6 @@ const MindMap = () => {
 const styles = {
   map: {
     border: '5px solid pink',
-    width: 100,
-    height: 100
   },
   mapContainer: {
     

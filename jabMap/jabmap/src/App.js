@@ -1,7 +1,7 @@
 import React, { Component, useContext, useEffect, useState } from "react";
 //import logo from './logo.svg';
 import "./App.css";
-import Circle from "./components/Circle";
+import Node from "./components/Node";
 import Edge from "./components/Edge";
 import MindMap from "./MindMap";
 import ReferenceList from "./components/sidebar";

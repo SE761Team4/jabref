@@ -12,6 +12,7 @@
     "@types/react-sidebar": "^3.0.0",
     "bootstrap": "^4.5.2",
     "d3": "^6.2.0",
+    "konva": "^7.1.3",
     "mmp": "^0.2.20",
     "react": "^16.13.1",
     "react-bootstrap": "^1.3.0",
