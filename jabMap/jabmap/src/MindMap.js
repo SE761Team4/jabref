@@ -5,11 +5,9 @@ import Node from "./components/Node";
 import Edge from "./components/Edge";
 import ReferenceList from "./components/sidebar";
 import { Editor } from "./components/toolbar.jsx";
-import * as mmp from 'mmp';
 import { Button } from "@material-ui/core";
 import { SelectedContextProvider } from './context/SelectedContext';
-import { SelectedContext } from './context/SelectedContext';
-import { Stage, Layer, Circle, Line } from 'react-konva';
+import { Stage, Layer } from 'react-konva';
 
 
 
@@ -37,6 +35,40 @@ const MindMap = () => {
       }
     ];
 
+    const [nodes, setNodes] = useState([{
+      id: 'node1',
+      x: 100,
+      y: 100, 
+    }, 
+    {
+      id: 'node2',
+      x: 200,
+      y: 200
+    },{
+      id: 'node3',
+      x: 300,
+      y: 300
+    }
+  ]);
+  
+const [edges, setEdges] = useState([{
+  startId: nodes[0].id,
+  startX:  nodes[0].x,
+  startY: nodes[0].y,
+  endId: nodes[1].id,
+  endX: nodes[1].x,
+  endY: nodes[1].y
+},
+{
+  startId: nodes[1].id,
+  startX:  nodes[1].x,
+  startY: nodes[1].y,
+  endId: nodes[2].id,
+  endX: nodes[2].x,
+  endY: nodes[2].y
+}
+]);
+
   // componentDidMount() {
   //   fetch("/libraries/current/entries")
   //     .then((res) => res.json())
@@ -46,56 +78,9 @@ const MindMap = () => {
   //     .catch(console.log);
   // }
 
-  useEffect(() => {
-    // const d3Script = document.createElement('script');
-    // const mmpScript = document.createElement('script');
-
-    // d3Script.src = "../node_modules/d3/dist/d3.js";
-    // d3Script.async = true;
-    // mmpScript.src = "../node_modules/mmp/build/mmp.js";
-    // mmpScript.async = true;
-
-    // document.body.appendChild(d3Script);
-    // document.body.appendChild(mmpScript)
-
-    // createMap();
-  }, []);
-
-  const createMap = () => {
-    mmp.create("map", { rootNode: { name: "Map" } });
-  }
-
-
-  const [xStart, setXStart] = useState();
-  const [xEnd, setXEnd] = useState();
-  const [yStart, setYStart] = useState();
-  const [yEnd, setYEnd] = useState();
   const [linking, setLinking] = useState(false);
   const [selected, setSelected] = useState("none");
-  const [linkNodes, setLinkNodes] = useState([]);
-
-//   const { selected, changeSelected } = useContext(SelectedContext);
-  
-  const [nodes, setNodes] = useState([{
-    id: 'node1',
-    x: 100,
-    y: 100, 
-  }, 
-  {
-    id: 'node2',
-    x: 200,
-    y: 200
-  }]);
-
-  const [edges, setEdges] = useState([{
-    startId: nodes[0].id,
-    startX:  nodes[0].x,
-    startY: nodes[0].y,
-    endId: nodes[1].id,
-    endX: nodes[1].x,
-    endY: nodes[1].y
-  }]);
-
+  const [linkNodes, setLinkNodes] = useState([]);  
 
   const addNode = () => {
     let newNodes = nodes;
@@ -116,13 +101,15 @@ const MindMap = () => {
 
   const setSelectedNode = (newSelection) => {
     if(linking){
-        console.log("islinking " + linking + linkNodes.length + newSelection)
-        if (linkNodes.length < 2){
-            linkNodes.push(newSelection);
-        } else if (linkNodes.length === 2){
-            makeEdge(linkNodes);
-            setLinkNodes([]);
-            setLinking(false);
+        if (linkNodes.length < 1){
+          linkNodes.push(newSelection);
+        } else if (linkNodes.length >= 1){
+          linkNodes.push(newSelection);
+          setLinking(false)
+          console.log(linkNodes);
+
+          makeEdge(linkNodes);
+
         }
         console.log(linkNodes);
 
@@ -171,9 +158,7 @@ const MindMap = () => {
 
     let node1 = nodes.filter((node) => {return node.id === nodesToLink[0]});
     let node2 = nodes.filter((node) => { return node.id === nodesToLink[1]});
-
-    console.log(node1);
-    console.log(node2);
+    console.log("making edge")
     let newEdge = {
         startId: node1[0].id,
         startX:  node1[0].x,
@@ -183,13 +168,23 @@ const MindMap = () => {
         endY: node2[0].y
     };
     console.log(newEdge);
+    edges.push(newEdge);
 
-    setEdges([...edges,newEdge]);
+    setLinkNodes([]);
+    setSelected("none");
+
+    console.log("edges")
+    console.log(edges);
+    console.log(linking);
+    console.log(selected)
+
   }
 
   const startLinking = () => {
-      setLinking(true);
-      setSelected("none");
+        
+    
+    setLinking(!linking);
+    setSelected("none");
   }
   
   return (
@@ -203,12 +198,6 @@ const MindMap = () => {
                 {nodes.map((node) => 
                     <Node updateEdges={updateEdges} setSelectedNode={setSelectedNode} id={node.id} x={node.x} y={node.y} selected={selected}/>
                 )}
-                {/* {edges.map((edge) => 
-                <Edge x1={edge.startX} y1={edge.startY} x2={edge.endX} y2={edge.endY}/>
-                )}
-                {nodes.map((node) => 
-                <Node updateEdges={updateEdges} setSelectedNode={setSelectedNode} id={node.id} x={node.x} y={node.y} selected={selected}/>
-                )} */}
             </Layer>
         </Stage>
 

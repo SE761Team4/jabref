@@ -20,7 +20,6 @@ const Node = ({updateEdges, setSelectedNode, id, x, y, selected, dragStart, drag
         ...position,
         isSelected: selected == position.id
       });
-      console.log("pos selected: " + position.id + " " + position.isSelected + " " + selected);
     }, [selected])
 
     const setSelected = () => {
@@ -31,17 +30,25 @@ const Node = ({updateEdges, setSelectedNode, id, x, y, selected, dragStart, drag
       if(position.isSelected){
         setSelectedNode("none");
       } else {
-        console.log("Selected " + position.id)
         setSelectedNode(position.id)
       }
     }
 
     // Can use for dynamic nodes but is laggy
     const handleDragMove = (e) => {
-      console.log("coords " + e.target.x() + e.target.y())
+      setPosition({
+        ...position,
+        x: e.target.x(),
+        y: e.target.y()
+      })
       updateEdges(e.target.id(), e.target.x(), e.target.y())
     }
     const handleDragEnd = (e) => {
+      setPosition({
+        ...position,
+        x: e.target.x(),
+        y: e.target.y()
+      })
       updateEdges(e.target.id(), e.target.x(), e.target.y())
     }
 
@@ -51,20 +58,17 @@ const Node = ({updateEdges, setSelectedNode, id, x, y, selected, dragStart, drag
         x={position.x}
         y={position.y}
         onDragEnd={handleDragEnd}
+        onDragMove={handleDragMove}
         onClick={setSelected}
         draggable
       >
-        <Text text={position.id} />
-        <Circle
-          // id={position.id}
-          // x={position.x}
-          // y={position.y}
-          radius={50}
-          fill={position.isSelected ? "green" : "blue"}
-          // onDragEnd={handleDragEnd}
-          // onClick={setSelected}
-          // draggable
-        />
+
+      <Circle
+        radius={50}
+        fill={position.isSelected ? "green" : "blue"}
+      />
+      <Text text={position.id} />
+
       </Group>
 
 
