@@ -38,9 +38,17 @@ const Toolbar = ({nodes, edges, setNodes, setEdges, getNodeById, selectedNodeId,
         }
     }
 
+    const deleteNode = () => {
+        if (selectedNodeId !== "") {
+            setNodes(nodes.filter((node) => {return node.id !== selectedNodeId}));
+            setEdges(edges.filter((edge) => { return edge.startId !== selectedNodeId && edge.endId !== selectedNodeId }));
+        }
+    }
+
     return(
         <div className={classes.toolbar}>
             <Button onClick={addNode}>Add Node</Button>
+            <Button onClick={deleteNode}>Delete Node</Button>
         </div>
     )
 }
