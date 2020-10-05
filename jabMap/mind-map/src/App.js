@@ -23,6 +23,7 @@ function App() {
   }]);
 
   const [edges, setEdges] = useState([{
+    id: 'edge1',
     startId: nodes[0].id,
     startX:  nodes[0].x,
     startY: nodes[0].y,
@@ -31,6 +32,7 @@ function App() {
     endY: nodes[1].y
   },
   {
+    id: 'edge2',
     startId: nodes[1].id,
     startX:  nodes[1].x,
     startY: nodes[1].y,
@@ -48,7 +50,7 @@ function App() {
 
   const getNodeById = (id) => {
       for (var node of nodes) {
-          if ((node.id) == id) {
+          if ((node.id) === id) {
               return node;
           }
       }
@@ -56,7 +58,7 @@ function App() {
 
   const updateNode = (id, x, y) => {
     const newNodes = nodes.map((node) => {
-      if (node.id == id) {
+      if (node.id === id) {
         const updatedNode = {
           ...node,
           x: x,
@@ -72,7 +74,7 @@ function App() {
 
   const updateEdges = (id, x, y) => {
       const newEdges = edges.map((edge) => {
-          if (edge.startId == id) {
+          if (edge.startId === id) {
               const updatedEdge = {
                   ...edge,
                   startX: x,
@@ -80,7 +82,7 @@ function App() {
                 };
               return updatedEdge;
           }
-          if (edge.endId == id) {
+          if (edge.endId === id) {
               const updatedEdge = {
                   ...edge,
                   endX: x,
@@ -105,7 +107,16 @@ function App() {
     return (
         <div className={classes.wrapper}>
             <ReferencesTable references={references} setReferences={setReferences}></ReferencesTable>
-            <ToolBar nodes={nodes} edges={edges} getNodeById={getNodeById} selectedNodeId={selectedNodeId} setNodes={setNodes} setEdges={setEdges} globalNodeIdCounter={globalNodeIdCounter} setGlobalNodeIdCounter={setGlobalNodeIdCounter}/>
+            <ToolBar 
+              nodes={nodes} 
+              edges={edges} 
+              getNodeById={getNodeById} 
+              selectedNodeId={selectedNodeId} 
+              setNodes={setNodes} 
+              setEdges={setEdges} 
+              globalNodeIdCounter={globalNodeIdCounter} 
+              setGlobalNodeIdCounter={setGlobalNodeIdCounter}
+            />
             <MindMap nodes={nodes} edges={edges} updateEdges={updateEdges} updateNode={updateNode} selectedNodeId={selectedNodeId} setSelectedNodeId={setSelectedNodeId}/>
         </div>
       );
