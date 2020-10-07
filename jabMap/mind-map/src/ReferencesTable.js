@@ -25,7 +25,7 @@ const ReferencesTable = ({references, setReferences}) => {
     const classes = useStyles();
 
     //TODO: Call API and store references in references
-    // //Call API on refresh
+    // Call API on refresh
     // useEffect(() => {
     //     fetch("/libraries/current/entries")
     //         .then((res) => res.json())
@@ -36,28 +36,30 @@ const ReferencesTable = ({references, setReferences}) => {
     //         .catch(console.log);
     // });
 
+
+
     //Rendered table using Material UI library
     return(<TableContainer component={Paper}>
         <Table className={classes.table} aria-label="simple table">
             <TableHead>
                 <TableRow className={classes.row}>
-                    <TableCell>Dessert (100g serving)</TableCell>
-                    <TableCell align="right">Calories</TableCell>
-                    <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                    <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                    <TableCell align="right">Protein&nbsp;(g)</TableCell>
+                    <TableCell>Title</TableCell>
+                    <TableCell>Author</TableCell>
+                    <TableCell>Year</TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
                 {references.map((references) => (
-                    <TableRow key={references.name} className={classes.row}>
+                    <TableRow key={references.title} className={classes.row}>
                         <TableCell component="th" scope="row">
-                            {references.name}
+                            {references.title}
                         </TableCell>
-                        <TableCell align="right">{references.calories}</TableCell>
-                        <TableCell align="right">{references.fat}</TableCell>
-                        <TableCell align="right">{references.carbs}</TableCell>
-                        <TableCell align="right">{references.protein}</TableCell>
+                        <TableCell component="th" scope="row">
+                            {references.author}
+                        </TableCell>
+                        <TableCell component="th" scope="row">
+                            {references.year}
+                        </TableCell>
                     </TableRow>
                 ))}
             </TableBody>
