@@ -11,15 +11,18 @@ function App() {
     id: 'node1',
     x: 100,
     y: 100,
+    colors: ''
   },
   {
     id: 'node2',
     x: 200,
-    y: 200
+    y: 200,
+    colors: ''
   },{
     id: 'node3',
     x: 300,
-    y: 300
+    y: 300,
+    colors: ''
   }]);
 
   const [edges, setEdges] = useState([{
@@ -62,10 +65,27 @@ function App() {
         const updatedNode = {
           ...node,
           x: x,
-          y: y
+          y: y,
         }
         return updatedNode;
       } else {
+        return node;
+      }
+    });
+    setNodes(newNodes);
+  }
+
+  const updateNodeColor = (nd, newColor) => {
+    const newNodes = nodes.map((node) => {
+
+      if (nd.indexOf(node.id)>-1) {
+        const updatedNode = {
+          ...node,
+          colors: newColor
+        }
+        return updatedNode;
+      } else {
+        node.colors = 'white';
         return node;
       }
     });
@@ -116,6 +136,7 @@ function App() {
               setEdges={setEdges} 
               globalNodeIdCounter={globalNodeIdCounter} 
               setGlobalNodeIdCounter={setGlobalNodeIdCounter}
+              updateNodeColor = {updateNodeColor}
             />
             <MindMap nodes={nodes} edges={edges} updateEdges={updateEdges} updateNode={updateNode} selectedNodeId={selectedNodeId} setSelectedNodeId={setSelectedNodeId}/>
         </div>
