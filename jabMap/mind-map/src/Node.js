@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'; 
-import { Ellipse, Layer, Text, Group } from 'react-konva';
+import React from 'react'; 
+import { Ellipse, Text, Group } from 'react-konva';
 
 
 const Node = ({id, x, y, updateEdges, setSelectedNodeId, selectedNodeId, updateNode}) => {
@@ -20,7 +20,7 @@ const Node = ({id, x, y, updateEdges, setSelectedNodeId, selectedNodeId, updateN
       >
         <Ellipse
           radius={{"x" : 50, "y" : 30}}
-          fill={selectedNodeId == id ? "green" : "white"}
+          fill={selectedNodeId === id ? "green" : "white"}
           stroke={"black"}
         />
         <Text text={id}

@@ -1,4 +1,4 @@
-import React, { Component, useContext, useEffect, useState } from "react";
+import React from "react";
 //import logo from './logo.svg';
 import "./App.css";
 import Node from "./Node";
@@ -25,7 +25,7 @@ const MindMap = ({nodes, edges, updateEdges, setSelectedNodeId, selectedNodeId, 
                     <Edge x1={edge.startX} y1={edge.startY} x2={edge.endX} y2={edge.endY}/>
                 )}
                 {nodes.map((node) =>
-                    <Node id={node.id} x={node.x} y={node.y} updateEdges={updateEdges} selectedNodeId={selectedNodeId} setSelectedNodeId={setSelectedNodeId} updateNode={updateNode}/>
+                    <Node key={node.id} id={node.id} x={node.x} y={node.y} updateEdges={updateEdges} selectedNodeId={selectedNodeId} setSelectedNodeId={setSelectedNodeId} updateNode={updateNode}/>
                 )}
             </Layer>
         </Stage>

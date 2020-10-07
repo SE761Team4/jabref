@@ -15,7 +15,7 @@ const Toolbar = ({nodes, edges, setNodes, setEdges, getNodeById, selectedNodeId,
 
 
     const addNode = () => {
-        if (selectedNodeId != "") {
+        if (selectedNodeId !== "") {
             const newNode = {
                 id: `node${globalNodeIdCounter}`,
                 x: 400,
