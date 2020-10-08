@@ -75,9 +75,10 @@ const Toolbar = ({nodes, edges, setNodes, setEdges, getNodeById, selectedNodeId,
 
 
      window.onkeydown = function(e)  {
-        e.preventDefault();
+       
         if (e.keyCode === 114 || (e.ctrlKey && e.keyCode === 70)){
             // listen to ctrl + F
+            e.preventDefault();
             inputRef.current.focus();
         }
     }
