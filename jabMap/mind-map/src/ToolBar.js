@@ -47,6 +47,9 @@ const Toolbar = ({nodes, edges, setNodes, setEdges, getNodeById, selectedNodeId,
     }
 
     const searchNodes = (event) =>{ 
+
+        // TODO: currently search node from id, should add label search, icon search
+
         var searchterm = event.target.value;
         var indx = [];
         
@@ -66,16 +69,15 @@ const Toolbar = ({nodes, edges, setNodes, setEdges, getNodeById, selectedNodeId,
  
      const changeNodeColor = (event) =>{ 
          var newColor = event.target.value;
-         //var selectedNode = getNodeById(selectedNodeId);
+
          updateNodeColor(selectedNodeId,newColor);
-         
      }
 
 
      window.onkeydown = function(e)  {
         e.preventDefault();
         if (e.keyCode === 114 || (e.ctrlKey && e.keyCode === 70)){
-
+            // listen to ctrl + F
             inputRef.current.focus();
         }
     }
@@ -84,7 +86,6 @@ const Toolbar = ({nodes, edges, setNodes, setEdges, getNodeById, selectedNodeId,
         <div className={classes.toolbar}>
             <Button onClick={addNode}>Add Node</Button>
             <Button onClick={deleteNode}>Delete Node</Button>
-            
             <input id='nodeColor' type="color" onChange = {changeNodeColor}></input>
             <input type='text'  id='searchnode' onChange={searchNodes}  ref={inputRef } placeholder="🔎Node Search" size='30'  />
         </div>

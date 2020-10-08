@@ -98,6 +98,7 @@ function App() {
   
   var updateSearchIndex = (idx) => {
 
+    // update the nodes in search, show red stroke
     nodes.forEach(n => {
       if(idx.indexOf(n.id) >-1){
         n.isInSerchRet = true;
