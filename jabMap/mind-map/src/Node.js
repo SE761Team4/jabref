@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'; 
 import { Ellipse, Layer, Text, Group } from 'react-konva';
 
-const Node = ({id, x, y, colors, updateEdges, setSelectedNodeId, selectedNodeId, updateNode}) => {
+const Node = ({id, x, y, colors, updateEdges, setSelectedNodeId, selectedNodeId, updateNode, isInSerchRet}) => {
 
     const handleDragMove = (e) => {
       updateNode(id, e.target.x(), e.target.y());
@@ -19,8 +19,9 @@ const Node = ({id, x, y, colors, updateEdges, setSelectedNodeId, selectedNodeId,
       >
         <Ellipse
           radius={{"x" : 50, "y" : 30}}
-          fill={colors == ''? (selectedNodeId == id ? "green" : "white"):colors}
-          stroke={"black"}
+          //fill={ selectedNodeId == id ? "green" : (colors == ''? "white":colors)}
+          fill={ colors=="white"||colors==""? (selectedNodeId == id ? "green" : "white"):colors}
+          stroke={isInSerchRet?"red":"black"}
         />
         <Text text={id}
         x={-50}

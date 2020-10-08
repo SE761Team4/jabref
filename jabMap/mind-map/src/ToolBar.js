@@ -3,7 +3,7 @@ import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import './App.css'
 
-const Toolbar = ({nodes, edges, setNodes, setEdges, getNodeById, selectedNodeId, globalNodeIdCounter, setGlobalNodeIdCounter,updateNodeColor}) => {
+const Toolbar = ({nodes, edges, setNodes, setEdges, getNodeById, selectedNodeId, globalNodeIdCounter, setGlobalNodeIdCounter,updateNodeColor,updateSearchIndex}) => {
     //Styles
     const useStyles = makeStyles({
         toolbar: {
@@ -51,7 +51,7 @@ const Toolbar = ({nodes, edges, setNodes, setEdges, getNodeById, selectedNodeId,
         var indx = [];
         
         if(searchterm == ''){
-            updateNodeColor(indx, 'blue')
+            updateSearchIndex(indx)
             return;
         }
         
@@ -60,14 +60,8 @@ const Toolbar = ({nodes, edges, setNodes, setEdges, getNodeById, selectedNodeId,
                 indx.push(node.id);
             }
         });
-        updateNodeColor(indx, 'blue')
-        //var searchedOnes = nodes.find(x => x.id.indexOf(searchterm)>-1 );
-        //alert(searchedOnes[0])
-        //for(var node in searchedOnes){
-        //    updateNodeColor(searchterm, 'blue')
 
-        //}
-
+        updateSearchIndex(indx)
      }
  
      const changeNodeColor = (event) =>{ 

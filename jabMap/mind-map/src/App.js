@@ -11,18 +11,21 @@ function App() {
     id: 'node1',
     x: 100,
     y: 100,
-    colors: ''
+    colors: '',
+    isInSerchRet :false
   },
   {
     id: 'node2',
     x: 200,
     y: 200,
-    colors: ''
+    colors: '',
+    isInSerchRet :false
   },{
     id: 'node3',
     x: 300,
     y: 300,
-    colors: ''
+    colors: '',
+    isInSerchRet :false
   }]);
 
   const [edges, setEdges] = useState([{
@@ -85,11 +88,28 @@ function App() {
         }
         return updatedNode;
       } else {
-        node.colors = 'white';
+        if(node.colors=="")
+          node.colors = 'white';
         return node;
       }
     });
     setNodes(newNodes);
+  }
+  
+  var updateSearchIndex = (idx) => {
+
+    nodes.forEach(n => {
+      if(idx.indexOf(n.id) >-1){
+        n.isInSerchRet = true;
+      }
+      else
+      {
+        n.isInSerchRet = false;
+      }
+      updateNode(n.id,n.x,n.y)
+      
+    });
+
   }
 
   const updateEdges = (id, x, y) => {
@@ -137,8 +157,9 @@ function App() {
               globalNodeIdCounter={globalNodeIdCounter} 
               setGlobalNodeIdCounter={setGlobalNodeIdCounter}
               updateNodeColor = {updateNodeColor}
+              updateSearchIndex = {updateSearchIndex}
             />
-            <MindMap nodes={nodes} edges={edges} updateEdges={updateEdges} updateNode={updateNode} selectedNodeId={selectedNodeId} setSelectedNodeId={setSelectedNodeId}/>
+            <MindMap nodes={nodes} edges={edges} updateEdges={updateEdges} updateNode={updateNode} selectedNodeId={selectedNodeId} setSelectedNodeId={setSelectedNodeId}  updateSearchIndex = {updateSearchIndex}/>
         </div>
       );
     }
