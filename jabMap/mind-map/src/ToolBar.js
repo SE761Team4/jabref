@@ -1,5 +1,5 @@
 import { Button } from "@material-ui/core";
-import React from "react";
+import React, {useRef } from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import './App.css'
 
@@ -13,7 +13,7 @@ const Toolbar = ({nodes, edges, setNodes, setEdges, getNodeById, selectedNodeId,
     });
     const classes = useStyles();
 
-
+    const inputRef = useRef(null);
 
     const addNode = () => {
         if (selectedNodeId != "") {
@@ -71,13 +71,22 @@ const Toolbar = ({nodes, edges, setNodes, setEdges, getNodeById, selectedNodeId,
          
      }
 
+
+     window.onkeydown = function(e)  {
+        e.preventDefault();
+        if (e.keyCode === 114 || (e.ctrlKey && e.keyCode === 70)){
+
+            inputRef.current.focus();
+        }
+    }
+
     return(
         <div className={classes.toolbar}>
             <Button onClick={addNode}>Add Node</Button>
             <Button onClick={deleteNode}>Delete Node</Button>
             
             <input id='nodeColor' type="color" onChange = {changeNodeColor}></input>
-            <input type='text'  id='searchnode' onChange={searchNodes} placeholder="🔎Node Search" size='30'/>
+            <input type='text'  id='searchnode' onChange={searchNodes}  ref={inputRef } placeholder="🔎Node Search" size='30'  />
         </div>
     )
 }

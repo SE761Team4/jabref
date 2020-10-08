@@ -143,7 +143,6 @@ function App() {
     });
     const classes = useStyles();
 
-
     return (
         <div className={classes.wrapper}>
             <ReferencesTable references={references} setReferences={setReferences}></ReferencesTable>
