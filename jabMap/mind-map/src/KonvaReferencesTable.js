@@ -1,4 +1,7 @@
-import React from "react";
+import React, {
+    createRef,
+    useRef
+} from "react";
 import {Paper, TableContainer, Table, TableCell, TableBody, TableRow, TableHead} from "@material-ui/core";
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -11,7 +14,7 @@ import {
 
 
 
-const KonvaReferencesTable = ({references, setReferences, addNode}) => {
+const KonvaReferencesTable = ({references, setReferences, addNode, layerRef, stageRef}) => {
 
     console.log("render")
     //Styles
@@ -33,53 +36,75 @@ const KonvaReferencesTable = ({references, setReferences, addNode}) => {
     const height = 100;
     const margin = 10;
 
+    const arrLength = references.length;
+    const elRefs = React.useRef([]);
+
+    if (elRefs.current.length !== arrLength) {
+        // add or remove refs
+        elRefs.current = Array(arrLength).fill().map((_, i) => elRefs.current[i] || createRef());
+    }
 
     console.log(references)
     //Rendered table using Material UI library
     return(
         <Group>
-            {references.map((references, index) => (
+            {references.map((reference, index) => {
+                return (
                 <Group>
-                    <Group y ={index * (height + margin)}>
-                        <Rect width={width}
-                        height={height}
-                        fill={"#eaeaea"}
-                              // opacity={0.5}
+                    <Group
+                        y={index * (height + margin)}>
+                        <Rect
+                            width={width}
+                            height={height}
+                            fill={"#eaeaea"}
+                            // opacity={0.5}
                         />
 
-                        <Text text={references.title}
-                              x={width / 2}
-                              y={height / 2}
-                              // align="center"
-                              // verticalAlign="middle"
-                              width={100}
-                              height={60}
+                        <Text
+                            text={reference.title}
+                            x={width / 2}
+                            y={height / 2}
+                            // align="center"
+                            // verticalAlign="middle"
+                            width={100}
+                            height={60}
                         />
                     </Group>
 
                     {/*DRAGGABLE VERSION*/}
-                    <Group y ={index * (height + margin)}
-                    opacity={0.5}
-                    draggable
-                    onDragEnd={() => {
+                    <Group
+                        // y={index * (height + margin)}
+                        opacity={0.5}
+                        draggable
+                        ref={elRefs.current[index]}
+                        position={{x:0, y: index * (height + margin)}}
+                        onDragEnd={() => {
+                            console.log(elRefs.current[index])
+                            elRefs.current[index].current.position({x : 0, y : index * (height + margin)})
+                            console.log(layerRef)
+                            layerRef.current.draw()
+                            const {x, y} = stageRef.current.getPointerPosition()
+                            addNode(reference, x - 300, y)
+                        }}>
+                        <Rect
+                            width={width}
+                            height={height}
+                            fill={"#eaeaea"}
+                        />
 
-                        addNode(references)}}>
-                    <Rect width={width}
-                    height={height}
-                    fill={"#eaeaea"}
-                    />
-
-                    <Text text={references.title}
-                    x={width / 2}
-                    y={height / 2}
-                    // align="center"
-                    // verticalAlign="middle"
-                    width={100}
-                    height={60}
-                    />
+                        <Text
+                            text={reference.title}
+                            x={width / 2}
+                            y={height / 2}
+                            // align="center"
+                            // verticalAlign="middle"
+                            width={100}
+                            height={60}
+                        />
                     </Group>
                 </ Group>
-                    ))}
+                )
+            })}
 
         </Group>
     )

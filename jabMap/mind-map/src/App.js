@@ -1,4 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, {
+    useState,
+    useEffect,
+    useRef
+} from "react";
 //import logo from "./logo.svg";
 import "./App.css";
 import MindMap from "./MindMap";
@@ -9,6 +13,7 @@ import ReferencesTable from "./ReferencesTable";
 import { makeStyles } from "@material-ui/core/styles";
 import { Stage, Layer } from 'react-konva';
 import uuid from 'react-uuid'
+import useWindowDimensions from './WindowDimensions';
 
 function App() {
     const [nodes, setNodes] = useState([
@@ -132,7 +137,7 @@ function App() {
     fetchReferences();
   }, []);
 
-  const addNode = (bibData) => {
+  const addNode = (bibData, x, y) => {
     if (selectedNodeId !== "") {
         let nodeLabel;
         if (bibData === undefined) {
@@ -140,11 +145,17 @@ function App() {
         } else {
             nodeLabel = bibData.title;
         }
+        if (x === undefined) {
+            x = 400;
+        }
+        if (y === undefined) {
+            y = 400;
+        }
         const newNode = {
             id: uuid(),
             label: nodeLabel,
-            x: 400,
-            y: 400
+            x: x,
+            y: y
         }
         setGlobalNodeIdCounter(globalNodeIdCounter + 1);
 
@@ -163,7 +174,10 @@ function App() {
     }
   }
 
+  const layerRef = useRef();
+  const stageRef = useRef();
 
+  const { windowHeight, windowWidth } = useWindowDimensions();
 
   return (
     <div className={classes.wrapper}>
@@ -181,12 +195,12 @@ function App() {
         globalNodeIdCounter={globalNodeIdCounter}
         setGlobalNodeIdCounter={setGlobalNodeIdCounter}
       /> */}
-      <ToolBar
-        addNode={addNode}
-      />
-      <Stage width={1000} height={1000}>
-        <Layer>
-            <KonvaReferencesTable references={references} addNode={addNode}></KonvaReferencesTable>
+      {/*<ToolBar*/}
+      {/*  addNode={addNode}*/}
+      {/*/>*/}
+      <Stage width={windowWidth} height={windowHeight} ref={stageRef}>
+        <Layer ref={layerRef}>
+            <KonvaReferencesTable references={references} setReferences={setReferences} addNode={addNode} layerRef={layerRef} stageRef={stageRef}/>
           <MindMap
             nodes={nodes}
             edges={edges}
