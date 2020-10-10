@@ -3,27 +3,34 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import MindMap from "./MindMap";
 import ToolBar from "./ToolBar";
+import KonvaReferencesTable
+    from "./KonvaReferencesTable";
 import ReferencesTable from "./ReferencesTable";
 import { makeStyles } from "@material-ui/core/styles";
+import { Stage, Layer } from 'react-konva';
+import uuid from 'react-uuid'
 
 function App() {
-  const [nodes, setNodes] = useState([
-    {
-      id: "node1",
-      x: 100,
-      y: 100,
-    },
-    {
-      id: "node2",
-      x: 200,
-      y: 200,
-    },
-    {
-      id: "node3",
-      x: 300,
-      y: 300,
-    },
-  ]);
+    const [nodes, setNodes] = useState([
+        {
+            id: "node1",
+            label: "dogs",
+            x: 100,
+            y: 100,
+        },
+        {
+            id: "node2",
+            label: "cats",
+            x: 200,
+            y: 200,
+        },
+        {
+            id: "node3",
+            label: "fish",
+            x: 300,
+            y: 300,
+        },
+    ]);
 
   const [edges, setEdges] = useState([
     {
@@ -54,7 +61,7 @@ function App() {
 
   const getNodeById = (id) => {
     for (var node of nodes) {
-      if (node.id === id) {
+      if (node.id == id) {
         return node;
       }
     }
@@ -62,7 +69,7 @@ function App() {
 
   const updateNode = (id, x, y) => {
     const newNodes = nodes.map((node) => {
-      if (node.id === id) {
+      if (node.id == id) {
         const updatedNode = {
           ...node,
           x: x,
@@ -78,7 +85,7 @@ function App() {
 
   const updateEdges = (id, x, y) => {
     const newEdges = edges.map((edge) => {
-      if (edge.startId === id) {
+      if (edge.startId == id) {
         const updatedEdge = {
           ...edge,
           startX: x,
@@ -86,7 +93,7 @@ function App() {
         };
         return updatedEdge;
       }
-      if (edge.endId === id) {
+      if (edge.endId == id) {
         const updatedEdge = {
           ...edge,
           endX: x,
@@ -104,6 +111,10 @@ function App() {
     wrapper: {
       position: "relative",
     },
+      canvas: {
+          left: "25%",
+          position: "absolute"
+      },
   });
   const classes = useStyles();
 
@@ -121,13 +132,46 @@ function App() {
     fetchReferences();
   }, []);
 
+  const addNode = (bibData) => {
+    if (selectedNodeId !== "") {
+        let nodeLabel;
+        if (bibData === undefined) {
+            nodeLabel = `new node`
+        } else {
+            nodeLabel = bibData.title;
+        }
+        const newNode = {
+            id: uuid(),
+            label: nodeLabel,
+            x: 400,
+            y: 400
+        }
+        setGlobalNodeIdCounter(globalNodeIdCounter + 1);
+
+        setNodes([...nodes, newNode]);
+        const selectedNode = getNodeById(selectedNodeId);
+        const newEdge = {
+            startId: selectedNode.id,
+            startX:  selectedNode.x,
+            startY: selectedNode.y,
+            endId: newNode.id,
+            endX: newNode.x,
+            endY: newNode.y
+        }
+
+        setEdges([...edges, newEdge])
+    }
+  }
+
+
+
   return (
     <div className={classes.wrapper}>
-      <ReferencesTable
+      {/* <ReferencesTable
         references={references}
         setReferences={setReferences}
-      ></ReferencesTable>
-      <ToolBar
+      ></ReferencesTable> */}
+      {/* <ToolBar
         nodes={nodes}
         edges={edges}
         getNodeById={getNodeById}
@@ -136,15 +180,23 @@ function App() {
         setEdges={setEdges}
         globalNodeIdCounter={globalNodeIdCounter}
         setGlobalNodeIdCounter={setGlobalNodeIdCounter}
+      /> */}
+      <ToolBar
+        addNode={addNode}
       />
-      <MindMap
-        nodes={nodes}
-        edges={edges}
-        updateEdges={updateEdges}
-        updateNode={updateNode}
-        selectedNodeId={selectedNodeId}
-        setSelectedNodeId={setSelectedNodeId}
-      />
+      <Stage width={1000} height={1000}>
+        <Layer>
+            <KonvaReferencesTable references={references} addNode={addNode}></KonvaReferencesTable>
+          <MindMap
+            nodes={nodes}
+            edges={edges}
+            updateEdges={updateEdges}
+            updateNode={updateNode}
+            selectedNodeId={selectedNodeId}
+            setSelectedNodeId={setSelectedNodeId}
+          />
+        </Layer>
+      </Stage>
     </div>
   );
 }

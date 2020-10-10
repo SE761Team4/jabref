@@ -7,6 +7,8 @@ import { makeStyles } from '@material-ui/core/styles';
 
 
 const ReferencesTable = ({references, setReferences}) => {
+
+    console.log("render")
     //Styles
     const useStyles = makeStyles({
         table: {
@@ -52,4 +54,4 @@ const ReferencesTable = ({references, setReferences}) => {
     </TableContainer>)
 }
 
-export default ReferencesTable
+export default React.memo(ReferencesTable)

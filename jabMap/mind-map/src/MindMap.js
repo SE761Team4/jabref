@@ -4,7 +4,7 @@ import "./App.css";
 import Node from "./Node";
 import Edge from "./Edge";
 import { makeStyles } from '@material-ui/core/styles';
-import { Stage, Layer } from 'react-konva';
+import { Stage, Layer, Group } from 'react-konva';
 
 
 const MindMap = ({nodes, edges, updateEdges, setSelectedNodeId, selectedNodeId, updateNode}) => {
@@ -19,16 +19,14 @@ const MindMap = ({nodes, edges, updateEdges, setSelectedNodeId, selectedNodeId, 
     const classes = useStyles();
 
     return (
-        <Stage width={width} height={height} className={classes.canvas}>
-            <Layer>
-                {edges.map((edge) =>
-                    <Edge x1={edge.startX} y1={edge.startY} x2={edge.endX} y2={edge.endY}/>
-                )}
-                {nodes.map((node) =>
-                    <Node key={node.id} id={node.id} x={node.x} y={node.y} updateEdges={updateEdges} selectedNodeId={selectedNodeId} setSelectedNodeId={setSelectedNodeId} updateNode={updateNode}/>
-                )}
-            </Layer>
-        </Stage>
+        <Group x={310}>
+            {edges.map((edge) =>
+                <Edge x1={edge.startX} y1={edge.startY} x2={edge.endX} y2={edge.endY}/>
+            )}
+            {nodes.map((node) =>
+                <Node key={node.id} label={node.label} id={node.id} x={node.x} y={node.y} updateEdges={updateEdges} selectedNodeId={selectedNodeId} setSelectedNodeId={setSelectedNodeId} updateNode={updateNode}/>
+            )}
+        </ Group>
     )
 }
 

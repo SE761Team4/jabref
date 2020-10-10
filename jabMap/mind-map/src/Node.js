@@ -1,8 +1,8 @@
-import React from 'react'; 
+import React from 'react';
 import { Ellipse, Text, Group } from 'react-konva';
 
 
-const Node = ({id, x, y, updateEdges, setSelectedNodeId, selectedNodeId, updateNode}) => {
+const Node = ({id, x, y, updateEdges, setSelectedNodeId, selectedNodeId, updateNode, label}) => {
 
     const handleDragMove = (e) => {
       updateNode(id, e.target.x(), e.target.y());
@@ -23,7 +23,7 @@ const Node = ({id, x, y, updateEdges, setSelectedNodeId, selectedNodeId, updateN
           fill={selectedNodeId === id ? "green" : "white"}
           stroke={"black"}
         />
-        <Text text={id}
+        <Text text={label}
         x={-50}
         y={-30}
         align="center"
