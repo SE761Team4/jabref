@@ -1,6 +1,7 @@
 package org.jabref.model.jabmap;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This class is a data object for a mind map node References to BibEntry objects and kept as strings to simplify serialisation to JSON
@@ -58,42 +59,27 @@ public class MindMapNode {
 
     @Override
     public boolean equals(Object mindMapNode) {
-        if (mindMapNode == null) {
+        if (this == mindMapNode) {
+            return true;
+        }
+
+        if (mindMapNode == null || mindMapNode.getClass() != this.getClass()) {
             return false;
         }
 
-        if (mindMapNode.getClass() != this.getClass()) {
-            return false;
-        }
+        MindMapNode other = (MindMapNode) mindMapNode;
 
-        if (!this.getId().equals(((MindMapNode) mindMapNode).getId())) {
-            return false;
-        }
+        return Objects.equals(this.citationKey, other.getCitationKey())
+                && Objects.equals(this.icons, other.getIcons())
+                && Objects.equals(this.id, other.getId())
+                && Objects.equals(this.label, other.getLabel())
+                && Objects.equals(this.x_pos, other.getX_pos())
+                && Objects.equals(this.y_pos, other.getY_pos());
 
-        if (!this.getLabel().equals(((MindMapNode) mindMapNode).getLabel())) {
-            return false;
-        }
-
-        if (this.getX_pos() != ((MindMapNode) mindMapNode).getX_pos()) {
-            return false;
-        }
-
-        if (this.getIcons() != null && ((MindMapNode) mindMapNode).getIcons() != null) {
-            if (!this.getIcons().containsAll(((MindMapNode) mindMapNode).getIcons())) {
-                return false;
-            }
-        } else if (this.getIcons().size() != ((MindMapNode) mindMapNode).getIcons().size()) {
-            return false;
-        } else if (!this.getIcons().containsAll(((MindMapNode) mindMapNode).getIcons())) {
-            return false;
-        }
-
-        return this.getY_pos() == ((MindMapNode) mindMapNode).getY_pos();
     }
 
     @Override
     public int hashCode() {
-        // no need
-        return 0;
+        return Objects.hashCode(this);
     }
 }

@@ -15,7 +15,6 @@ class MindMapEdgeBuilderTest {
 
         mindMapEdgeBuilder.withNode1Id(1L);
 
-        // then
         final Field field = mindMapEdgeBuilder.getClass().getDeclaredField("node1Id");
         field.setAccessible(true);
         assertEquals(1L, field.get(mindMapEdgeBuilder));
@@ -27,7 +26,6 @@ class MindMapEdgeBuilderTest {
 
         mindMapEdgeBuilder.withNode2Id(2L);
 
-        // then
         final Field field = mindMapEdgeBuilder.getClass().getDeclaredField("node2Id");
         field.setAccessible(true);
         assertEquals(2L, field.get(mindMapEdgeBuilder));
@@ -39,7 +37,6 @@ class MindMapEdgeBuilderTest {
 
         mindMapEdgeBuilder.withLabel("edge1");
 
-        // then
         final Field field = mindMapEdgeBuilder.getClass().getDeclaredField("label");
         field.setAccessible(true);
         assertEquals("edge1", field.get(mindMapEdgeBuilder));
@@ -51,7 +48,6 @@ class MindMapEdgeBuilderTest {
 
         mindMapEdgeBuilder.withDirection(String.valueOf(EdgeDirection.DEFAULT));
 
-        // then
         final Field field = mindMapEdgeBuilder.getClass().getDeclaredField("direction");
         field.setAccessible(true);
         assertEquals(EdgeDirection.DEFAULT, field.get(mindMapEdgeBuilder));
@@ -63,7 +59,6 @@ class MindMapEdgeBuilderTest {
 
         mindMapEdgeBuilder.withDirection(EdgeDirection.DEFAULT);
 
-        // then
         final Field field = mindMapEdgeBuilder.getClass().getDeclaredField("direction");
         field.setAccessible(true);
         assertEquals(EdgeDirection.DEFAULT, field.get(mindMapEdgeBuilder));

@@ -16,7 +16,6 @@ class MindMapNodeBuilderTest {
 
         mindMapNodeBuilder.withId(1L);
 
-        // then
         final Field field = mindMapNodeBuilder.getClass().getDeclaredField("id");
         field.setAccessible(true);
         assertEquals(1L, field.get(mindMapNodeBuilder));
@@ -28,7 +27,6 @@ class MindMapNodeBuilderTest {
 
         mindMapNodeBuilder.withLabel("node1");
 
-        // then
         final Field field = mindMapNodeBuilder.getClass().getDeclaredField("label");
         field.setAccessible(true);
         assertEquals("node1", field.get(mindMapNodeBuilder));
@@ -40,7 +38,6 @@ class MindMapNodeBuilderTest {
 
         mindMapNodeBuilder.withCitationKey("cite1");
 
-        // then
         final Field field = mindMapNodeBuilder.getClass().getDeclaredField("citationKey");
         field.setAccessible(true);
         assertEquals("cite1", field.get(mindMapNodeBuilder));
@@ -57,7 +54,6 @@ class MindMapNodeBuilderTest {
         nodeIcons.add(NodeIcon.READ);
         nodeIcons.add(NodeIcon.HIGH_PRIORITY);
 
-        // then
         final Field field = mindMapNodeBuilder.getClass().getDeclaredField("icons");
         field.setAccessible(true);
         assertEquals(nodeIcons, field.get(mindMapNodeBuilder));
@@ -69,7 +65,6 @@ class MindMapNodeBuilderTest {
 
         mindMapNodeBuilder.withXPos(10);
 
-        // then
         final Field field = mindMapNodeBuilder.getClass().getDeclaredField("xPos");
         field.setAccessible(true);
         assertEquals(10, field.get(mindMapNodeBuilder));
@@ -81,7 +76,6 @@ class MindMapNodeBuilderTest {
 
         mindMapNodeBuilder.withYPos(10);
 
-        // then
         final Field field = mindMapNodeBuilder.getClass().getDeclaredField("yPos");
         field.setAccessible(true);
         assertEquals(10, field.get(mindMapNodeBuilder));

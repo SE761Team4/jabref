@@ -2,6 +2,7 @@ package org.jabref.model.jabmap;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This class is a data model for a complete mind map
@@ -33,33 +34,22 @@ public class MindMap {
 
     @Override
     public boolean equals(Object mindMap) {
-        if (mindMap == null) {
-            System.out.println(1);
+        if (this == mindMap) {
+            return true;
+        }
+
+        if (mindMap == null || mindMap.getClass() != MindMap.class) {
             return false;
         }
 
-        if (mindMap.getClass() != MindMap.class) {
-            return false;
-        }
+        MindMap other = (MindMap) mindMap;
 
-        if (this.getEdges().size() != ((MindMap) mindMap).getEdges().size()) {
-            return false;
-        }
-
-        if (this.getNodes().size() != ((MindMap) mindMap).getNodes().size()) {
-            return false;
-        }
-
-        if (!this.getNodes().containsAll(((MindMap) mindMap).getNodes())) {
-            return false;
-        }
-
-        return this.getEdges().containsAll(((MindMap) mindMap).getEdges());
+        return Objects.equals(this.nodes, other.getNodes())
+                && Objects.equals(this.edges, other.getEdges());
     }
 
     @Override
     public int hashCode() {
-        // no need
-        return 0;
+        return Objects.hashCode(this);
     }
 }

@@ -67,7 +67,6 @@ class BibtexMindMapAdapterTest {
                 .withLabel("node1")
                 .withXPos(50)
                 .withYPos(50)
-                // .withIcons(icons)
                 .build();
 
         node2 = new MindMapNodeBuilder()
