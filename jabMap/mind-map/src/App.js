@@ -18,6 +18,8 @@ import useWindowDimensions
     from './WindowDimensions';
 import ToolBar
     from "./ToolBar";
+import NodeInfoPanel
+    from "./NodeInfoPanel";
 
 function App() {
     const [nodes, setNodes] = useState([
