@@ -84,7 +84,7 @@ const KonvaReferencesTable = ({references, setReferences, addNode, layerRef, sta
                             console.log(layerRef)
                             layerRef.current.draw()
                             const {x, y} = stageRef.current.getPointerPosition()
-                            addNode(reference, x - 300, y)
+                            addNode(reference, x - 300, y, reference.type.key)
                         }}>
                         <Rect
                             width={width}

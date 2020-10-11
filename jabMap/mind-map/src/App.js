@@ -9,6 +9,8 @@ import MindMap from "./MindMap";
 import ToolBar from "./ToolBar";
 import KonvaReferencesTable
     from "./KonvaReferencesTable";
+import NodeInfoPanel
+    from "./NodeInfoPanel";
 import ReferencesTable from "./ReferencesTable";
 import { makeStyles } from "@material-ui/core/styles";
 import { Stage, Layer } from 'react-konva';
@@ -33,7 +35,7 @@ function App() {
             id: "node3",
             label: "fish",
             x: 300,
-            y: 300,
+            y: 300
         },
     ]);
 
@@ -60,7 +62,7 @@ function App() {
 
   const [references, setReferences] = useState([{}]);
 
-  const [selectedNodeId, setSelectedNodeId] = useState("");
+  const [selectedNode, setSelectedNode] = useState({});
 
   const [globalNodeIdCounter, setGlobalNodeIdCounter] = useState(4);
 
@@ -72,15 +74,18 @@ function App() {
     }
   };
 
-  const updateNode = (id, x, y) => {
+  const getReferenceById = (id) => {
+      for (const reference of references) {
+          if (reference.type.key == id) {
+              return reference;
+          }
+      }
+  }
+
+  const updateNode = (newNode) => {
     const newNodes = nodes.map((node) => {
-      if (node.id == id) {
-        const updatedNode = {
-          ...node,
-          x: x,
-          y: y,
-        };
-        return updatedNode;
+      if (newNode.id == node.id) {
+        return newNode;
       } else {
         return node;
       }
@@ -138,11 +143,13 @@ function App() {
   }, []);
 
   const addNode = (bibData, x, y) => {
-    if (selectedNodeId !== "") {
+    if (selectedNode.id !== "") {
         let nodeLabel;
+        let bibEntryId;
         if (bibData === undefined) {
             nodeLabel = `new node`
         } else {
+            bibEntryId = bibData.type.key
             nodeLabel = bibData.title;
         }
         if (x === undefined) {
@@ -155,12 +162,13 @@ function App() {
             id: uuid(),
             label: nodeLabel,
             x: x,
-            y: y
+            y: y,
+            bibEntryId: bibEntryId
         }
         setGlobalNodeIdCounter(globalNodeIdCounter + 1);
 
         setNodes([...nodes, newNode]);
-        const selectedNode = getNodeById(selectedNodeId);
+
         const newEdge = {
             startId: selectedNode.id,
             startX:  selectedNode.x,
@@ -179,7 +187,7 @@ function App() {
 
   const { windowHeight, windowWidth } = useWindowDimensions();
 
-  return (
+    return (
     <div className={classes.wrapper}>
       {/* <ReferencesTable
         references={references}
@@ -195,9 +203,9 @@ function App() {
         globalNodeIdCounter={globalNodeIdCounter}
         setGlobalNodeIdCounter={setGlobalNodeIdCounter}
       /> */}
-      {/*<ToolBar*/}
-      {/*  addNode={addNode}*/}
-      {/*/>*/}
+      <ToolBar
+        addNode={addNode}
+      />
       <Stage width={windowWidth} height={windowHeight} ref={stageRef}>
         <Layer ref={layerRef}>
             <KonvaReferencesTable references={references} setReferences={setReferences} addNode={addNode} layerRef={layerRef} stageRef={stageRef}/>
@@ -206,11 +214,14 @@ function App() {
             edges={edges}
             updateEdges={updateEdges}
             updateNode={updateNode}
-            selectedNodeId={selectedNodeId}
-            setSelectedNodeId={setSelectedNodeId}
+            selectedNodeId={selectedNode.id}
+            setSelectedNode={setSelectedNode}
           />
         </Layer>
       </Stage>
+        {selectedNode.id ? <NodeInfoPanel node={selectedNode} reference={getReferenceById(selectedNode.bibEntryId)} updateNode={updateNode}/> :
+            <NodeInfoPanel node={selectedNode} updateNode={updateNode}/>}
+
     </div>
   );
 }

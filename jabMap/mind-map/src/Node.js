@@ -1,36 +1,57 @@
 import React from 'react';
-import { Ellipse, Text, Group } from 'react-konva';
+import { Ellipse, Text, Group, Rect } from 'react-konva';
 
 
-const Node = ({id, x, y, updateEdges, setSelectedNodeId, selectedNodeId, updateNode, label}) => {
+const Node = ({node, id, x, y, updateEdges, setSelectedNode, selectedNodeId, updateNode, label, bibEntryId}) => {
 
     const handleDragMove = (e) => {
-      updateNode(id, e.target.x(), e.target.y());
-      updateEdges(id, e.target.x(), e.target.y());
+        node.x = e.target.x()
+        node.y = e.target.y()
+      updateNode(node);
+      updateEdges(node.id, e.target.x(), e.target.y());
     }
 
+    const width = 150
+    const height = 70
     return (
       <Group
-        id={id}
-        x={x}
-        y={y}
+        id={node.id}
+        x={node.x}
+        y={node.y}
         draggable
         onDragMove={handleDragMove}
-        onClick={() => setSelectedNodeId(id)}
+        onClick={() => setSelectedNode(node)}
       >
-        <Ellipse
+        <Rect
           radius={{"x" : 50, "y" : 30}}
-          fill={selectedNodeId === id ? "green" : "white"}
+          width={width}
+          height={height}
+          offsetX={width/2}
+          offsetY={height/2}
+          cornerRadius={5}
+          fill={selectedNodeId === node.id ? "green" : "white"}
           stroke={"black"}
         />
-        <Text text={label}
-        x={-50}
-        y={-30}
+        <Text text={node.label}
+          offsetX={width/2}
+          offsetY={height/2 + 10}
         align="center"
         verticalAlign="middle"
-        width={100}
-        height={60}
+        width={width}
+        height={height}
         />
+          <Group
+              width={width}
+              height={height}
+              offsetX={width/2 -10}
+              offsetY={-height/2 + 20}
+          >
+              {node.bibEntryId && <Rect
+              width={10}
+              height={10}
+              fill={"red"}
+              />}
+          </Group>
       </Group>
     );
   };
