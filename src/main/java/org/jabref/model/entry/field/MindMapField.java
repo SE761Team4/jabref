@@ -11,7 +11,7 @@ import java.util.Set;
  */
 public enum MindMapField implements Field {
     NODE_LABEL("label"),
-    NODE_CITATION_KEY("bibentry"),
+    NODE_CITATION_KEY("citationKey"),
     NODE_ICONS("icons"),
     NODE_XPOS("x_pos", FieldProperty.NUMERIC),
     NODE_YPOS("y_pos", FieldProperty.NUMERIC),

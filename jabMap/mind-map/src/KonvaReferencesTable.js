@@ -55,7 +55,7 @@ const KonvaReferencesTable = ({references, setReferences, addNode, layerRef, sta
                         <Rect
                             width={width}
                             height={height}
-                            fill={"#eaeaea"}
+                            fill={"#dddddd"}
                             // opacity={0.5}
                         />
 
@@ -88,7 +88,7 @@ const KonvaReferencesTable = ({references, setReferences, addNode, layerRef, sta
                         <Rect
                             width={width}
                             height={height}
-                            fill={"#eaeaea"}
+                            fill={"#dddddd"}
                         />
 
                         <Text

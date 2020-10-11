@@ -28,8 +28,8 @@ const Node = ({node, id, updateEdges, setSelectedNode, selectedNodeId, updateNod
           height={height}
           offsetX={width/2}
           offsetY={height/2}
-          cornerRadius={5}
-          fill={selectedNodeId === node.id ? "green" : "white"}
+          cornerRadius={20}
+          fill={selectedNodeId === node.id ? "#a2b8e5" : "white"}
           stroke={"black"}
         />
         <Text text={node.label}
@@ -46,7 +46,7 @@ const Node = ({node, id, updateEdges, setSelectedNode, selectedNodeId, updateNod
               offsetX={width/2 -10}
               offsetY={-height/2 + 20}
           >
-              {node.bibEntryId && <Rect
+              {node.citationKey && <Rect
               width={10}
               height={10}
               fill={"red"}

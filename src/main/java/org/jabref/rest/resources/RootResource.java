@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.OPTIONS;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -39,7 +40,7 @@ public class RootResource {
                 .filter(b -> !(b.getType() == MindMapEntryType.Node) && !(b.getType() == MindMapEntryType.Edge))
                 .collect(Collectors.toList());
         Gson gson = new GsonBuilder().registerTypeAdapter(BibEntry.class, new BibEntryAdapter()).create();
-        return Response.status(Response.Status.OK).entity(gson.toJson(entries)).build();
+        return Response.status(Response.Status.OK).entity(gson.toJson(entries)).header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT").allow("OPTIONS").build();
     }
 
     @GET
@@ -51,7 +52,7 @@ public class RootResource {
         BibtexMindMapAdapter adapter = new BibtexMindMapAdapter();
         // Attempt to get a map saved in the current database
         MindMap map = adapter.convert(getActiveDatabase().getEntries());
-        return Response.status(Response.Status.OK).entity(new Gson().toJson(map)).build();
+        return Response.status(Response.Status.OK).entity(new Gson().toJson(map)).header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT").allow("OPTIONS").build();
     }
 
     @PUT
@@ -66,8 +67,25 @@ public class RootResource {
 
         addToDatabase(adapter.reverse().convert(map));
 
-        Response.ResponseBuilder builder = Response.ok();
+        Response.ResponseBuilder builder = Response.ok()
+                                                   .header("Access-Control-Allow-Origin", "*")
+                                                   .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
+                                                   .header("Access-Control-Allow-Credentials", "true")
+                                                   .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
+                                                   .header("Access-Control-Max-Age", "1209600").allow("OPTIONS");
         return builder.build();
+    }
+
+    @OPTIONS
+    @Path("{path : .*}")
+    public Response options() {
+        return Response.ok("")
+                       .header("Access-Control-Allow-Origin", "*")
+                       .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
+                       .header("Access-Control-Allow-Credentials", "true")
+                       .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
+                       .header("Access-Control-Max-Age", "1209600")
+                       .build();
     }
 
     /**

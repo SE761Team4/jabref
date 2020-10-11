@@ -1,6 +1,7 @@
 {
   "name": "mind-map",
   "version": "0.1.0",
+  "homepage":".",
   "private": true,
   "proxy": "http://localhost:9898",
   "dependencies": {

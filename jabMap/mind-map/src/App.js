@@ -127,7 +127,7 @@ function App() {
     const classes = useStyles();
 
     const fetchMap = async () => {
-        fetch("/libraries/current/map")
+        fetch("http://localhost:9898/libraries/current/map")
             .then((res) => res.json())
             .then((data) => {
                 console.log(data);
@@ -152,7 +152,7 @@ function App() {
     }
 
     const fetchReferences = async () => {
-        fetch("/libraries/current/entries")
+        fetch("http://localhost:9898/libraries/current/entries")
             .then((res) => res.json())
             .then((data) => {
                 setReferences(data);
@@ -178,7 +178,7 @@ function App() {
             "edges" : convertedEdges
         })
         console.log(payload);
-        fetch('/libraries/current/map', {
+        fetch('http://localhost:9898/libraries/current/map', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -209,7 +209,7 @@ function App() {
                 label: nodeLabel,
                 x_pos: x_pos,
                 y_pos: y_pos,
-                bibEntryId: bibEntryId
+                citationKey: bibEntryId
             }
 
         setNodes([...nodes, newNode]);
@@ -226,6 +226,13 @@ function App() {
         setEdges([...edges, newEdge])
     }
   }
+
+    const deleteNode = () => {
+        if (selectedNode.id !== undefined) {
+            setNodes(nodes.filter((node) => {return node.id !== selectedNode.id}));
+            setEdges(edges.filter((edge) => { return edge.startId !== selectedNode.id && edge.endId !== selectedNode.id }));
+        }
+    }
 
     const layerRef = useRef();
     const stageRef = useRef();
@@ -252,6 +259,7 @@ function App() {
             <ToolBar
               addNode={addNode}
               saveMap={saveMap}
+              deleteNode={deleteNode}
             />
             <Stage
                 width={windowWidth}
@@ -275,7 +283,7 @@ function App() {
                     />
                 </Layer>
             </Stage>
-            {selectedNode.id ? <NodeInfoPanel node={selectedNode} reference={getReferenceById(selectedNode.bibEntryId)} updateNode={updateNode}/> :
+            {selectedNode.id ? <NodeInfoPanel node={selectedNode} reference={getReferenceById(selectedNode.citationKey)} updateNode={updateNode}/> :
                 <NodeInfoPanel node={selectedNode} updateNode={updateNode}/>}
 
         </div>

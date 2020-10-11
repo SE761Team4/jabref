@@ -38,7 +38,7 @@ const NodeInfoPanel = ({node, reference, updateNode}) => {
            right: 10,
            width: "300px",
            height: "400px",
-           backgroundColor: "#eaeaea"
+           backgroundColor: "#dddddd"
         }
     });
     const classes = useStyles();
