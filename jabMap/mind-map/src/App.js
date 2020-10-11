@@ -129,8 +129,10 @@ function App() {
                 setNodes(data.nodes);
                 setEdges(
                 data.edges.map(edge => {
-                    var node1 = data.nodes.find(node => node.id === edge.node1_Id);
-                    var node2 = data.nodes.find(node => node.id === edge.node2_Id);
+                    let node1 = data.nodes.find(node => node.id === edge.node1_Id);
+                    console.log(node1);
+                    let node2 = data.nodes.find(node => node.id === edge.node2_Id);
+                    console.log(node2);
                     return {
                         startId: edge.node1_Id,
                         startX: node1.x_pos,
@@ -195,13 +197,11 @@ function App() {
                 y_pos = 400;
             }
             const newNode = {
-                id: globalNodeIdCounter,
+                id: Math.floor(Math.random() * 1000000000),
                 label: nodeLabel,
                 x_pos: x_pos,
                 y_pos: y_pos
             }
-            console.log(newNode);
-            setGlobalNodeIdCounter(globalNodeIdCounter + 1);
 
             setNodes([...nodes, newNode]);
             const selectedNode = getNodeById(selectedNodeId);
