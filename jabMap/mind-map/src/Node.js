@@ -2,7 +2,7 @@ import React from 'react';
 import { Ellipse, Text, Group } from 'react-konva';
 
 
-const Node = ({id, x, y, updateEdges, setSelectedNodeId, selectedNodeId, updateNode, label}) => {
+const Node = ({id, x_pos, y_pos, colour, updateEdges, setSelectedNodeId, selectedNodeId, updateNode, label}) => {
 
     const handleDragMove = (e) => {
       updateNode(id, e.target.x(), e.target.y());
@@ -12,8 +12,8 @@ const Node = ({id, x, y, updateEdges, setSelectedNodeId, selectedNodeId, updateN
     return (
       <Group
         id={id}
-        x={x}
-        y={y}
+        x={x_pos}
+        y={y_pos}
         draggable
         onDragMove={handleDragMove}
         onClick={() => setSelectedNodeId(id)}
@@ -21,7 +21,7 @@ const Node = ({id, x, y, updateEdges, setSelectedNodeId, selectedNodeId, updateN
         <Ellipse
           radius={{"x" : 50, "y" : 30}}
           fill={selectedNodeId === id ? "green" : "white"}
-          stroke={"black"}
+          stroke={colour}
         />
         <Text text={label}
         x={-50}

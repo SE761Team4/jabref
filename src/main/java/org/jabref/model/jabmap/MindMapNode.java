@@ -15,13 +15,15 @@ public class MindMapNode {
     private final String label;
     // Citation key of bib entry to act as id
     private final String citationKey;
+    private final String colour;
     private final List<NodeIcon> icons;
     private final int x_pos;
     private final int y_pos;
 
-    MindMapNode(Long id, String label, String citationKey, List<NodeIcon> icons, int x_pos, int y_pos) {
+    MindMapNode(Long id, String label, String citationKey, String colour, List<NodeIcon> icons, int x_pos, int y_pos) {
         this.id = id;
         this.label = label;
+        this.colour = colour;
         this.citationKey = citationKey;
         this.icons = icons;
         this.x_pos = x_pos;
@@ -34,6 +36,10 @@ public class MindMapNode {
 
     public String getLabel() {
         return label;
+    }
+
+    public String getColour() {
+        return colour;
     }
 
     public String getCitationKey() {

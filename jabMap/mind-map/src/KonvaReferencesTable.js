@@ -16,7 +16,6 @@ import {
 
 const KonvaReferencesTable = ({references, setReferences, addNode, layerRef, stageRef}) => {
 
-    console.log("render")
     //Styles
     const useStyles = makeStyles({
         table: {
@@ -44,7 +43,7 @@ const KonvaReferencesTable = ({references, setReferences, addNode, layerRef, sta
         elRefs.current = Array(arrLength).fill().map((_, i) => elRefs.current[i] || createRef());
     }
 
-    console.log(references)
+    //console.log(references)
     //Rendered table using Material UI library
     return(
         <Group>
@@ -79,9 +78,9 @@ const KonvaReferencesTable = ({references, setReferences, addNode, layerRef, sta
                         ref={elRefs.current[index]}
                         position={{x:0, y: index * (height + margin)}}
                         onDragEnd={() => {
-                            console.log(elRefs.current[index])
+                            //console.log(elRefs.current[index])
                             elRefs.current[index].current.position({x : 0, y : index * (height + margin)})
-                            console.log(layerRef)
+                            //console.log(layerRef)
                             layerRef.current.draw()
                             const {x, y} = stageRef.current.getPointerPosition()
                             addNode(reference, x - 300, y)
