@@ -11,15 +11,21 @@ function App() {
     id: 'node1',
     x: 100,
     y: 100,
+    colors: '',
+    isInSerchRet :false
   },
   {
     id: 'node2',
     x: 200,
-    y: 200
+    y: 200,
+    colors: '',
+    isInSerchRet :false
   },{
     id: 'node3',
     x: 300,
-    y: 300
+    y: 300,
+    colors: '',
+    isInSerchRet :false
   }]);
 
   const [edges, setEdges] = useState([{
@@ -62,7 +68,7 @@ function App() {
         const updatedNode = {
           ...node,
           x: x,
-          y: y
+          y: y,
         }
         return updatedNode;
       } else {
@@ -70,6 +76,41 @@ function App() {
       }
     });
     setNodes(newNodes);
+  }
+
+  const updateNodeColor = (nd, newColor) => {
+    const newNodes = nodes.map((node) => {
+
+      if (nd.indexOf(node.id)>-1) {
+        const updatedNode = {
+          ...node,
+          colors: newColor
+        }
+        return updatedNode;
+      } else {
+        if(node.colors=="")
+          node.colors = 'white';
+        return node;
+      }
+    });
+    setNodes(newNodes);
+  }
+  
+  var updateSearchIndex = (idx) => {
+
+    // update the nodes in search, show red stroke
+    nodes.forEach(n => {
+      if(idx.indexOf(n.id) >-1){
+        n.isInSerchRet = true;
+      }
+      else
+      {
+        n.isInSerchRet = false;
+      }
+      updateNode(n.id,n.x,n.y)
+      
+    });
+
   }
 
   const updateEdges = (id, x, y) => {
@@ -103,7 +144,6 @@ function App() {
     });
     const classes = useStyles();
 
-
     return (
         <div className={classes.wrapper}>
             <ReferencesTable references={references} setReferences={setReferences}></ReferencesTable>
@@ -116,8 +156,10 @@ function App() {
               setEdges={setEdges} 
               globalNodeIdCounter={globalNodeIdCounter} 
               setGlobalNodeIdCounter={setGlobalNodeIdCounter}
+              updateNodeColor = {updateNodeColor}
+              updateSearchIndex = {updateSearchIndex}
             />
-            <MindMap nodes={nodes} edges={edges} updateEdges={updateEdges} updateNode={updateNode} selectedNodeId={selectedNodeId} setSelectedNodeId={setSelectedNodeId}/>
+            <MindMap nodes={nodes} edges={edges} updateEdges={updateEdges} updateNode={updateNode} selectedNodeId={selectedNodeId} setSelectedNodeId={setSelectedNodeId}  updateSearchIndex = {updateSearchIndex}/>
         </div>
       );
     }

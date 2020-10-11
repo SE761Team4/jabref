@@ -25,7 +25,7 @@ const MindMap = ({nodes, edges, updateEdges, setSelectedNodeId, selectedNodeId, 
                     <Edge x1={edge.startX} y1={edge.startY} x2={edge.endX} y2={edge.endY}/>
                 )}
                 {nodes.map((node) =>
-                    <Node id={node.id} x={node.x} y={node.y} updateEdges={updateEdges} selectedNodeId={selectedNodeId} setSelectedNodeId={setSelectedNodeId} updateNode={updateNode}/>
+                    <Node id={node.id} x={node.x} y={node.y} colors={node.colors} updateEdges={updateEdges} selectedNodeId={selectedNodeId} setSelectedNodeId={setSelectedNodeId} updateNode={updateNode} isInSerchRet = {node.isInSerchRet}/>
                 )}
             </Layer>
         </Stage>
