@@ -58,7 +58,9 @@ public class RootResource {
     @PUT
     @Path("libraries/current/map")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response saveMindMap(String jsonMindMap) {
+        System.out.println(jsonMindMap);
         Gson gBuilder = new GsonBuilder().create();
         MindMap map = gBuilder.fromJson(jsonMindMap, MindMap.class);
 
@@ -67,25 +69,23 @@ public class RootResource {
 
         addToDatabase(adapter.reverse().convert(map));
 
-        Response.ResponseBuilder builder = Response.ok()
-                                                   .header("Access-Control-Allow-Origin", "*")
+        Response.ResponseBuilder builder = Response.status(Response.Status.OK)
+                                                   // .header("Access-Control-Allow-Origin", "*")
+                                                   .header("Access-Control-Allow-Origin", null)
                                                    .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
-                                                   .header("Access-Control-Allow-Credentials", "true")
-                                                   .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
-                                                   .header("Access-Control-Max-Age", "1209600").allow("OPTIONS");
+                                                   .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
         return builder.build();
     }
 
+    @Path("libraries/current/map")
     @OPTIONS
-    @Path("{path : .*}")
-    public Response options() {
-        return Response.ok("")
-                       .header("Access-Control-Allow-Origin", "*")
-                       .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
-                       .header("Access-Control-Allow-Credentials", "true")
-                       .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
-                       .header("Access-Control-Max-Age", "1209600")
-                       .build();
+    public Response handleOptions() {
+        Response.ResponseBuilder builder = Response.status(Response.Status.OK)
+                                                   .header("Access-Control-Allow-Origin", "*")
+                                                   .header("Access-Control-Allow-Origin", null)
+                                                   .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
+                                                   .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
+        return builder.build();
     }
 
     /**
