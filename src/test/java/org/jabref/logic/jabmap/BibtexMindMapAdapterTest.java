@@ -98,9 +98,7 @@ class BibtexMindMapAdapterTest {
     void getNodeIdsFromEdgeKeyTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         String key = "mindmapedge_from_1_to_2";
 
-        Method method = adapter.getClass().getDeclaredMethod("getNodeIdsFromEdgeKey", String.class);
-        method.setAccessible(true);
-        String[] result = (String[]) method.invoke(adapter, key);
+        String[] result = adapter.getNodeIdsFromEdgeKey(key);
         String[] expect = new String[] {"1", "2"};
 
         assertTrue(Arrays.equals(result, expect));
@@ -109,9 +107,8 @@ class BibtexMindMapAdapterTest {
     @Test
     void getNodeIdFromNodeKeyTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         String key = "mindmapnode_1";
-        Method method = adapter.getClass().getDeclaredMethod("getNodeIdFromNodeKey", String.class);
-        method.setAccessible(true);
-        String result = (String) method.invoke(adapter, key);
+
+        String result = adapter.getNodeIdFromNodeKey(key);
         String expect = "1";
 
         assertEquals(expect, result);
@@ -119,22 +116,14 @@ class BibtexMindMapAdapterTest {
 
     @Test
     void createNodeFromBibEntryTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        Method method = adapter.getClass().getDeclaredMethod("createNodeFromBibEntry", BibEntry.class);
-        method.setAccessible(true);
-        MindMapNode newnode = (MindMapNode) method.invoke(adapter, node1Entry);
+        MindMapNode newnode = adapter.createNodeFromBibEntry(node1Entry);
 
         assertEquals(newnode, node1);
     }
 
     @Test
     void createEdgeFromBibEntryTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        Method method = adapter.getClass().getDeclaredMethod("createEdgeFromBibEntry", BibEntry.class);
-        method.setAccessible(true);
-
-        Method method1 = adapter.getClass().getDeclaredMethod("getNodeIdsFromEdgeKey", String.class);
-        method1.setAccessible(true);
-
-        MindMapEdge newedge = (MindMapEdge) method.invoke(adapter, edgeEntry);
+        MindMapEdge newedge = adapter.createEdgeFromBibEntry(edgeEntry);
 
         assertEquals(edge1, newedge);
     }
