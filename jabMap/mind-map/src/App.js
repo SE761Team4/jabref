@@ -76,7 +76,7 @@ function App() {
 
   const getReferenceById = (id) => {
       for (const reference of references) {
-          if (reference.type.key == id) {
+          if (reference.citekey === id) {
               return reference;
           }
       }
@@ -188,13 +188,14 @@ function App() {
     }
 
     const addNode = (bibData, x_pos, y_pos) => {
-        if (selectedNode.id !== "") {
+        if (selectedNode.id !== undefined) {
+            console.log(selectedNode)
             let nodeLabel;
             let bibEntryId;
             if (bibData === undefined) {
                 nodeLabel = `New Node`
             } else {
-                bibEntryId = bibData.type.key
+                bibEntryId = bibData.citekey;
                 nodeLabel = bibData.title;
             }
             if (x_pos === undefined) {
