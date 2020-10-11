@@ -5,7 +5,7 @@ import {makeStyles} from "@material-ui/core/styles";
 // const Toolbar = ({nodes, edges, setNodes, setEdges, getNodeById, selectedNodeId, globalNodeIdCounter, setGlobalNodeIdCounter}) => {
 
 
-const Toolbar = ({addNode}) => {
+const Toolbar = ({addNode, saveMap}) => {
     console.log("toolbar render")
     //Styles
     const useStyles = makeStyles({
@@ -52,6 +52,7 @@ const Toolbar = ({addNode}) => {
     return(
         <div className={classes.toolbar}>
             <Button onClick={() => addNode()}>Add Node</Button>
+            <Button onClick={() => saveMap()}>Save Map</Button>
             {/* <Button onClick={deleteNode}>Delete Node</Button> */}
         </div>
     )

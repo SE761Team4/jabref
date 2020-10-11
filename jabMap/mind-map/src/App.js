@@ -5,74 +5,72 @@ import React, {
 } from "react";
 //import logo from "./logo.svg";
 import "./App.css";
-import MindMap from "./MindMap";
-import ToolBar from "./ToolBar";
+import MindMap
+    from "./MindMap";
 import KonvaReferencesTable
     from "./KonvaReferencesTable";
-import NodeInfoPanel
-    from "./NodeInfoPanel";
-import ReferencesTable from "./ReferencesTable";
-import { makeStyles } from "@material-ui/core/styles";
-import { Stage, Layer } from 'react-konva';
-import uuid from 'react-uuid'
-import useWindowDimensions from './WindowDimensions';
+import {makeStyles} from "@material-ui/core/styles";
+import {
+    Layer,
+    Stage
+} from 'react-konva';
+import useWindowDimensions
+    from './WindowDimensions';
+import ToolBar
+    from "./ToolBar";
 
 function App() {
     const [nodes, setNodes] = useState([
-        {
-            id: "node1",
-            label: "dogs",
-            x: 100,
-            y: 100,
-        },
-        {
-            id: "node2",
-            label: "cats",
-            x: 200,
-            y: 200,
-        },
-        {
-            id: "node3",
-            label: "fish",
-            x: 300,
-            y: 300
-        },
+        // {
+        //     id: "node1",
+        //     label: "dogs",
+        //     x: 100,
+        //     y: 100,
+        // },
+        // {
+        //     id: "node2",
+        //     label: "cats",
+        //     x: 200,
+        //     y: 200,
+        // },
+        // {
+        //     id: "node3",
+        //     label: "fish",
+        //     x: 300,
+        //     y: 300,
+        // },
     ]);
 
-  const [edges, setEdges] = useState([
-    {
-      id: "edge1",
-      startId: nodes[0].id,
-      startX: nodes[0].x,
-      startY: nodes[0].y,
-      endId: nodes[1].id,
-      endX: nodes[1].x,
-      endY: nodes[1].y,
-    },
-    {
-      id: "edge2",
-      startId: nodes[1].id,
-      startX: nodes[1].x,
-      startY: nodes[1].y,
-      endId: nodes[2].id,
-      endX: nodes[2].x,
-      endY: nodes[2].y,
-    },
-  ]);
+    const [edges, setEdges] = useState([
+        // {
+        //     id: "edge1",
+        //     startId: nodes[0].id,
+        //     startX: nodes[0].x,
+        //     startY: nodes[0].y,
+        //     endId: nodes[1].id,
+        //     endX: nodes[1].x,
+        //     endY: nodes[1].y,
+        // },
+        // {
+        //     id: "edge2",
+        //     startId: nodes[1].id,
+        //     startX: nodes[1].x,
+        //     startY: nodes[1].y,
+        //     endId: nodes[2].id,
+        //     endX: nodes[2].x,
+        //     endY: nodes[2].y,
+        // },
+    ]);
 
-  const [references, setReferences] = useState([{}]);
+    const [references, setReferences] = useState([{}]);
 
   const [selectedNode, setSelectedNode] = useState({});
 
   const [globalNodeIdCounter, setGlobalNodeIdCounter] = useState(4);
 
-  const getNodeById = (id) => {
-    for (var node of nodes) {
-      if (node.id == id) {
-        return node;
-      }
-    }
-  };
+    const getNodeById = (id) => {
+        return nodes.find(node => (node.id === id));
+    };
 
   const getReferenceById = (id) => {
       for (const reference of references) {
@@ -93,107 +91,150 @@ function App() {
     setNodes(newNodes);
   };
 
-  const updateEdges = (id, x, y) => {
-    const newEdges = edges.map((edge) => {
-      if (edge.startId == id) {
-        const updatedEdge = {
-          ...edge,
-          startX: x,
-          startY: y,
-        };
-        return updatedEdge;
-      }
-      if (edge.endId == id) {
-        const updatedEdge = {
-          ...edge,
-          endX: x,
-          endY: y,
-        };
-        return updatedEdge;
-      }
-      return edge;
+    const updateEdges = (id, x, y) => {
+        const newEdges = edges.map((edge) => {
+            if (edge.startId === id) {
+                return {
+                    ...edge,
+                    startX: x,
+                    startY: y,
+                };
+            }
+            if (edge.endId === id) {
+                return {
+                    ...edge,
+                    endX: x,
+                    endY: y,
+                };
+            }
+            return edge;
+        });
+        setEdges(newEdges);
+    };
+
+    //Styles
+    const useStyles = makeStyles({
+        wrapper: {
+            position: "relative",
+        },
+        canvas: {
+            left: "25%",
+            position: "absolute"
+        },
     });
-    setEdges(newEdges);
-  };
+    const classes = useStyles();
 
-  //Styles
-  const useStyles = makeStyles({
-    wrapper: {
-      position: "relative",
-    },
-      canvas: {
-          left: "25%",
-          position: "absolute"
-      },
-  });
-  const classes = useStyles();
+    const fetchMap = async () => {
+        fetch("/libraries/current/map")
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data);
+                setNodes(data.nodes);
+                setEdges(
+                data.edges.map(edge => {
+                    var node1 = data.nodes.find(node => node.id === edge.node1_Id);
+                    var node2 = data.nodes.find(node => node.id === edge.node2_Id);
+                    return {
+                        startId: edge.node1_Id,
+                        startX: node1.x_pos,
+                        startY: node1.y_pos,
+                        endId: edge.node2_Id,
+                        endX: node2.x_pos,
+                        endY: node2.y_pos,
+                    };
+                }));
+            })
+            .catch(console.log);
+    }
 
-  const fetchReferences = async () => {
-    fetch("/libraries/current/entries")
-    .then((res) => res.json())
-    .then((data) => {
-        //console.log(data);
-        setReferences(data);
-    })
-    .catch(console.log);
-  }
+    const fetchReferences = async () => {
+        fetch("/libraries/current/entries")
+            .then((res) => res.json())
+            .then((data) => {
+                setReferences(data);
+            })
+            .catch(console.log);
+    }
 
-  useEffect(() => {
-    fetchReferences();
-  }, []);
+    useEffect(() => {
+        fetchReferences();
+        fetchMap();
+    }, []);
 
-  const addNode = (bibData, x, y) => {
-    if (selectedNode.id !== "") {
-        let nodeLabel;
-        let bibEntryId;
-        if (bibData === undefined) {
-            nodeLabel = `new node`
-        } else {
-            bibEntryId = bibData.type.key
-            nodeLabel = bibData.title;
-        }
-        if (x === undefined) {
-            x = 400;
-        }
-        if (y === undefined) {
-            y = 400;
-        }
-        const newNode = {
-            id: uuid(),
-            label: nodeLabel,
-            x: x,
-            y: y,
-            bibEntryId: bibEntryId
-        }
-        setGlobalNodeIdCounter(globalNodeIdCounter + 1);
+    const saveMap = () => {
+        console.log(nodes);
+        var convertedEdges = edges.map(edge => {
+            return {
+                node1_Id: edge.startId,
+                node2_Id: edge.endId
+            }
+        })
+        var payload = JSON.stringify({
+            "nodes" : nodes,
+            "edges" : convertedEdges
+        })
+        console.log(payload);
+        fetch('/libraries/current/map', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: payload
+        });
+    }
+
+    const addNode = (bibData, x_pos, y_pos) => {
+        if (selectedNode.id !== "") {
+            let nodeLabel;
+            let bibEntryId;
+            if (bibData === undefined) {
+                nodeLabel = `New Node`
+            } else {
+                bibEntryId = bibData.type.key
+                nodeLabel = bibData.title;
+            }
+            if (x_pos === undefined) {
+                x_pos = 0;
+            }
+            if (y_pos === undefined) {
+                y_pos = 400;
+            }
+            const newNode = {
+                id: Math.floor(Math.random() * 1000000000),
+                label: nodeLabel,
+                x_pos: x_pos,
+                y_pos: y_pos,
+                bibEntryId: bibEntryId
+            }
 
         setNodes([...nodes, newNode]);
 
-        const newEdge = {
-            startId: selectedNode.id,
-            startX:  selectedNode.x,
-            startY: selectedNode.y,
-            endId: newNode.id,
-            endX: newNode.x,
-            endY: newNode.y
-        }
+            const newEdge = {
+                startId: selectedNode.id,
+                startX: selectedNode.x_pos,
+                startY: selectedNode.y_pos,
+                endId: newNode.id,
+                endX: newNode.x_pos,
+                endY: newNode.y_pos
+            }
 
         setEdges([...edges, newEdge])
     }
   }
 
-  const layerRef = useRef();
-  const stageRef = useRef();
+    const layerRef = useRef();
+    const stageRef = useRef();
 
-  const { windowHeight, windowWidth } = useWindowDimensions();
+    const {windowHeight, windowWidth} = useWindowDimensions();
 
     return (
-    <div className={classes.wrapper}>
-      {/* <ReferencesTable
+        <div
+            className={classes.wrapper}>
+            {/* <ReferencesTable
         references={references}
         setReferences={setReferences}
       ></ReferencesTable> */}
-      {/* <ToolBar
+            {/* <ToolBar
         nodes={nodes}
         edges={edges}
         getNodeById={getNodeById}
@@ -203,27 +244,37 @@ function App() {
         globalNodeIdCounter={globalNodeIdCounter}
         setGlobalNodeIdCounter={setGlobalNodeIdCounter}
       /> */}
-      <ToolBar
-        addNode={addNode}
-      />
-      <Stage width={windowWidth} height={windowHeight} ref={stageRef}>
-        <Layer ref={layerRef}>
-            <KonvaReferencesTable references={references} setReferences={setReferences} addNode={addNode} layerRef={layerRef} stageRef={stageRef}/>
-          <MindMap
-            nodes={nodes}
-            edges={edges}
-            updateEdges={updateEdges}
-            updateNode={updateNode}
-            selectedNodeId={selectedNode.id}
-            setSelectedNode={setSelectedNode}
-          />
-        </Layer>
-      </Stage>
-        {selectedNode.id ? <NodeInfoPanel node={selectedNode} reference={getReferenceById(selectedNode.bibEntryId)} updateNode={updateNode}/> :
-            <NodeInfoPanel node={selectedNode} updateNode={updateNode}/>}
+            <ToolBar
+              addNode={addNode}
+              saveMap={saveMap}
+            />
+            <Stage
+                width={windowWidth}
+                height={windowHeight}
+                ref={stageRef}>
+                <Layer
+                    ref={layerRef}>
+                    <KonvaReferencesTable
+                        references={references}
+                        setReferences={setReferences}
+                        addNode={addNode}
+                        layerRef={layerRef}
+                        stageRef={stageRef}/>
+                    <MindMap
+                        nodes={nodes}
+                        edges={edges}
+                        updateEdges={updateEdges}
+                        updateNode={updateNode}
+                        selectedNodeId={selectedNode.id}
+                        setSelectedNode={setSelectedNode}
+                    />
+                </Layer>
+            </Stage>
+            {selectedNode.id ? <NodeInfoPanel node={selectedNode} reference={getReferenceById(selectedNode.bibEntryId)} updateNode={updateNode}/> :
+                <NodeInfoPanel node={selectedNode} updateNode={updateNode}/>}
 
-    </div>
-  );
+        </div>
+    );
 }
 
 export default App;

@@ -21,9 +21,8 @@ import com.google.gson.stream.JsonWriter;
  */
 public class BibEntryAdapter extends TypeAdapter<BibEntry> {
 
-    private static final String JSON_TYPE = "type";
-    private static final String JSON_METADATA = "bibtex_metadata";
-    private static final String JSON_KEY = "key";
+    private static final String JSON_TYPE = "entrytype";
+    private static final String JSON_KEY = "citekey";
 
     @Override
     public void write(JsonWriter writer, BibEntry entry) throws IOException {
@@ -32,11 +31,8 @@ public class BibEntryAdapter extends TypeAdapter<BibEntry> {
             return;
         }
         writer.beginObject();
-        writer.name(JSON_TYPE);
-        writer.beginObject();
-        writer.name(JSON_METADATA).value(new TypedBibEntry(entry, BibDatabaseMode.BIBTEX).getTypeForDisplay());
+        writer.name(JSON_TYPE).value(new TypedBibEntry(entry, BibDatabaseMode.BIBTEX).getTypeForDisplay());
         writer.name(JSON_KEY).value(entry.getCiteKeyOptional().orElse(""));
-        writer.endObject();
 
         // Grab field entries and place in map
         Map<String, String> mapFieldToValue = new HashMap<>();
