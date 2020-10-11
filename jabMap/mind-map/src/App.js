@@ -134,8 +134,10 @@ function App() {
                 setNodes(data.nodes);
                 setEdges(
                 data.edges.map(edge => {
-                    var node1 = data.nodes.find(node => node.id === edge.node1_Id);
-                    var node2 = data.nodes.find(node => node.id === edge.node2_Id);
+                    let node1 = data.nodes.find(node => node.id === edge.node1_Id);
+                    console.log(node1);
+                    let node2 = data.nodes.find(node => node.id === edge.node2_Id);
+                    console.log(node2);
                     return {
                         startId: edge.node1_Id,
                         startX: node1.x_pos,

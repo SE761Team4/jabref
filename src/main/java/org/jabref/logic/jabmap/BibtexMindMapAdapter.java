@@ -55,9 +55,8 @@ public class BibtexMindMapAdapter extends Converter<List<BibEntry>, MindMap> {
             }
         }
         // Return blank mind map
-        MindMap newMap = new MindMap();
-        newMap.addNode(new MindMapNodeBuilder().withLabel(DEFAULT_MAP_LABEL).build());
-        return newMap;
+        // newMap.addNode(new MindMapNodeBuilder().withLabel(DEFAULT_MAP_LABEL).build());
+        return new MindMap();
     }
 
     /**
@@ -80,7 +79,7 @@ public class BibtexMindMapAdapter extends Converter<List<BibEntry>, MindMap> {
                     // Node will always have x and y pos
                     newEntry.setField(MindMapField.NODE_XPOS, String.valueOf(node.getX_pos()));
                     newEntry.setField(MindMapField.NODE_YPOS, String.valueOf(node.getY_pos()));
-                    if (!node.getColour().isEmpty()) {
+                    if (node.getColour() != null) {
                         newEntry.setField(MindMapField.NODE_COLOUR, node.getColour());
                     }
                     return newEntry;
@@ -153,7 +152,7 @@ public class BibtexMindMapAdapter extends Converter<List<BibEntry>, MindMap> {
 
     private String[] getNodeIdsFromEdgeKey(String key) {
         // Regex to extract node ids from citation key format
-        Pattern pattern = Pattern.compile(".*(\\d+)_to_(\\d+)");
+        Pattern pattern = Pattern.compile("(\\d+)_to_(\\d+)");
         Matcher matcher = pattern.matcher(key);
         if (matcher.find()) {
             String[] ids = new String[2];
@@ -166,7 +165,7 @@ public class BibtexMindMapAdapter extends Converter<List<BibEntry>, MindMap> {
 
     private String getNodeIdFromNodeKey(String key) {
         // Regex to extract node id from citation key format
-        Pattern pattern = Pattern.compile(".*(\\d+)");
+        Pattern pattern = Pattern.compile("(\\d+)");
         Matcher matcher = pattern.matcher(key);
         if (matcher.find()) {
             return matcher.group(1);
