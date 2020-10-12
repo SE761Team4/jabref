@@ -13,6 +13,7 @@ import Input
     from "@material-ui/core/Input";
 import FormHelperText
     from "@material-ui/core/FormHelperText";
+import { CirclePicker } from 'react-color';
 import Card
     from "@material-ui/core/Card";
 import {
@@ -71,7 +72,8 @@ const NodeInfoPanel = ({node, reference, updateNode, changeNodeColor}) => {
                         Color:
                     </TableCell>
                     <TableCell component="td" scope="row" style ={{border: "none"}}>
-                    <input id='nodeColor' type="color" value={ node.colour === undefined? 'black': node.colour} onChange = {changeNodeColor}></input>
+                    {/*<input id='nodeColor' type="color" value={ node.colour === undefined? 'black': node.colour} onChange = {changeNodeColor}></input>*/}
+                    <CirclePicker colors={['#BA1D2A', '#FC6A38', '#55773B', '#279DA3', '#0E5756']} onChange={changeNodeColor}/>
                     </TableCell>
                 </TableRow>
 
