@@ -134,7 +134,7 @@ function App() {
     const classes = useStyles();
 
     const fetchMap = async () => {
-        fetch("libraries/current/map")
+        fetch("/libraries/current/map")
             .then((res) => res.json())
             .then((data) => {
                 //setNodes(data.nodes);
@@ -215,7 +215,7 @@ function App() {
             "nodes": nodes,
             "edges": convertedEdges
         });
-        fetch('libraries/current/map', {
+        fetch('/libraries/current/map', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -273,9 +273,10 @@ function App() {
 
 
     const deleteNode = () => {
-        if (selectedNode.id !== undefined) {
+        if (selectedNode.id !== undefined && selectedNode.id !== -1) {
             setNodes(nodes.filter((node) => {return node.id !== selectedNode.id}));
             setEdges(edges.filter((edge) => { return edge.startId !== selectedNode.id && edge.endId !== selectedNode.id }));
+            setSelectedNode(nodes[0]);
         }
     }
 
