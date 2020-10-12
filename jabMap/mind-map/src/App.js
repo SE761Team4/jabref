@@ -261,18 +261,18 @@ function App() {
   }
 
   const addEdge = (node1, node2) => {
-    console.log(node1);
-    console.log(node2);
-    const newEdge = {
-        startId: node1.id,
-        startX: node1.x_pos,
-        startY: node1.y_pos,
-        endId: node2.id,
-        endX: node2.x_pos,
-        endY: node2.y_pos
-    }
+    if(node1.id !== node2.id) {
+        const newEdge = {
+            startId: node1.id,
+            startX: node1.x_pos,
+            startY: node1.y_pos,
+            endId: node2.id,
+            endX: node2.x_pos,
+            endY: node2.y_pos
+        }
+        setEdges([...edges,newEdge])
 
-    setEdges([...edges,newEdge])
+    }
   }
 
 
