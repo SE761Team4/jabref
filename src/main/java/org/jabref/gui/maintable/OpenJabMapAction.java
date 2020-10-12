@@ -1,5 +1,8 @@
 package org.jabref.gui.maintable;
 
+import java.util.List;
+
+import javafx.scene.Node;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.web.WebEngine;
@@ -40,14 +43,20 @@ public class OpenJabMapAction extends SimpleCommand {
 
     @Override
     public void execute() {
+        List<Node> toolBarNode = jabRefFrame.getToolBarOfFrame();
         if (splitPane.getItems().contains(jabMapPane)) {
             splitPane.getItems().removeAll(jabMapPane);
             jabRefFrame.restoreAfterJabMapClosed();
+            for (int i = 0; i < toolBarNode.size(); i++) {
+                toolBarNode.get(i).setVisible(true);
+            }
         } else {
-            browser.getEngine().reload();
             splitPane.getItems().removeAll(splitPane.getItems());
             browser.setPrefSize(splitPane.getWidth(), splitPane.getHeight());
             splitPane.getItems().add(jabMapPane);
+            for (int i = 0; i < toolBarNode.size(); i++) {
+                toolBarNode.get(i).setVisible(false);
+            }
         }
 
     }
