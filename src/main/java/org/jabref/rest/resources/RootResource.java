@@ -57,6 +57,7 @@ public class RootResource {
     @PUT
     @Path("libraries/current/map")
     @Consumes(MediaType.APPLICATION_JSON)
+    // @Produces(MediaType.APPLICATION_JSON)
     public Response saveMindMap(String jsonMindMap) {
         Gson gBuilder = new GsonBuilder().create();
         MindMap map = gBuilder.fromJson(jsonMindMap, MindMap.class);
@@ -66,7 +67,7 @@ public class RootResource {
 
         addToDatabase(adapter.reverse().convert(map));
 
-        Response.ResponseBuilder builder = Response.ok();
+        Response.ResponseBuilder builder = Response.status(Response.Status.OK);
         return builder.build();
     }
 

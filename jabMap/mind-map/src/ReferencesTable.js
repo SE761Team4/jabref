@@ -1,5 +1,4 @@
-import React, {useEffect}
-    from "react";
+import React from "react";
 import {Paper, TableContainer, Table, TableCell, TableBody, TableRow, TableHead} from "@material-ui/core";
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -8,6 +7,8 @@ import { makeStyles } from '@material-ui/core/styles';
 
 
 const ReferencesTable = ({references, setReferences}) => {
+
+    console.log("render")
     //Styles
     const useStyles = makeStyles({
         table: {
@@ -24,40 +25,28 @@ const ReferencesTable = ({references, setReferences}) => {
     });
     const classes = useStyles();
 
-    //TODO: Call API and store references in references
-    // //Call API on refresh
-    // useEffect(() => {
-    //     fetch("/libraries/current/entries")
-    //         .then((res) => res.json())
-    //         .then((data) => {
-    //             console.log(data)
-    //             setReferences(data);
-    //         })
-    //         .catch(console.log);
-    // });
-
     //Rendered table using Material UI library
     return(<TableContainer component={Paper}>
         <Table className={classes.table} aria-label="simple table">
             <TableHead>
                 <TableRow className={classes.row}>
-                    <TableCell>Dessert (100g serving)</TableCell>
-                    <TableCell align="right">Calories</TableCell>
-                    <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                    <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                    <TableCell align="right">Protein&nbsp;(g)</TableCell>
+                    <TableCell>Title</TableCell>
+                    <TableCell>Author</TableCell>
+                    <TableCell>Year</TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
                 {references.map((references) => (
-                    <TableRow key={references.name} className={classes.row}>
+                    <TableRow key={references.title + references.author} className={classes.row}>
                         <TableCell component="th" scope="row">
-                            {references.name}
+                            {references.title}
                         </TableCell>
-                        <TableCell align="right">{references.calories}</TableCell>
-                        <TableCell align="right">{references.fat}</TableCell>
-                        <TableCell align="right">{references.carbs}</TableCell>
-                        <TableCell align="right">{references.protein}</TableCell>
+                        <TableCell component="th" scope="row">
+                            {references.author}
+                        </TableCell>
+                        <TableCell component="th" scope="row">
+                            {references.year}
+                        </TableCell>
                     </TableRow>
                 ))}
             </TableBody>
@@ -65,4 +54,4 @@ const ReferencesTable = ({references, setReferences}) => {
     </TableContainer>)
 }
 
-export default ReferencesTable
+export default React.memo(ReferencesTable)

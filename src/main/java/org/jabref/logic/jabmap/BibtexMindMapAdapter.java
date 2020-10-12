@@ -55,9 +55,8 @@ public class BibtexMindMapAdapter extends Converter<List<BibEntry>, MindMap> {
             }
         }
         // Return blank mind map
-        MindMap newMap = new MindMap();
-        newMap.addNode(new MindMapNodeBuilder().withLabel(DEFAULT_MAP_LABEL).build());
-        return newMap;
+        // newMap.addNode(new MindMapNodeBuilder().withLabel(DEFAULT_MAP_LABEL).build());
+        return new MindMap();
     }
 
     /**
@@ -80,6 +79,9 @@ public class BibtexMindMapAdapter extends Converter<List<BibEntry>, MindMap> {
                     // Node will always have x and y pos
                     newEntry.setField(MindMapField.NODE_XPOS, String.valueOf(node.getX_pos()));
                     newEntry.setField(MindMapField.NODE_YPOS, String.valueOf(node.getY_pos()));
+                    if (node.getColour() != null) {
+                        newEntry.setField(MindMapField.NODE_COLOUR, node.getColour());
+                    }
                     return newEntry;
                 })
                 .collect(Collectors.toList());
@@ -89,8 +91,8 @@ public class BibtexMindMapAdapter extends Converter<List<BibEntry>, MindMap> {
                 .map(edge -> {
                     BibEntry newEntry = new BibEntry(MindMapEntryType.Edge);
                     newEntry.setField(InternalField.KEY_FIELD, MindMapEdge.getCitationKeyFromIds(edge.getNode1_Id(), edge.getNode2_Id()));
-                    newEntry.setField(MindMapField.EDGE_LABEL, edge.getLabel());
-                    newEntry.setField(MindMapField.EDGE_DIRECTION, edge.getDirection().toString());
+                    newEntry.setField(MindMapField.EDGE_LABEL, edge.getLabel() == null ? "" : edge.getLabel());
+                    newEntry.setField(MindMapField.EDGE_DIRECTION, edge.getDirection() == null ? "" : edge.getDirection().toString());
                     return newEntry;
                 })
                 .collect(Collectors.toList());
@@ -108,18 +110,20 @@ public class BibtexMindMapAdapter extends Converter<List<BibEntry>, MindMap> {
         String id = getNodeIdFromNodeKey(entry.getCiteKeyOptional().orElse(""));
         newNodeBuilder.withId(Long.parseLong(id));
         for (Map.Entry<Field, String> field : entry.getFieldMap().entrySet()) {
-            Field fieldName = field.getKey();
+            String fieldName = field.getKey().getName();
             String fieldValue = field.getValue();
-            if (MindMapField.NODE_LABEL.equals(fieldName)) {
+            if (MindMapField.NODE_LABEL.getName().equals(fieldName)) {
                 newNodeBuilder.withLabel(fieldValue);
-            } else if (MindMapField.NODE_CITATION_KEY.equals(fieldName)) {
+            } else if (MindMapField.NODE_CITATION_KEY.getName().equals(fieldName)) {
                 newNodeBuilder.withCitationKey(fieldValue);
-            } else if (MindMapField.NODE_ICONS.equals(fieldName)) {
+            } else if (MindMapField.NODE_ICONS.getName().equals(fieldName)) {
                 newNodeBuilder.withIcons(Arrays.asList(fieldValue.split(",")));
-            } else if (MindMapField.NODE_XPOS.equals(fieldName)) {
+            } else if (MindMapField.NODE_XPOS.getName().equals(fieldName)) {
                 newNodeBuilder.withXPos(Integer.parseInt(fieldValue));
-            } else if (MindMapField.NODE_YPOS.equals(fieldName)) {
+            } else if (MindMapField.NODE_YPOS.getName().equals(fieldName)) {
                 newNodeBuilder.withYPos(Integer.parseInt(fieldValue));
+            } else if (MindMapField.NODE_COLOUR.getName().equals(fieldName)) {
+                newNodeBuilder.withColour(fieldValue);
             }
         }
         return newNodeBuilder.build();
@@ -135,11 +139,11 @@ public class BibtexMindMapAdapter extends Converter<List<BibEntry>, MindMap> {
         newEdge.withNode1Id(Long.parseLong(ids[0]));
         newEdge.withNode2Id(Long.parseLong(ids[1]));
         for (Map.Entry<Field, String> field : entry.getFieldMap().entrySet()) {
-            Field fieldName = field.getKey();
+            String fieldName = field.getKey().getName();
             String fieldValue = field.getValue();
-            if (MindMapField.EDGE_LABEL.equals(fieldName)) {
+            if (MindMapField.EDGE_LABEL.getName().equals(fieldName)) {
                 newEdge.withLabel(fieldValue);
-            } else if (MindMapField.EDGE_DIRECTION.equals(fieldName)) {
+            } else if (MindMapField.EDGE_DIRECTION.getName().equals(fieldName)) {
                 newEdge.withDirection(fieldValue);
             }
         }
@@ -148,7 +152,7 @@ public class BibtexMindMapAdapter extends Converter<List<BibEntry>, MindMap> {
 
     private String[] getNodeIdsFromEdgeKey(String key) {
         // Regex to extract node ids from citation key format
-        Pattern pattern = Pattern.compile(".*(\\d+)_to_(\\d+)");
+        Pattern pattern = Pattern.compile("(\\d+)_to_(\\d+)");
         Matcher matcher = pattern.matcher(key);
         if (matcher.find()) {
             String[] ids = new String[2];
@@ -161,7 +165,7 @@ public class BibtexMindMapAdapter extends Converter<List<BibEntry>, MindMap> {
 
     private String getNodeIdFromNodeKey(String key) {
         // Regex to extract node id from citation key format
-        Pattern pattern = Pattern.compile(".*(\\d+)");
+        Pattern pattern = Pattern.compile("(\\d+)");
         Matcher matcher = pattern.matcher(key);
         if (matcher.find()) {
             return matcher.group(1);

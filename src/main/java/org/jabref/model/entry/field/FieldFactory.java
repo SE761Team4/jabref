@@ -74,11 +74,12 @@ public class FieldFactory {
     }
 
     public static Field parseField(String fieldName) {
-        return OptionalUtil.<Field>orElse(OptionalUtil.<Field>orElse(OptionalUtil.<Field>orElse(
+        return OptionalUtil.<Field>orElse(OptionalUtil.<Field>orElse(OptionalUtil.<Field>orElse(OptionalUtil.<Field>orElse(
                 InternalField.fromName(fieldName),
                 StandardField.fromName(fieldName)),
                 SpecialField.fromName(fieldName)),
-                IEEEField.fromName(fieldName))
+                IEEEField.fromName(fieldName)),
+                MindMapField.fromName(fieldName))
                 .orElse(new UnknownField(fieldName));
     }
 
@@ -142,6 +143,8 @@ public class FieldFactory {
         fields.addAll(EnumSet.allOf(InternalField.class));
         fields.addAll(EnumSet.allOf(SpecialField.class));
         fields.addAll(EnumSet.allOf(StandardField.class));
+
+        fields.addAll(EnumSet.allOf(MindMapField.class));
         return fields;
     }
 

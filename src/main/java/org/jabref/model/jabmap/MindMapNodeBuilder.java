@@ -8,6 +8,7 @@ public class MindMapNodeBuilder {
     private Long id;
     private String label;
     private String citationKey;
+    private String colour;
     private List<NodeIcon> icons = new ArrayList<>();
     private int xPos;
     private int yPos;
@@ -24,6 +25,11 @@ public class MindMapNodeBuilder {
 
     public MindMapNodeBuilder withCitationKey(String citationKey) {
         this.citationKey = citationKey;
+        return this;
+    }
+
+    public MindMapNodeBuilder withColour(String colour) {
+        this.colour = colour;
         return this;
     }
 
@@ -46,6 +52,6 @@ public class MindMapNodeBuilder {
     }
 
     public MindMapNode build() {
-        return new MindMapNode(id, label, citationKey, icons, xPos, yPos);
+        return new MindMapNode(id, label, citationKey, colour, icons, xPos, yPos);
     }
 }

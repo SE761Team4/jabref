@@ -1,7 +1,9 @@
 package org.jabref.model.entry.field;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -9,10 +11,11 @@ import java.util.Set;
  */
 public enum MindMapField implements Field {
     NODE_LABEL("label"),
-    NODE_CITATION_KEY("bibentry"),
+    NODE_CITATION_KEY("citationKey"),
     NODE_ICONS("icons"),
     NODE_XPOS("x_pos", FieldProperty.NUMERIC),
     NODE_YPOS("y_pos", FieldProperty.NUMERIC),
+    NODE_COLOUR("colour"),
 
     EDGE_LABEL("label"),
     EDGE_DIRECTION("direction");
@@ -28,6 +31,12 @@ public enum MindMapField implements Field {
     MindMapField(String name) {
         this.name = name;
         this.properties = Collections.emptySet();
+    }
+
+    public static Optional<MindMapField> fromName(String name) {
+        return Arrays.stream(MindMapField.values())
+                     .filter(field -> field.getName().equalsIgnoreCase(name))
+                     .findAny();
     }
 
     @Override

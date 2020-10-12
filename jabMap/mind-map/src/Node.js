@@ -1,36 +1,58 @@
-import React, { useEffect, useState } from 'react'; 
-import { Ellipse, Layer, Text, Group } from 'react-konva';
+import React from 'react';
+import { Ellipse, Text, Group, Rect } from 'react-konva';
 
-const Node = ({id, x, y, colors, updateEdges, setSelectedNodeId, selectedNodeId, updateNode, isInSerchRet}) => {
+
+const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, updateNode, label, bibEntryId, isInSearch: isInSearch}) => {
 
     const handleDragMove = (e) => {
-      updateNode(id, e.target.x(), e.target.y());
-      updateEdges(id, e.target.x(), e.target.y());
+        node.x_pos = e.target.x()
+        node.y_pos = e.target.y()
+      updateNode(node);
+      updateEdges(node.id, e.target.x(), e.target.y());
     }
 
+    const width = 150
+    const height = 70
     return (
       <Group
-        id={id}
-        x={x}
-        y={y}
+        id={node.id}
+        x={node.x_pos}
+        y={node.y_pos}
         draggable
         onDragMove={handleDragMove}
-        onClick={() => setSelectedNodeId(id)}
+        onClick={() => setSelectedNode(node)}
       >
-        <Ellipse
+        <Rect
           radius={{"x" : 50, "y" : 30}}
-          //fill={ selectedNodeId == id ? "green" : (colors == ''? "white":colors)}
-          fill={ colors=="white"||colors==""? (selectedNodeId == id ? "green" : "white"):colors}
-          stroke={isInSerchRet?"red":"black"}
+          width={width}
+          height={height}
+          offsetX={width/2}
+          offsetY={height/2}
+          cornerRadius={20}
+          fill={isInSearch ? "red" : selectedNodeId === node.id ? "#a2b8e5" : "white"}
+          stroke={node.colour === undefined ? "#6E6E6E" : node.colour}
+          strokeWidth={4}
         />
-        <Text text={id}
-        x={-50}
-        y={-30}
+        <Text text={node.label}
+          offsetX={width/2}
+          offsetY={height/2 + 10}
         align="center"
         verticalAlign="middle"
-        width={100}
-        height={60}
+        width={width}
+        height={height}
         />
+          <Group
+              width={width}
+              height={height}
+              offsetX={width/2 -10}
+              offsetY={-height/2 + 20}
+          >
+              {node.citationKey && <Rect
+              width={10}
+              height={10}
+              fill={"red"}
+              />}
+          </Group>
       </Group>
     );
   };
