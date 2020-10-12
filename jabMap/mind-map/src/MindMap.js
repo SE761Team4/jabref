@@ -8,8 +8,6 @@ import { Stage, Layer, Group } from 'react-konva';
 
 
 const MindMap = ({nodes, edges, updateEdges, setSelectedNode, selectedNodeId, updateNode}) => {
-    const width = window.innerWidth * 0.75;
-    const height = window.innerHeight;
     const useStyles = makeStyles({
         canvas: {
             left: "25%",
@@ -24,7 +22,7 @@ const MindMap = ({nodes, edges, updateEdges, setSelectedNode, selectedNodeId, up
                 <Edge x1={edge.startX} y1={edge.startY} x2={edge.endX} y2={edge.endY}/>
             )}
             {nodes.map((node) =>
-                <Node node={node} key={node.id} label={node.label} id={node.id} x={node.x_pos} y={node.y_pos} colour={node.colour} updateEdges={updateEdges} selectedNodeId={selectedNodeId} setSelectedNode={setSelectedNode} updateNode={updateNode}/>
+                <Node node={node} key={node.id} label={node.label} colors={node.colors} id={node.id} x={node.x_pos} y={node.y_pos} colour={node.colour} updateEdges={updateEdges} selectedNodeId={selectedNodeId} setSelectedNode={setSelectedNode} updateNode={updateNode} isInSerchRet = {node.isInSerchRet}/>
             )}
         </ Group>
     )

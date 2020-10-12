@@ -92,7 +92,40 @@ function App() {
     });
     setNodes(newNodes);
   };
+    const updateNodeColor = (nd, newColor) => {
+        const newNodes = nodes.map((node) => {
 
+            if (nd.indexOf(node.id)>-1) {
+                const updatedNode = {
+                    ...node,
+                    colors: newColor
+                }
+                return updatedNode;
+            } else {
+                if(node.colors=="")
+                    node.colors = 'white';
+                return node;
+            }
+        });
+        setNodes(newNodes);
+    }
+
+    var updateSearchIndex = (idx) => {
+
+        // update the nodes in search, show red stroke
+        nodes.forEach(n => {
+            if(idx.indexOf(n.id) >-1){
+                n.isInSerchRet = true;
+            }
+            else
+            {
+                n.isInSerchRet = false;
+            }
+            updateNode(n.id,n.x,n.y)
+
+        });
+
+    }
     const updateEdges = (id, x, y) => {
         const newEdges = edges.map((edge) => {
             if (edge.startId === id) {
@@ -260,6 +293,8 @@ function App() {
               addNode={addNode}
               saveMap={saveMap}
               deleteNode={deleteNode}
+              updateNodeColor = {updateNodeColor}
+              updateSearchIndex = {updateSearchIndex}
             />
             <Stage
                 width={windowWidth}
@@ -280,6 +315,7 @@ function App() {
                         updateNode={updateNode}
                         selectedNodeId={selectedNode.id}
                         setSelectedNode={setSelectedNode}
+                        updateSearchIndex = {updateSearchIndex}
                     />
                 </Layer>
             </Stage>
