@@ -67,7 +67,7 @@ const NodeInfoPanel = ({node, reference, updateNode, changeNodeColor}) => {
                         Color:
                     </TableCell>
                     <TableCell component="td" scope="row">
-                    <input id='nodeColor' type="color" value={node.colour==undefined?'black':node.colour} onChange = {changeNodeColor}></input>
+                    <input id='nodeColor' type="color" value={ node.colour === undefined? 'black': node.colour} onChange = {changeNodeColor}></input>
                     </TableCell>
                 </TableRow>
 

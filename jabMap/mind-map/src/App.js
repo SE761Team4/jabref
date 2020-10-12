@@ -244,25 +244,12 @@ function App() {
             }
 
         setNodes([...nodes, newNode]);
-
-
         addEdge(selectedNode, newNode);
-        // const newEdge = {
-        //     startId: selectedNode.id,
-        //     startX: selectedNode.x_pos,
-        //     startY: selectedNode.y_pos,
-        //     endId: newNode.id,
-        //     endX: newNode.x_pos,
-        //     endY: newNode.y_pos
-        // }
-
-        // setEdges([...edges, newEdge])
     }
   }
 
   const addEdge = (node1, node2) => {
-    console.log(node1);
-    console.log(node2);
+
     const newEdge = {
         startId: node1.id,
         startX: node1.x_pos,
@@ -311,7 +298,6 @@ function App() {
               saveMap={saveMap}
               deleteNode={deleteNode}
               searchNodes = {searchNodes}
-              changeNodeColor = {changeNodeColor}
               linking={linking}
               setLinking={setLinking}
             />
