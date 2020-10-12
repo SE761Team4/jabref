@@ -104,7 +104,7 @@ public class BibtexMindMapAdapter extends Converter<List<BibEntry>, MindMap> {
     /**
      * Helper method that takes a bib entry and iteratively converts the fields & values to those of a MindMapNode
      */
-    private MindMapNode createNodeFromBibEntry(BibEntry entry) throws IllegalArgumentException {
+    MindMapNode createNodeFromBibEntry(BibEntry entry) throws IllegalArgumentException {
         MindMapNodeBuilder newNodeBuilder = new MindMapNodeBuilder();
         // Create id field from citation key of Bibtex entry
         String id = getNodeIdFromNodeKey(entry.getCiteKeyOptional().orElse(""));
@@ -132,7 +132,7 @@ public class BibtexMindMapAdapter extends Converter<List<BibEntry>, MindMap> {
     /**
      * Helper method that takes a bib entry and iteratively converts the fields & values to those of a MindMapEdge
      */
-    private MindMapEdge createEdgeFromBibEntry(BibEntry entry) throws IllegalArgumentException {
+     MindMapEdge createEdgeFromBibEntry(BibEntry entry) throws IllegalArgumentException {
         MindMapEdgeBuilder newEdge = new MindMapEdgeBuilder();
         // Create id fields from citation key ids
         String[] ids = getNodeIdsFromEdgeKey(entry.getCiteKeyOptional().orElse(""));
@@ -150,7 +150,7 @@ public class BibtexMindMapAdapter extends Converter<List<BibEntry>, MindMap> {
         return newEdge.build();
     }
 
-    private String[] getNodeIdsFromEdgeKey(String key) {
+    String[] getNodeIdsFromEdgeKey(String key) {
         // Regex to extract node ids from citation key format
         Pattern pattern = Pattern.compile("(\\d+)_to_(\\d+)");
         Matcher matcher = pattern.matcher(key);
@@ -163,7 +163,7 @@ public class BibtexMindMapAdapter extends Converter<List<BibEntry>, MindMap> {
         return new String[2];
     }
 
-    private String getNodeIdFromNodeKey(String key) {
+    String getNodeIdFromNodeKey(String key) {
         // Regex to extract node id from citation key format
         Pattern pattern = Pattern.compile("(\\d+)");
         Matcher matcher = pattern.matcher(key);

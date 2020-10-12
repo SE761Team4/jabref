@@ -1,5 +1,7 @@
 package org.jabref.model.jabmap;
 
+import java.util.Objects;
+
 /**
  * This class is a model for a mind map edge object Refs to other mind map data objects are kept as strings to simplify serialisation to JSON
  */
@@ -38,5 +40,28 @@ public class MindMapEdge {
 
     public static String getCitationKeyFromIds(Long id1, Long id2) {
         return EDGE_KEY_PART1 + id1 + EDGE_KEY_PART2 + id2;
+    }
+
+    @Override
+    public boolean equals(Object mindMapEdge) {
+        if (this == mindMapEdge) {
+            return true;
+        }
+
+        if (mindMapEdge == null || mindMapEdge.getClass() != this.getClass()) {
+            return false;
+        }
+
+        MindMapEdge other = (MindMapEdge) mindMapEdge;
+
+        return Objects.equals(this.direction, other.getDirection())
+                && Objects.equals(this.node1_Id, other.getNode1_Id())
+                && Objects.equals(this.node2_Id, other.getNode2_Id())
+                && Objects.equals(this.label, other.getLabel());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(this);
     }
 }

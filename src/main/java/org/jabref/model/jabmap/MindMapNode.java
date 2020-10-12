@@ -1,6 +1,7 @@
 package org.jabref.model.jabmap;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This class is a data object for a mind map node References to BibEntry objects and kept as strings to simplify serialisation to JSON
@@ -60,5 +61,31 @@ public class MindMapNode {
 
     public static String getCitationKeyFromId(Long id) {
         return NODE_KEY_PART + id;
+    }
+
+    @Override
+    public boolean equals(Object mindMapNode) {
+        if (this == mindMapNode) {
+            return true;
+        }
+
+        if (mindMapNode == null || mindMapNode.getClass() != this.getClass()) {
+            return false;
+        }
+
+        MindMapNode other = (MindMapNode) mindMapNode;
+
+        return Objects.equals(this.citationKey, other.getCitationKey())
+                && Objects.equals(this.icons, other.getIcons())
+                && Objects.equals(this.id, other.getId())
+                && Objects.equals(this.label, other.getLabel())
+                && Objects.equals(this.x_pos, other.getX_pos())
+                && Objects.equals(this.y_pos, other.getY_pos());
+
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(this);
     }
 }
