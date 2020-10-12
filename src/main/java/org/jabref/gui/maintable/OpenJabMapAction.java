@@ -1,5 +1,8 @@
 package org.jabref.gui.maintable;
 
+import java.util.List;
+
+import javafx.scene.Node;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.web.WebEngine;
@@ -17,6 +20,7 @@ public class OpenJabMapAction extends SimpleCommand {
     private final SplitPane splitPane;
     private Pane jabMapPane;
     private WebView browser;
+    private int toolBarleft;
 
     public OpenJabMapAction(JabRefFrame jabRefFrame, SplitPane splitPane) {
         this.jabRefFrame = jabRefFrame;
@@ -40,14 +44,27 @@ public class OpenJabMapAction extends SimpleCommand {
 
     @Override
     public void execute() {
+        List<Node> toolBarNode = jabRefFrame.getToolBarOfFrame();
         if (splitPane.getItems().contains(jabMapPane)) {
             splitPane.getItems().removeAll(jabMapPane);
             jabRefFrame.restoreAfterJabMapClosed();
+            for (int i = 0; i < toolBarNode.size(); i++) {
+                toolBarNode.get(i).setVisible(true);
+            }
         } else {
-            browser.getEngine().reload();
+            // browser.getEngine().reload();
             splitPane.getItems().removeAll(splitPane.getItems());
             browser.setPrefSize(splitPane.getWidth(), splitPane.getHeight());
             splitPane.getItems().add(jabMapPane);
+            for (int i = 0; i < toolBarNode.size(); i++) {
+                if (i != 0) {
+                    toolBarNode.get(i).setVisible(false);
+                }
+                if (i == 1) {
+                    toolBarNode.get(1).resize(0, 0);
+                }
+
+            }
         }
 
     }

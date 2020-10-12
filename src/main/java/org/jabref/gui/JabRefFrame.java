@@ -95,7 +95,6 @@ import org.jabref.gui.importer.NewEntryAction;
 import org.jabref.gui.importer.actions.OpenDatabaseAction;
 import org.jabref.gui.importer.fetcher.LookupIdentifierAction;
 import org.jabref.gui.integrity.IntegrityCheckAction;
-import org.jabref.gui.jabmap.JabMapAction;
 import org.jabref.gui.journals.AbbreviateAction;
 import org.jabref.gui.journals.ManageJournalsAction;
 import org.jabref.gui.keyboard.CustomizeKeyBindingAction;
@@ -176,6 +175,7 @@ public class JabRefFrame extends BorderPane {
     private TabPane tabbedPane;
     private SidePane sidePane;
     private PopOver progressViewPopOver;
+    private List<Node> toolbarElements = new ArrayList<>();
 
     public JabRefFrame(Stage mainStage) {
         this.mainStage = mainStage;
@@ -459,7 +459,6 @@ public class JabRefFrame extends BorderPane {
 
     private void initLayout() {
         setId("frame");
-
         VBox head = new VBox(createMenu(), createToolbar());
         head.setSpacing(0d);
         setTop(head);
@@ -513,35 +512,47 @@ public class JabRefFrame extends BorderPane {
         final Button pushToApplicationButton = factory.createIconButton(pushToApplicationAction.getActionInformation(), pushToApplicationAction);
         pushToApplicationsManager.registerReconfigurable(pushToApplicationButton);
 
+        Separator toolBarFirstSep;
+        Region toolBarFirstSpacer;
+        GlobalSearchBar toolBarSearch;
+        Separator toolBarSecondSep;
+        Separator toolBarThirdSep;
+        Separator toolBarForthSep;
+        HBox toolBarFileHBox;
+        HBox toolBarJabMapHBox;
+        HBox toolBarEntryHBox;
+        HBox toolBarDoUndoHBox;
+        HBox toolBarToolsHBox;
+        Region toolBarSecondSpacer;
         ToolBar toolBar = new ToolBar(
 
-                new HBox(
+                toolBarFileHBox = new HBox(
                         factory.createIconButton(StandardActions.NEW_LIBRARY, new NewDatabaseAction(this, prefs)),
                         factory.createIconButton(StandardActions.OPEN_LIBRARY, new OpenDatabaseAction(this)),
                         factory.createIconButton(StandardActions.SAVE_LIBRARY, new SaveAction(SaveAction.SaveMethod.SAVE, this, stateManager))),
 
-                new Separator(Orientation.VERTICAL),
+                toolBarFirstSep = new Separator(Orientation.VERTICAL),
 
-                new HBox(
+                toolBarJabMapHBox = new HBox(
                         factory.createIconButton(StandardActions.OPEN_JABMAP, new OpenJabMapAction(this, splitPane))
                 ),
 
-                leftSpacer,
+                toolBarFirstSpacer = leftSpacer,
 
-                globalSearchBar,
+                toolBarSearch = globalSearchBar,
 
-                rightSpacer,
+                toolBarSecondSpacer = rightSpacer,
 
-                new HBox(
+                toolBarEntryHBox = new HBox(
                         factory.createIconButton(StandardActions.NEW_ARTICLE, new NewEntryAction(this, StandardEntryType.Article, dialogService, Globals.prefs, stateManager)),
                         factory.createIconButton(StandardActions.NEW_ENTRY, new NewEntryAction(this, dialogService, Globals.prefs, stateManager)),
                         factory.createIconButton(StandardActions.NEW_ENTRY_FROM_PLAIN_TEXT, new ExtractBibtexAction(stateManager)),
                         factory.createIconButton(StandardActions.DELETE_ENTRY, new EditAction(StandardActions.DELETE_ENTRY, this, stateManager))
                 ),
 
-                new Separator(Orientation.VERTICAL),
+                toolBarSecondSep = new Separator(Orientation.VERTICAL),
 
-                new HBox(
+                toolBarDoUndoHBox = new HBox(
                         factory.createIconButton(StandardActions.UNDO, new UndoRedoAction(StandardActions.UNDO, this, dialogService, stateManager)),
                         factory.createIconButton(StandardActions.REDO, new UndoRedoAction(StandardActions.REDO, this, dialogService, stateManager)),
                         factory.createIconButton(StandardActions.CUT, new EditAction(StandardActions.CUT, this, stateManager)),
@@ -549,15 +560,15 @@ public class JabRefFrame extends BorderPane {
                         factory.createIconButton(StandardActions.PASTE, new EditAction(StandardActions.PASTE, this, stateManager))
                 ),
 
-                new Separator(Orientation.VERTICAL),
+                toolBarThirdSep = new Separator(Orientation.VERTICAL),
 
-                new HBox(
+                toolBarToolsHBox = new HBox(
                         pushToApplicationButton,
                         factory.createIconButton(StandardActions.GENERATE_CITE_KEYS, new GenerateCitationKeyAction(this, dialogService, stateManager)),
                         factory.createIconButton(StandardActions.CLEANUP_ENTRIES, new CleanupAction(this, prefs, dialogService, stateManager))
                 ),
 
-                new Separator(Orientation.VERTICAL),
+                toolBarForthSep = new Separator(Orientation.VERTICAL),
 
                 new HBox(
                         factory.createIconButton(StandardActions.OPEN_GITHUB, new OpenBrowserAction("https://github.com/JabRef/jabref")),
@@ -571,6 +582,20 @@ public class JabRefFrame extends BorderPane {
                         createTaskIndicator()
                 )
         );
+
+        // please keep JabMapHbox as the first one
+        toolbarElements.add(toolBarJabMapHBox);
+        toolbarElements.add(toolBarFileHBox);
+        toolbarElements.add(toolBarDoUndoHBox);
+        toolbarElements.add(toolBarToolsHBox);
+        toolbarElements.add(toolBarFirstSep);
+        toolbarElements.add(toolBarFirstSpacer);
+        toolbarElements.add(toolBarSearch);
+        toolbarElements.add(toolBarSecondSep);
+        toolbarElements.add(toolBarThirdSep);
+        toolbarElements.add(toolBarForthSep);
+        toolbarElements.add(toolBarSecondSpacer);
+        toolbarElements.add(toolBarEntryHBox);
 
         leftSpacer.setPrefWidth(50);
         leftSpacer.setMinWidth(Region.USE_PREF_SIZE);
@@ -592,7 +617,7 @@ public class JabRefFrame extends BorderPane {
         return (BasePanel) tabbedPane.getTabs().get(i).getContent();
     }
 
-    /**
+  /**
      * Returns a list of BasePanel.
      */
     public List<BasePanel> getBasePanelList() {
@@ -1346,6 +1371,10 @@ public class JabRefFrame extends BorderPane {
         splitPane.getItems().addAll(sidePane, tabbedPane);
         SplitPane.setResizableWithParent(sidePane, false);
         setDividerPosition();
+    }
+
+    public List<Node> getToolBarOfFrame() {
+        return toolbarElements;
     }
 
     /**
