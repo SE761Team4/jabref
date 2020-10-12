@@ -20,7 +20,6 @@ public class OpenJabMapAction extends SimpleCommand {
     private final SplitPane splitPane;
     private Pane jabMapPane;
     private WebView browser;
-    private int toolBarleft;
 
     public OpenJabMapAction(JabRefFrame jabRefFrame, SplitPane splitPane) {
         this.jabRefFrame = jabRefFrame;
@@ -52,7 +51,6 @@ public class OpenJabMapAction extends SimpleCommand {
                 toolBarNode.get(i).setVisible(true);
             }
         } else {
-            // browser.getEngine().reload();
             splitPane.getItems().removeAll(splitPane.getItems());
             browser.setPrefSize(splitPane.getWidth(), splitPane.getHeight());
             splitPane.getItems().add(jabMapPane);
@@ -60,10 +58,6 @@ public class OpenJabMapAction extends SimpleCommand {
                 if (i != 0) {
                     toolBarNode.get(i).setVisible(false);
                 }
-                if (i == 1) {
-                    toolBarNode.get(1).resize(0, 0);
-                }
-
             }
         }
 
