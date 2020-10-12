@@ -73,7 +73,7 @@ const NodeInfoPanel = ({node, reference, updateNode, changeNodeColor}) => {
                     </TableCell>
                     <TableCell component="td" scope="row" style ={{border: "none"}}>
                     {/*<input id='nodeColor' type="color" value={ node.colour === undefined? 'black': node.colour} onChange = {changeNodeColor}></input>*/}
-                    <CirclePicker colors={['#BA1D2A', '#FC6A38', '#FCF1A4', '#0A9F90', '#0E5756']} onChange={changeNodeColor}/>
+                    <CirclePicker colors={['#BA1D2A', '#FC6A38', '#55773B', '#279DA3', '#0E5756']} onChange={changeNodeColor}/>
                     </TableCell>
                 </TableRow>
 
