@@ -6,7 +6,7 @@ import './App.css'
 // const Toolbar = ({nodes, edges, setNodes, setEdges, getNodeById, selectedNodeId, globalNodeIdCounter, setGlobalNodeIdCounter}) => {
 
 
-const Toolbar = ({addNode, saveMap, deleteNode, searchNodes, changeNodeColor}) => {
+const Toolbar = ({addNode, saveMap, deleteNode, searchNodes, changeNodeColor, linking, setLinking}) => {
     console.log("toolbar render")
     //Styles
     const useStyles = makeStyles({
@@ -63,7 +63,8 @@ const Toolbar = ({addNode, saveMap, deleteNode, searchNodes, changeNodeColor}) =
         <div className={classes.toolbar}>
             <Button onClick={() => addNode()}>Add Node</Button>
             <Button onClick={() => saveMap()}>Save Map</Button>
-             <Button onClick={deleteNode}>Delete Node</Button>
+            <Button onClick={deleteNode}>Delete Node</Button>
+            <Button onClick={() => setLinking(!linking)} style={{backgroundColor: linking ? "grey" : "white" }}>Link Nodes</Button>
             
             <input type='text'  id='searchnode' onChange={searchNodes}  ref={inputRef } placeholder="🔎Node Search" size='30'  />
         </div>

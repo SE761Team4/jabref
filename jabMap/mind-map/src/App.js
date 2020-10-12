@@ -22,40 +22,53 @@ import NodeInfoPanel
     from "./NodeInfoPanel";
 
 function App() {
-    const [nodes, setNodes] = useState([
-    ]);
 
-    const [edges, setEdges] = useState([
-    ]);
+    const [nodes, setNodes] = useState([]);
+
+    const [edges, setEdges] = useState([]);
 
     const [references, setReferences] = useState([{}]);
 
-  const [selectedNode, setSelectedNode] = useState({});
+    const [selectedNode, setSelectedNode] = useState({});
 
-  const [globalNodeIdCounter, setGlobalNodeIdCounter] = useState(4);
+    const [globalNodeIdCounter, setGlobalNodeIdCounter] = useState(4);
+
+    const [linking, setLinking] = useState(false);
 
     const getNodeById = (id) => {
         return nodes.find(node => (node.id === id));
     };
 
-  const getReferenceById = (id) => {
-      for (const reference of references) {
-          if (reference.citekey === id) {
-              return reference;
-          }
-      }
-  }
+    const handleSelected = (selected) => {
+        if(!linking){
+            setSelectedNode(selected);
+        } else {
+            // TODO make edge between clicked node and selected
+            console.log(linking)
+            addEdge(selectedNode, selected);
+            setLinking(false);
+        }
+    }
 
-  const updateNode = (newNode) => {
-    const newNodes = nodes.map((node) => {
-      if (newNode.id === node.id) {
-        return newNode;
-      } else {
-        return node;
-      }
-    });
-    setNodes(newNodes);
-  };
+    const getReferenceById = (id) => {
+        for (const reference of references) {
+            if (reference.citekey === id) {
+                return reference;
+            }
+        }
+    }
+
+    const updateNode = (newNode) => {
+        const newNodes = nodes.map((node) => {
+        if (newNode.id === node.id) {
+            return newNode;
+        } else {
+            return node;
+        }
+        });
+        setNodes(newNodes);
+    };
+
     const updateNodeColor = (nodeId, newColor) => {
  
         const newNodes = nodes.map((node) => {
@@ -181,6 +194,7 @@ function App() {
     useEffect(() => {
         fetchReferences();
         fetchMap();
+        console.log(nodes)
     }, []);
 
     const saveMap = () => {
@@ -231,18 +245,37 @@ function App() {
 
         setNodes([...nodes, newNode]);
 
-            const newEdge = {
-                startId: selectedNode.id,
-                startX: selectedNode.x_pos,
-                startY: selectedNode.y_pos,
-                endId: newNode.id,
-                endX: newNode.x_pos,
-                endY: newNode.y_pos
-            }
 
-        setEdges([...edges, newEdge])
+        addEdge(selectedNode, newNode);
+        // const newEdge = {
+        //     startId: selectedNode.id,
+        //     startX: selectedNode.x_pos,
+        //     startY: selectedNode.y_pos,
+        //     endId: newNode.id,
+        //     endX: newNode.x_pos,
+        //     endY: newNode.y_pos
+        // }
+
+        // setEdges([...edges, newEdge])
     }
   }
+
+  const addEdge = (node1, node2) => {
+    console.log(node1);
+    console.log(node2);
+    const newEdge = {
+        startId: node1.id,
+        startX: node1.x_pos,
+        startY: node1.y_pos,
+        endId: node2.id,
+        endX: node2.x_pos,
+        endY: node2.y_pos
+    }
+
+    setEdges([...edges,newEdge])
+  }
+
+
 
     const deleteNode = () => {
         if (selectedNode.id !== undefined) {
@@ -279,6 +312,8 @@ function App() {
               deleteNode={deleteNode}
               searchNodes = {searchNodes}
               changeNodeColor = {changeNodeColor}
+              linking={linking}
+              setLinking={setLinking}
             />
             <Stage
                 width={windowWidth}
@@ -298,7 +333,7 @@ function App() {
                         updateEdges={updateEdges}
                         updateNode={updateNode}
                         selectedNodeId={selectedNode.id}
-                        setSelectedNode={setSelectedNode}
+                        setSelectedNode={handleSelected}
                         updateSearchIndex = {updateSearchIndex}
                     />
                 </Layer>
