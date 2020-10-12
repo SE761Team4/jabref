@@ -21,6 +21,9 @@ import ToolBar
 import NodeInfoPanel
     from "./NodeInfoPanel";
 
+import ReferencesTable
+    from "./ReferencesTable";
+
 function App() {
 
     const [nodes, setNodes] = useState([]);
@@ -70,7 +73,7 @@ function App() {
     };
 
     const updateNodeColor = (nodeId, newColor) => {
- 
+
         const newNodes = nodes.map((node) => {
             if (node.id === nodeId) {
                 console.log("match");
@@ -276,13 +279,12 @@ function App() {
 
     const {windowHeight, windowWidth} = useWindowDimensions();
 
+    const draggedRow = useRef();
+
     return (
         <div
             className={classes.wrapper}>
-            {/* <ReferencesTable
-        references={references}
-        setReferences={setReferences}
-      ></ReferencesTable> */}
+
             {/* <ToolBar
         nodes={nodes}
         edges={edges}
@@ -301,29 +303,46 @@ function App() {
               linking={linking}
               setLinking={setLinking}
             />
-            <Stage
-                width={windowWidth}
-                height={windowHeight}
-                ref={stageRef}>
-                <Layer
-                    ref={layerRef}>
-                    <KonvaReferencesTable
-                        references={references}
-                        setReferences={setReferences}
-                        addNode={addNode}
-                        layerRef={layerRef}
-                        stageRef={stageRef}/>
-                    <MindMap
-                        nodes={nodes}
-                        edges={edges}
-                        updateEdges={updateEdges}
-                        updateNode={updateNode}
-                        selectedNodeId={selectedNode.id}
-                        setSelectedNode={handleSelected}
-                        updateSearchIndex = {updateSearchIndex}
-                    />
-                </Layer>
-            </Stage>
+            <ReferencesTable
+                draggedRow={draggedRow}
+                addNode={addNode}
+                references={references}
+                setReferences={setReferences}
+            />
+            <div
+                onDrop={e => {
+                    // register event position
+                    stageRef.current.setPointersPositions(e);
+                    const {x, y} = stageRef.current.getPointerPosition();
+                    addNode(draggedRow.current, x - windowHeight * 0.25 - 75, y);
+                }}
+                onDragOver={e => e.preventDefault()}
+            >
+                <Stage
+                    style={{left: "25%", position: "absolute", top: "64px", margin: 0, padding: 0}}
+                    width={windowWidth * 0.75}
+                    height={windowHeight - 64}
+                    ref={stageRef}>
+                    <Layer
+                        ref={layerRef}>
+                        {/*<KonvaReferencesTable*/}
+                        {/*    references={references}*/}
+                        {/*    setReferences={setReferences}*/}
+                        {/*    addNode={addNode}*/}
+                        {/*    layerRef={layerRef}*/}
+                        {/*    stageRef={stageRef}/>*/}
+                        <MindMap
+                            nodes={nodes}
+                            edges={edges}
+                            updateEdges={updateEdges}
+                            updateNode={updateNode}
+                            selectedNodeId={selectedNode.id}
+                            setSelectedNode={handleSelected}
+                            updateSearchIndex = {updateSearchIndex}
+                        />
+                    </Layer>
+                </Stage>
+            </div>
             {selectedNode.id ? <NodeInfoPanel node={selectedNode} reference={getReferenceById(selectedNode.citationKey)} updateNode={updateNode} changeNodeColor={changeNodeColor}/> :
                 <NodeInfoPanel node={selectedNode} updateNode={updateNode} />}
 
