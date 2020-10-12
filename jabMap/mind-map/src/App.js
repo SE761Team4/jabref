@@ -249,17 +249,18 @@ function App() {
   }
 
   const addEdge = (node1, node2) => {
+    if(node1.id !== node2.id) {
+        const newEdge = {
+            startId: node1.id,
+            startX: node1.x_pos,
+            startY: node1.y_pos,
+            endId: node2.id,
+            endX: node2.x_pos,
+            endY: node2.y_pos
+        }
+        setEdges([...edges,newEdge])
 
-    const newEdge = {
-        startId: node1.id,
-        startX: node1.x_pos,
-        startY: node1.y_pos,
-        endId: node2.id,
-        endX: node2.x_pos,
-        endY: node2.y_pos
     }
-
-    setEdges([...edges,newEdge])
   }
 
 
