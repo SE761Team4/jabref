@@ -40,8 +40,8 @@ const MindMapToolbar = ({addNode, saveMap, deleteNode, searchNodes, linking, set
 
     return(
         <Toolbar className = 'Toolbar-proportions' component = { Paper }>
-        <div style={{  borderRight: '0.1em solid grey', borderRight: '0.1em solid grey', padding: '0.5em' }}>
-            <IconButton size="small" aria-label = "add" onClick={() => addNode()} > 
+        <div style={{  borderRight: '0.1em solid grey', padding: '0.5em' }}>
+            <IconButton size="small" aria-label = "add" onClick={() => addNode()} >
                 <AddIcon/>
             </IconButton>
             <IconButton size="small" onClick={() => setLinking(!linking)} color={linking ? 'primary' : 'default'} >
@@ -57,18 +57,18 @@ const MindMapToolbar = ({addNode, saveMap, deleteNode, searchNodes, linking, set
             </IconButton>
             <IconButton size="small" >
                 <StarBorderIcon/>
-            </IconButton>	
+            </IconButton>
         </div>
             <IconButton size="small" onClick={() => saveMap()} style={{paddingLeft: '0.5em'}}>
                 <SaveIcon />
-            </IconButton> 
+            </IconButton>
         <div style={{ align: "right",  padding: '0.5em' }}>
             <select style={{ border: 'none', textAlign: 'centre', fontSize: 12, marginRight: 50, marginLeft:30 }} >
             <option value = "noFilter"> No Filter </option>
                 <option value = "highPriority"> High Priority </option>
                 <option value = "favourites"> Low Priority </option>
                 <option value = "favourites"> Favourites </option>
-            </select> 
+            </select>
             <input type='text'  id='searchnode' onChange={searchNodes}  ref={inputRef } placeholder="🔎Node Search" size='30'  />
         </div>
     </Toolbar>
