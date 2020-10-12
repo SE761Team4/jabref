@@ -1,10 +1,9 @@
 import React from "react";
-//import logo from './logo.svg';
 import "./App.css";
 import Node from "./Node";
 import Edge from "./Edge";
 import { makeStyles } from '@material-ui/core/styles';
-import { Stage, Layer, Group } from 'react-konva';
+import { Group } from 'react-konva';
 
 
 const MindMap = ({nodes, edges, updateEdges, setSelectedNode, selectedNodeId, updateNode}) => {

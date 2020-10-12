@@ -47,9 +47,9 @@ function App() {
             setSelectedNode(selected);
         } else {
             // TODO make edge between clicked node and selected
-            console.log(linking)
             addEdge(selectedNode, selected);
             setLinking(false);
+            setSelectedNode(selected);
         }
     }
 
@@ -76,7 +76,6 @@ function App() {
 
         const newNodes = nodes.map((node) => {
             if (node.id === nodeId) {
-                console.log("match");
                 return {
                     ...node,
                     colour: newColor
@@ -138,14 +137,22 @@ function App() {
         fetch("libraries/current/map")
             .then((res) => res.json())
             .then((data) => {
-                console.log(data);
-                setNodes(data.nodes);
+                //setNodes(data.nodes);
+                setNodes(data.nodes.map(node => {
+                   if(node.id === -1) {
+                       return {
+                           ...node,
+                           x_pos: windowWidth/8,
+                           y_pos: windowHeight/3
+                       }
+                   } else {
+                       return node;
+                   }
+                }));
                 setEdges(
                 data.edges.map(edge => {
                     let node1 = data.nodes.find(node => node.id === edge.node1_Id);
-                    console.log(node1);
                     let node2 = data.nodes.find(node => node.id === edge.node2_Id);
-                    console.log(node2);
                     return {
                         startId: edge.node1_Id,
                         startX: node1.x_pos,
@@ -178,17 +185,14 @@ function App() {
         updateSearchIndex(indx)
     }
 
-    const changeNodeColor = (event) =>{
-        const newColor = event.target.value;
-
-        updateNodeColor(selectedNode.id, newColor);
+    const changeNodeColor = (color, event) =>{
+        updateNodeColor(selectedNode.id, color.hex);
     }
 
     const fetchReferences = async () => {
         fetch("/libraries/current/entries")
             .then((res) => res.json())
             .then((data) => {
-                console.log(data);
                 setReferences(data);
             })
             .catch(console.log);
@@ -197,11 +201,10 @@ function App() {
     useEffect(() => {
         fetchReferences();
         fetchMap();
-        console.log(nodes)
+        console.log(selectedNode)
     }, []);
 
     const saveMap = () => {
-        console.log(nodes);
         const convertedEdges = edges.map(edge => {
             return {
                 node1_Id: edge.startId,
@@ -248,6 +251,7 @@ function App() {
 
         setNodes([...nodes, newNode]);
         addEdge(selectedNode, newNode);
+        handleSelected(newNode);
     }
   }
 
@@ -326,12 +330,6 @@ function App() {
                     ref={stageRef}>
                     <Layer
                         ref={layerRef}>
-                        {/*<KonvaReferencesTable*/}
-                        {/*    references={references}*/}
-                        {/*    setReferences={setReferences}*/}
-                        {/*    addNode={addNode}*/}
-                        {/*    layerRef={layerRef}*/}
-                        {/*    stageRef={stageRef}/>*/}
                         <MindMap
                             nodes={nodes}
                             edges={edges}

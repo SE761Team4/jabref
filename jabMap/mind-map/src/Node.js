@@ -21,6 +21,14 @@ const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, u
         draggable
         onDragMove={handleDragMove}
         onClick={() => setSelectedNode(node)}
+        onMouseEnter={(e) => {
+            const container = e.target.getStage().container();
+            container.style.cursor = "pointer";
+        }}
+        onMouseLeave={e => {
+            const container = e.target.getStage().container();
+            container.style.cursor = "default";
+        }}
       >
         <Rect
           radius={{"x" : 50, "y" : 30}}

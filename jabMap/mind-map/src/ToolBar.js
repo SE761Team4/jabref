@@ -17,7 +17,6 @@ import HeightIcon from '@material-ui/icons/Height';
 
 
 const MindMapToolbar = ({addNode, saveMap, deleteNode, searchNodes, linking, setLinking}) => {
-    console.log("toolbar render")
     //Styles
     const useStyles = makeStyles({
         toolbar: {
