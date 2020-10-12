@@ -10,8 +10,8 @@ public class MindMapNodeBuilder {
     private String citationKey;
     private String colour;
     private List<NodeIcon> icons = new ArrayList<>();
-    private int xPos;
-    private int yPos;
+    private float xPos;
+    private float yPos;
 
     public MindMapNodeBuilder withId(Long id) {
         this.id = id;
@@ -41,12 +41,12 @@ public class MindMapNodeBuilder {
         return this;
     }
 
-    public MindMapNodeBuilder withXPos(int xPos) {
+    public MindMapNodeBuilder withXPos(float xPos) {
         this.xPos = xPos;
         return this;
     }
 
-    public MindMapNodeBuilder withYPos(int yPos) {
+    public MindMapNodeBuilder withYPos(float yPos) {
         this.yPos = yPos;
         return this;
     }

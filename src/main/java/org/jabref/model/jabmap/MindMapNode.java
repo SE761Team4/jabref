@@ -18,10 +18,10 @@ public class MindMapNode {
     private final String citationKey;
     private final String colour;
     private final List<NodeIcon> icons;
-    private final int x_pos;
-    private final int y_pos;
+    private final float x_pos;
+    private final float y_pos;
 
-    MindMapNode(Long id, String label, String citationKey, String colour, List<NodeIcon> icons, int x_pos, int y_pos) {
+    MindMapNode(Long id, String label, String citationKey, String colour, List<NodeIcon> icons, float x_pos, float y_pos) {
         this.id = id;
         this.label = label;
         this.colour = colour;
@@ -51,11 +51,11 @@ public class MindMapNode {
         return icons;
     }
 
-    public int getX_pos() {
+    public float getX_pos() {
         return x_pos;
     }
 
-    public int getY_pos() {
+    public float getY_pos() {
         return y_pos;
     }
 
