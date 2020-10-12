@@ -64,7 +64,7 @@ const Toolbar = ({addNode, saveMap, deleteNode, searchNodes, changeNodeColor}) =
             <Button onClick={() => addNode()}>Add Node</Button>
             <Button onClick={() => saveMap()}>Save Map</Button>
              <Button onClick={deleteNode}>Delete Node</Button>
-            <input id='nodeColor' type="color" onChange = {changeNodeColor}></input>
+            
             <input type='text'  id='searchnode' onChange={searchNodes}  ref={inputRef } placeholder="🔎Node Search" size='30'  />
         </div>
     )
