@@ -519,7 +519,6 @@ public class JabRefFrame extends BorderPane {
         Separator toolBarThirdSep;
         Separator toolBarForthSep;
         HBox toolBarFileHBox;
-        HBox toolBarJabMapHBox;
         HBox toolBarEntryHBox;
         HBox toolBarDoUndoHBox;
         HBox toolBarToolsHBox;
@@ -533,7 +532,7 @@ public class JabRefFrame extends BorderPane {
 
                 toolBarFirstSep = new Separator(Orientation.VERTICAL),
 
-                toolBarJabMapHBox = new HBox(
+                new HBox(
                         factory.createIconButton(StandardActions.OPEN_JABMAP, new OpenJabMapAction(this, splitPane))
                 ),
 
@@ -583,8 +582,6 @@ public class JabRefFrame extends BorderPane {
                 )
         );
 
-        // please keep JabMapHbox as the first one
-        toolbarElements.add(toolBarJabMapHBox);
         toolbarElements.add(toolBarFileHBox);
         toolbarElements.add(toolBarDoUndoHBox);
         toolbarElements.add(toolBarToolsHBox);

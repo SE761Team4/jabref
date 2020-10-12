@@ -55,9 +55,7 @@ public class OpenJabMapAction extends SimpleCommand {
             browser.setPrefSize(splitPane.getWidth(), splitPane.getHeight());
             splitPane.getItems().add(jabMapPane);
             for (int i = 0; i < toolBarNode.size(); i++) {
-                if (i != 0) {
-                    toolBarNode.get(i).setVisible(false);
-                }
+                toolBarNode.get(i).setVisible(false);
             }
         }
 
