@@ -6,7 +6,7 @@ import './App.css'
 // const Toolbar = ({nodes, edges, setNodes, setEdges, getNodeById, selectedNodeId, globalNodeIdCounter, setGlobalNodeIdCounter}) => {
 
 
-const Toolbar = ({addNode, saveMap, deleteNode, updateNodeColor,updateSearchIndex}) => {
+const Toolbar = ({addNode, saveMap, deleteNode, searchNodes, changeNodeColor}) => {
     console.log("toolbar render")
     //Styles
     const useStyles = makeStyles({
@@ -50,36 +50,8 @@ const Toolbar = ({addNode, saveMap, deleteNode, updateNodeColor,updateSearchInde
     //     }
     // }
 
-    const searchNodes = (event) =>{
-
-        // TODO: currently search node from id, should add label search, icon search
-
-        var searchterm = event.target.value;
-        var indx = [];
-
-        if(searchterm == ''){
-            updateSearchIndex(indx)
-            return;
-        }
-
-        nodes.forEach((node) => {
-            if(node.id.indexOf(searchterm)>-1) {
-                indx.push(node.id);
-            }
-        });
-
-        updateSearchIndex(indx)
-     }
-
-     const changeNodeColor = (event) =>{
-         var newColor = event.target.value;
-
-         updateNodeColor(selectedNodeId,newColor);
-     }
-
 
      window.onkeydown = function(e)  {
-
         if (e.keyCode === 114 || (e.ctrlKey && e.keyCode === 70)){
             // listen to ctrl + F
             e.preventDefault();

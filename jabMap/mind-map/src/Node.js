@@ -2,7 +2,7 @@ import React from 'react';
 import { Ellipse, Text, Group, Rect } from 'react-konva';
 
 
-const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, updateNode, label, bibEntryId, isInSerchRet}) => {
+const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, updateNode, label, bibEntryId, isInSearch: isInSearch}) => {
 
     const handleDragMove = (e) => {
         node.x_pos = e.target.x()
@@ -29,8 +29,9 @@ const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, u
           offsetX={width/2}
           offsetY={height/2}
           cornerRadius={20}
-          fill={selectedNodeId === node.id ? "#a2b8e5" : "white"}
-          stroke={isInSerchRet?"red":"black"}
+          fill={isInSearch ? "red" : selectedNodeId === node.id ? "#a2b8e5" : "white"}
+          stroke={node.colour === undefined ? "#6E6E6E" : node.colour}
+          strokeWidth={4}
         />
         <Text text={node.label}
           offsetX={width/2}

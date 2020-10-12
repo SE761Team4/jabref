@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.OPTIONS;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -40,7 +39,7 @@ public class RootResource {
                 .filter(b -> !(b.getType() == MindMapEntryType.Node) && !(b.getType() == MindMapEntryType.Edge))
                 .collect(Collectors.toList());
         Gson gson = new GsonBuilder().registerTypeAdapter(BibEntry.class, new BibEntryAdapter()).create();
-        return Response.status(Response.Status.OK).entity(gson.toJson(entries)).header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT").allow("OPTIONS").build();
+        return Response.status(Response.Status.OK).entity(gson.toJson(entries)).build();
     }
 
     @GET
@@ -52,15 +51,14 @@ public class RootResource {
         BibtexMindMapAdapter adapter = new BibtexMindMapAdapter();
         // Attempt to get a map saved in the current database
         MindMap map = adapter.convert(getActiveDatabase().getEntries());
-        return Response.status(Response.Status.OK).entity(new Gson().toJson(map)).header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT").allow("OPTIONS").build();
+        return Response.status(Response.Status.OK).entity(new Gson().toJson(map)).build();
     }
 
     @PUT
     @Path("libraries/current/map")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
+    // @Produces(MediaType.APPLICATION_JSON)
     public Response saveMindMap(String jsonMindMap) {
-        System.out.println(jsonMindMap);
         Gson gBuilder = new GsonBuilder().create();
         MindMap map = gBuilder.fromJson(jsonMindMap, MindMap.class);
 
@@ -69,22 +67,7 @@ public class RootResource {
 
         addToDatabase(adapter.reverse().convert(map));
 
-        Response.ResponseBuilder builder = Response.status(Response.Status.OK)
-                                                   // .header("Access-Control-Allow-Origin", "*")
-                                                   .header("Access-Control-Allow-Origin", null)
-                                                   .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
-                                                   .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
-        return builder.build();
-    }
-
-    @Path("libraries/current/map")
-    @OPTIONS
-    public Response handleOptions() {
-        Response.ResponseBuilder builder = Response.status(Response.Status.OK)
-                                                   .header("Access-Control-Allow-Origin", "*")
-                                                   .header("Access-Control-Allow-Origin", null)
-                                                   .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
-                                                   .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
+        Response.ResponseBuilder builder = Response.status(Response.Status.OK);
         return builder.build();
     }
 

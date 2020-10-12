@@ -1,7 +1,7 @@
 import React, {
-    useState,
     useEffect,
-    useRef
+    useRef,
+    useState
 } from "react";
 //import logo from "./logo.svg";
 import "./App.css";
@@ -23,45 +23,9 @@ import NodeInfoPanel
 
 function App() {
     const [nodes, setNodes] = useState([
-        // {
-        //     id: "node1",
-        //     label: "dogs",
-        //     x: 100,
-        //     y: 100,
-        // },
-        // {
-        //     id: "node2",
-        //     label: "cats",
-        //     x: 200,
-        //     y: 200,
-        // },
-        // {
-        //     id: "node3",
-        //     label: "fish",
-        //     x: 300,
-        //     y: 300,
-        // },
     ]);
 
     const [edges, setEdges] = useState([
-        // {
-        //     id: "edge1",
-        //     startId: nodes[0].id,
-        //     startX: nodes[0].x,
-        //     startY: nodes[0].y,
-        //     endId: nodes[1].id,
-        //     endX: nodes[1].x,
-        //     endY: nodes[1].y,
-        // },
-        // {
-        //     id: "edge2",
-        //     startId: nodes[1].id,
-        //     startX: nodes[1].x,
-        //     startY: nodes[1].y,
-        //     endId: nodes[2].id,
-        //     endX: nodes[2].x,
-        //     endY: nodes[2].y,
-        // },
     ]);
 
     const [references, setReferences] = useState([{}]);
@@ -84,7 +48,7 @@ function App() {
 
   const updateNode = (newNode) => {
     const newNodes = nodes.map((node) => {
-      if (newNode.id == node.id) {
+      if (newNode.id === node.id) {
         return newNode;
       } else {
         return node;
@@ -92,37 +56,32 @@ function App() {
     });
     setNodes(newNodes);
   };
-    const updateNodeColor = (nd, newColor) => {
+    const updateNodeColor = (nodeId, newColor) => {
+        console.log(newColor);
         const newNodes = nodes.map((node) => {
-
-            if (nd.indexOf(node.id)>-1) {
-                const updatedNode = {
+            if (node.id === nodeId) {
+                console.log("match");
+                return {
                     ...node,
-                    colors: newColor
-                }
-                return updatedNode;
-            } else {
-                if(node.colors=="")
-                    node.colors = 'white';
-                return node;
+                    colour: newColor
+                };
             }
+            return node;
         });
         setNodes(newNodes);
     }
 
-    var updateSearchIndex = (idx) => {
-
+    const updateSearchIndex = (idx) => {
         // update the nodes in search, show red stroke
-        nodes.forEach(n => {
-            if(idx.indexOf(n.id) >-1){
-                n.isInSerchRet = true;
+        nodes.forEach(node => {
+            if(idx.indexOf(node.id) >-1){
+                node.isInSearch = true;
             }
             else
             {
-                n.isInSerchRet = false;
+                node.isInSearch = false;
             }
-            updateNode(n.id,n.x,n.y)
-
+            updateNode(node)
         });
 
     }
@@ -160,7 +119,7 @@ function App() {
     const classes = useStyles();
 
     const fetchMap = async () => {
-        fetch("http://localhost:9898/libraries/current/map")
+        fetch("libraries/current/map")
             .then((res) => res.json())
             .then((data) => {
                 console.log(data);
@@ -184,10 +143,35 @@ function App() {
             .catch(console.log);
     }
 
+    const searchNodes = (event) =>{
+        // TODO: currently search node from id, should add label search, icon search
+        var searchterm = event.target.value;
+        var indx = [];
+
+        if(searchterm === ''){
+            updateSearchIndex(indx)
+            return;
+        }
+
+        nodes.forEach((node) => {
+            if(node.label.indexOf(searchterm)>-1) {
+                indx.push(node.id);
+            }
+        });
+
+        updateSearchIndex(indx)
+    }
+
+    const changeNodeColor = (event) =>{
+        const newColor = event.target.value;
+        updateNodeColor(selectedNode.id, newColor);
+    }
+
     const fetchReferences = async () => {
-        fetch("http://localhost:9898/libraries/current/entries")
+        fetch("/libraries/current/entries")
             .then((res) => res.json())
             .then((data) => {
+                console.log(data);
                 setReferences(data);
             })
             .catch(console.log);
@@ -200,18 +184,17 @@ function App() {
 
     const saveMap = () => {
         console.log(nodes);
-        var convertedEdges = edges.map(edge => {
+        const convertedEdges = edges.map(edge => {
             return {
                 node1_Id: edge.startId,
                 node2_Id: edge.endId
             }
-        })
-        var payload = JSON.stringify({
-            "nodes" : nodes,
-            "edges" : convertedEdges
-        })
-        console.log(payload);
-        fetch('http://localhost:9898/libraries/current/map', {
+        });
+        const payload = JSON.stringify({
+            "nodes": nodes,
+            "edges": convertedEdges
+        });
+        fetch('libraries/current/map', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -293,8 +276,8 @@ function App() {
               addNode={addNode}
               saveMap={saveMap}
               deleteNode={deleteNode}
-              updateNodeColor = {updateNodeColor}
-              updateSearchIndex = {updateSearchIndex}
+              searchNodes = {searchNodes}
+              changeNodeColor = {changeNodeColor}
             />
             <Stage
                 width={windowWidth}
