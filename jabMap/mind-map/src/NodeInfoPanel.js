@@ -28,7 +28,7 @@ import Typography
 import TextField
     from "@material-ui/core/TextField";
 
-const NodeInfoPanel = ({node, reference, updateNode}) => {
+const NodeInfoPanel = ({node, reference, updateNode, changeNodeColor}) => {
 
     //Styles
     const useStyles = makeStyles({
@@ -62,6 +62,15 @@ const NodeInfoPanel = ({node, reference, updateNode}) => {
                 Node Info
             </Typography>
             <TextField style={{width:"90%", marginBottom:"20px", marginLeft:"5%"}} id="standard-basic" label="Label" value={inputValue} type="text" inputRef={labelInputRef} onChange={updateValue}/>
+            <TableRow key="colorEditor">
+                    <TableCell component="td" scope="row">
+                        Color:
+                    </TableCell>
+                    <TableCell component="td" scope="row">
+                    <input id='nodeColor' type="color" value={node.colour==undefined?'black':node.colour} onChange = {changeNodeColor}></input>
+                    </TableCell>
+                </TableRow>
+
             {reference &&
             <Table className={classes.table} aria-label="simple table">
                 <Typography gutterBottom style={{marginLeft:"5%"}} variant="h5" component="h5" >
@@ -93,8 +102,7 @@ const NodeInfoPanel = ({node, reference, updateNode}) => {
                         </TableCell>
                     </TableRow>
                 </TableBody>
-            </Table>
-                }
+            </Table>}
         </Card>
     )
 }

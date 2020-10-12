@@ -57,7 +57,7 @@ function App() {
     setNodes(newNodes);
   };
     const updateNodeColor = (nodeId, newColor) => {
-        console.log(newColor);
+ 
         const newNodes = nodes.map((node) => {
             if (node.id === nodeId) {
                 console.log("match");
@@ -164,6 +164,7 @@ function App() {
 
     const changeNodeColor = (event) =>{
         const newColor = event.target.value;
+
         updateNodeColor(selectedNode.id, newColor);
     }
 
@@ -302,8 +303,8 @@ function App() {
                     />
                 </Layer>
             </Stage>
-            {selectedNode.id ? <NodeInfoPanel node={selectedNode} reference={getReferenceById(selectedNode.citationKey)} updateNode={updateNode}/> :
-                <NodeInfoPanel node={selectedNode} updateNode={updateNode}/>}
+            {selectedNode.id ? <NodeInfoPanel node={selectedNode} reference={getReferenceById(selectedNode.citationKey)} updateNode={updateNode} changeNodeColor={changeNodeColor}/> :
+                <NodeInfoPanel node={selectedNode} updateNode={updateNode} />}
 
         </div>
     );
