@@ -13,14 +13,6 @@ import ToolBar from "./ToolBar";
 import NodeInfoPanel from "./NodeInfoPanel";
 import useImage from 'use-image';
 import ReferencesTable from "./ReferencesTable";
-import logo from './assets/logo192.png'
-import logoSvg from './assets/logo.svg'
-
-const Logo = () => {
-    const [logo] = useImage('./assets/logo192.png');
-    return <Image image={logo} />;
-}
-
 
 
 function App() {
