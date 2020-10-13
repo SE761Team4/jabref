@@ -19,6 +19,9 @@ const Logo = () => {
     return <Image image={useImage} />;
 }
 
+import ReferencesTable
+    from "./ReferencesTable";
+
 function App() {
 
     const [nodes, setNodes] = useState([]);
@@ -42,9 +45,9 @@ function App() {
             setSelectedNode(selected);
         } else {
             // TODO make edge between clicked node and selected
-            console.log(linking)
             addEdge(selectedNode, selected);
             setLinking(false);
+            setSelectedNode(selected);
         }
     }
 
@@ -68,10 +71,9 @@ function App() {
     };
 
     const updateNodeColor = (nodeId, newColor) => {
- 
+
         const newNodes = nodes.map((node) => {
             if (node.id === nodeId) {
-                console.log("match");
                 return {
                     ...node,
                     colour: newColor
@@ -130,17 +132,25 @@ function App() {
     const classes = useStyles();
 
     const fetchMap = async () => {
-        fetch("libraries/current/map")
+        fetch("/libraries/current/map")
             .then((res) => res.json())
             .then((data) => {
-                console.log(data);
-                setNodes(data.nodes);
+                //setNodes(data.nodes);
+                setNodes(data.nodes.map(node => {
+                   if(node.id === -1) {
+                       return {
+                           ...node,
+                           x_pos: windowWidth/8,
+                           y_pos: windowHeight/3
+                       }
+                   } else {
+                       return node;
+                   }
+                }));
                 setEdges(
                 data.edges.map(edge => {
                     let node1 = data.nodes.find(node => node.id === edge.node1_Id);
-                    console.log(node1);
                     let node2 = data.nodes.find(node => node.id === edge.node2_Id);
-                    console.log(node2);
                     return {
                         startId: edge.node1_Id,
                         startX: node1.x_pos,
@@ -173,17 +183,14 @@ function App() {
         updateSearchIndex(indx)
     }
 
-    const changeNodeColor = (event) =>{
-        const newColor = event.target.value;
-
-        updateNodeColor(selectedNode.id, newColor);
+    const changeNodeColor = (color, event) =>{
+        updateNodeColor(selectedNode.id, color.hex);
     }
 
     const fetchReferences = async () => {
         fetch("/libraries/current/entries")
             .then((res) => res.json())
             .then((data) => {
-                console.log(data);
                 setReferences(data);
             })
             .catch(console.log);
@@ -192,11 +199,10 @@ function App() {
     useEffect(() => {
         fetchReferences();
         fetchMap();
-        console.log(nodes)
+        console.log(selectedNode)
     }, []);
 
     const saveMap = () => {
-        console.log(nodes);
         const convertedEdges = edges.map(edge => {
             return {
                 node1_Id: edge.startId,
@@ -207,7 +213,7 @@ function App() {
             "nodes": nodes,
             "edges": convertedEdges
         });
-        fetch('libraries/current/map', {
+        fetch('/libraries/current/map', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -243,29 +249,32 @@ function App() {
 
         setNodes([...nodes, newNode]);
         addEdge(selectedNode, newNode);
+        handleSelected(newNode);
     }
   }
 
   const addEdge = (node1, node2) => {
+    if(node1.id !== node2.id) {
+        const newEdge = {
+            startId: node1.id,
+            startX: node1.x_pos,
+            startY: node1.y_pos,
+            endId: node2.id,
+            endX: node2.x_pos,
+            endY: node2.y_pos
+        }
+        setEdges([...edges,newEdge])
 
-    const newEdge = {
-        startId: node1.id,
-        startX: node1.x_pos,
-        startY: node1.y_pos,
-        endId: node2.id,
-        endX: node2.x_pos,
-        endY: node2.y_pos
     }
-
-    setEdges([...edges,newEdge])
   }
 
 
 
     const deleteNode = () => {
-        if (selectedNode.id !== undefined) {
+        if (selectedNode.id !== undefined && selectedNode.id !== -1) {
             setNodes(nodes.filter((node) => {return node.id !== selectedNode.id}));
             setEdges(edges.filter((edge) => { return edge.startId !== selectedNode.id && edge.endId !== selectedNode.id }));
+            setSelectedNode(nodes[0]);
         }
     }
 
@@ -274,13 +283,12 @@ function App() {
 
     const {windowHeight, windowWidth} = useWindowDimensions();
 
+    const draggedRow = useRef();
+
     return (
         <div
             className={classes.wrapper}>
-            {/* <ReferencesTable
-        references={references}
-        setReferences={setReferences}
-      ></ReferencesTable> */}
+
             {/* <ToolBar
         nodes={nodes}
         edges={edges}
@@ -299,29 +307,40 @@ function App() {
               linking={linking}
               setLinking={setLinking}
             />
-            <Stage
-                width={windowWidth}
-                height={windowHeight}
-                ref={stageRef}>
-                <Layer
-                    ref={layerRef}>
-                    <KonvaReferencesTable
-                        references={references}
-                        setReferences={setReferences}
-                        addNode={addNode}
-                        layerRef={layerRef}
-                        stageRef={stageRef}/>
-                    <MindMap
-                        nodes={nodes}
-                        edges={edges}
-                        updateEdges={updateEdges}
-                        updateNode={updateNode}
-                        selectedNodeId={selectedNode.id}
-                        setSelectedNode={handleSelected}
-                        updateSearchIndex = {updateSearchIndex}
-                    />
-                </Layer>
-            </Stage>
+            <ReferencesTable
+                draggedRow={draggedRow}
+                addNode={addNode}
+                references={references}
+                setReferences={setReferences}
+            />
+            <div
+                onDrop={e => {
+                    // register event position
+                    stageRef.current.setPointersPositions(e);
+                    const {x, y} = stageRef.current.getPointerPosition();
+                    addNode(draggedRow.current, x - windowHeight * 0.25 - 75, y);
+                }}
+                onDragOver={e => e.preventDefault()}
+            >
+                <Stage
+                    style={{left: "25%", position: "absolute", top: "64px", margin: 0, padding: 0}}
+                    width={windowWidth * 0.75}
+                    height={windowHeight - 64}
+                    ref={stageRef}>
+                    <Layer
+                        ref={layerRef}>
+                        <MindMap
+                            nodes={nodes}
+                            edges={edges}
+                            updateEdges={updateEdges}
+                            updateNode={updateNode}
+                            selectedNodeId={selectedNode.id}
+                            setSelectedNode={handleSelected}
+                            updateSearchIndex = {updateSearchIndex}
+                        />
+                    </Layer>
+                </Stage>
+            </div>
             {selectedNode.id ? <NodeInfoPanel node={selectedNode} reference={getReferenceById(selectedNode.citationKey)} updateNode={updateNode} changeNodeColor={changeNodeColor}/> :
                 <NodeInfoPanel node={selectedNode} updateNode={updateNode} />}
 

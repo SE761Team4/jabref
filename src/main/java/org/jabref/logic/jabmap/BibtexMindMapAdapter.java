@@ -55,8 +55,9 @@ public class BibtexMindMapAdapter extends Converter<List<BibEntry>, MindMap> {
             }
         }
         // Return blank mind map
-        // newMap.addNode(new MindMapNodeBuilder().withLabel(DEFAULT_MAP_LABEL).build());
-        return new MindMap();
+        MindMap newMap = new MindMap();
+        newMap.addNode(new MindMapNodeBuilder().withLabel(DEFAULT_MAP_LABEL).withId(-1L).build());
+        return newMap;
     }
 
     /**
@@ -119,9 +120,9 @@ public class BibtexMindMapAdapter extends Converter<List<BibEntry>, MindMap> {
             } else if (MindMapField.NODE_ICONS.getName().equals(fieldName)) {
                 newNodeBuilder.withIcons(Arrays.asList(fieldValue.split(",")));
             } else if (MindMapField.NODE_XPOS.getName().equals(fieldName)) {
-                newNodeBuilder.withXPos(Integer.parseInt(fieldValue));
+                newNodeBuilder.withXPos(Float.parseFloat(fieldValue));
             } else if (MindMapField.NODE_YPOS.getName().equals(fieldName)) {
-                newNodeBuilder.withYPos(Integer.parseInt(fieldValue));
+                newNodeBuilder.withYPos(Float.parseFloat(fieldValue));
             } else if (MindMapField.NODE_COLOUR.getName().equals(fieldName)) {
                 newNodeBuilder.withColour(fieldValue);
             }

@@ -35,6 +35,14 @@ const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, u
         draggable
         onDragMove={handleDragMove}
         onClick={() => setSelectedNode(node)}
+        onMouseEnter={(e) => {
+            const container = e.target.getStage().container();
+            container.style.cursor = "pointer";
+        }}
+        onMouseLeave={e => {
+            const container = e.target.getStage().container();
+            container.style.cursor = "default";
+        }}
       >
         <Rect
           radius={{"x" : 50, "y" : 30}}
@@ -43,7 +51,7 @@ const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, u
           offsetX={width/2}
           offsetY={height/2}
           cornerRadius={20}
-          fill={isInSearch ? "red" : selectedNodeId === node.id ? "#a2b8e5" : "white"}
+          fill={isInSearch ? "#3f51b5" : selectedNodeId === node.id ? "#a2b8e5" : "white"}
           stroke={node.colour === undefined ? "#6E6E6E" : node.colour}
           strokeWidth={4}
         />

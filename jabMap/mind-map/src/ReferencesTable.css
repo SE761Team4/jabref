@@ -1,0 +1,27 @@
+.Table-proportions{
+    border: none;
+    /*font-size: 10px;*/
+    max-width: 25%;
+    width: 25%;
+    display: inline-block;
+    overflow-y: auto;
+    padding: 10px 0 10px 10px;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+.table-striped > tbody > tr:nth-child(odd) > td,
+.table-striped > tbody > tr:nth-child(odd) > th {
+    background-color: #f9f9f9;
+}
+
+.table-striped td {
+    padding-top:10px;
+    padding-bottom:10px;
+    padding-right:10px;
+}
+
+.table-striped td:first-child {
+    padding-left:10px;
+    padding-right:0;
+}
+
