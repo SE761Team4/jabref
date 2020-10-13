@@ -1,6 +1,16 @@
 import React from 'react';
-import { Ellipse, Text, Group, Rect } from 'react-konva';
+import { Text, Group, Rect, Image } from 'react-konva';
+import useImage from 'use-image';
 
+const Logo = () => {
+  const [logo] = useImage('./logo192.png');
+  return <Image image={useImage} />;
+}
+
+const LionImage = () => {
+  const [image] = useImage('/lion.png');
+  return <Image image={image} />;
+};
 
 const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, updateNode, label, bibEntryId, isInSearch: isInSearch}) => {
 
@@ -9,6 +19,10 @@ const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, u
         node.y_pos = e.target.y()
       updateNode(node);
       updateEdges(node.id, e.target.x(), e.target.y());
+    }
+
+    const getIcons = () => {
+      
     }
 
     const width = 150
@@ -41,6 +55,7 @@ const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, u
         width={width}
         height={height}
         />
+        <LionImage />
           <Group
               width={width}
               height={height}
