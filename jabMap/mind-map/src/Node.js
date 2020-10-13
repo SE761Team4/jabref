@@ -1,5 +1,6 @@
 import React from 'react';
-import { Ellipse, Text, Group, Rect } from 'react-konva';
+import { Text, Group, Rect, Image } from 'react-konva';
+import useImage from 'use-image';
 
 
 const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, updateNode, label, bibEntryId, isInSearch: isInSearch}) => {
@@ -10,6 +11,13 @@ const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, u
       updateNode(node);
       updateEdges(node.id, e.target.x(), e.target.y());
     }
+
+    const getIcons = () => {
+      
+    }
+
+    const [bookmark] = useImage('/assets/bookmarkSmall.png');
+
 
     const width = 150
     const height = 70
@@ -55,11 +63,7 @@ const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, u
               offsetX={width/2 -10}
               offsetY={-height/2 + 20}
           >
-              {node.citationKey && <Rect
-              width={10}
-              height={10}
-              fill={"red"}
-              />}
+              {node.citationKey && <Image image={bookmark}/>}
           </Group>
       </Group>
     );

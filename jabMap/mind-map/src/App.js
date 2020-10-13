@@ -3,26 +3,25 @@ import React, {
     useRef,
     useState
 } from "react";
-//import logo from "./logo.svg";
 import "./App.css";
-import MindMap
-    from "./MindMap";
-import KonvaReferencesTable
-    from "./KonvaReferencesTable";
+import MindMap from "./MindMap";
+import KonvaReferencesTable from "./KonvaReferencesTable";
 import {makeStyles} from "@material-ui/core/styles";
-import {
-    Layer,
-    Stage
-} from 'react-konva';
-import useWindowDimensions
-    from './WindowDimensions';
-import ToolBar
-    from "./ToolBar";
-import NodeInfoPanel
-    from "./NodeInfoPanel";
+import { Layer, Stage, Image } from 'react-konva';
+import useWindowDimensions from './WindowDimensions';
+import ToolBar from "./ToolBar";
+import NodeInfoPanel from "./NodeInfoPanel";
+import useImage from 'use-image';
+import ReferencesTable from "./ReferencesTable";
+import logo from './assets/logo192.png'
+import logoSvg from './assets/logo.svg'
 
-import ReferencesTable
-    from "./ReferencesTable";
+const Logo = () => {
+    const [logo] = useImage('./assets/logo192.png');
+    return <Image image={logo} />;
+}
+
+
 
 function App() {
 
@@ -287,10 +286,12 @@ function App() {
 
     const draggedRow = useRef();
 
+
+
+
     return (
         <div
             className={classes.wrapper}>
-
             {/* <ToolBar
         nodes={nodes}
         edges={edges}
@@ -331,6 +332,7 @@ function App() {
                     ref={stageRef}>
                     <Layer
                         ref={layerRef}>
+
                         <MindMap
                             nodes={nodes}
                             edges={edges}
@@ -345,6 +347,7 @@ function App() {
             </div>
             {selectedNode.id ? <NodeInfoPanel node={selectedNode} reference={getReferenceById(selectedNode.citationKey)} updateNode={updateNode} changeNodeColor={changeNodeColor}/> :
                 <NodeInfoPanel node={selectedNode} updateNode={updateNode} />}
+
 
         </div>
     );
