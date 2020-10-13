@@ -3,7 +3,6 @@ import React, {
     useRef,
     useState
 } from "react";
-import logo from "./logo192.png";
 import "./App.css";
 import MindMap from "./MindMap";
 import KonvaReferencesTable from "./KonvaReferencesTable";
@@ -13,14 +12,16 @@ import useWindowDimensions from './WindowDimensions';
 import ToolBar from "./ToolBar";
 import NodeInfoPanel from "./NodeInfoPanel";
 import useImage from 'use-image';
+import ReferencesTable from "./ReferencesTable";
+import logo from './assets/logo192.png'
+import logoSvg from './assets/logo.svg'
 
 const Logo = () => {
-    const [logo] = useImage('./logo192.png');
-    return <Image image={useImage} />;
+    const [logo] = useImage('./assets/logo192.png');
+    return <Image image={logo} />;
 }
 
-import ReferencesTable
-    from "./ReferencesTable";
+
 
 function App() {
 
@@ -285,10 +286,12 @@ function App() {
 
     const draggedRow = useRef();
 
+
+
+
     return (
         <div
             className={classes.wrapper}>
-
             {/* <ToolBar
         nodes={nodes}
         edges={edges}
@@ -329,6 +332,7 @@ function App() {
                     ref={stageRef}>
                     <Layer
                         ref={layerRef}>
+
                         <MindMap
                             nodes={nodes}
                             edges={edges}

@@ -2,15 +2,6 @@ import React from 'react';
 import { Text, Group, Rect, Image } from 'react-konva';
 import useImage from 'use-image';
 
-const Logo = () => {
-  const [logo] = useImage('./logo192.png');
-  return <Image image={useImage} />;
-}
-
-const LionImage = () => {
-  const [image] = useImage('/lion.png');
-  return <Image image={image} />;
-};
 
 const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, updateNode, label, bibEntryId, isInSearch: isInSearch}) => {
 
@@ -24,6 +15,9 @@ const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, u
     const getIcons = () => {
       
     }
+
+    const [bookmark] = useImage('/assets/bookmarkSmall.png');
+
 
     const width = 150
     const height = 70
@@ -63,18 +57,13 @@ const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, u
         width={width}
         height={height}
         />
-        <LionImage />
           <Group
               width={width}
               height={height}
               offsetX={width/2 -10}
               offsetY={-height/2 + 20}
           >
-              {node.citationKey && <Rect
-              width={10}
-              height={10}
-              fill={"red"}
-              />}
+              {node.citationKey && <Image image={bookmark}/>}
           </Group>
       </Group>
     );
