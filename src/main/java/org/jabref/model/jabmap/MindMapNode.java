@@ -51,6 +51,13 @@ public class MindMapNode {
         return icons;
     }
 
+    public String getIconsString() {
+        String iconsString = icons.toString();
+        iconsString = iconsString.substring(iconsString.indexOf('[') + 1, iconsString.indexOf(']'));
+        iconsString = iconsString.replace(" ", "");
+        return iconsString;
+    }
+
     public float getX_pos() {
         return x_pos;
     }
