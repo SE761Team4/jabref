@@ -12,7 +12,7 @@ const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, u
 
   const [priorityColor, setPriorityColor] = useState();
 
-  // Set nitial priority icon color 
+  // Set initial priority icon color 
   useEffect(() => {
     if(node.icons){
       if(node.icons.includes("HIGH_PRIORITY")){

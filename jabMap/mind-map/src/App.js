@@ -278,18 +278,29 @@ function App() {
 
 
     return (
-        <div
-            className={classes.wrapper}>
-            {/* <ToolBar
-        nodes={nodes}
-        edges={edges}
-        getNodeById={getNodeById}
-        selectedNodeId={selectedNodeId}
-        setNodes={setNodes}
-        setEdges={setEdges}
-        globalNodeIdCounter={globalNodeIdCounter}
-        setGlobalNodeIdCounter={setGlobalNodeIdCounter}
-      /> */}
+    //     <div
+    //         className={classes.wrapper}>
+    //         {/* <ToolBar
+    //     nodes={nodes}
+    //     edges={edges}
+    //     getNodeById={getNodeById}
+    //     selectedNodeId={selectedNodeId}
+    //     setNodes={setNodes}
+    //     setEdges={setEdges}
+    //     globalNodeIdCounter={globalNodeIdCounter}
+    //     setGlobalNodeIdCounter={setGlobalNodeIdCounter}
+    //   /> */}
+
+      <div class="container">
+
+            <ReferencesTable
+                draggedRow={draggedRow}
+                addNode={addNode}
+                references={references}
+                setReferences={setReferences}
+            />
+
+            <div class="map-container">
             <ToolBar
               addNode={addNode}
               saveMap={saveMap}
@@ -298,12 +309,8 @@ function App() {
               linking={linking}
               setLinking={setLinking}
             />
-            <ReferencesTable
-                draggedRow={draggedRow}
-                addNode={addNode}
-                references={references}
-                setReferences={setReferences}
-            />
+
+
             <div
                 onDrop={e => {
                     // register event position
@@ -335,9 +342,11 @@ function App() {
             </div>
             {selectedNode.id ? <NodeInfoPanel node={selectedNode} reference={getReferenceById(selectedNode.citationKey)} updateNode={updateNode} changeNodeColor={changeNodeColor}/> :
                 <NodeInfoPanel node={selectedNode} updateNode={updateNode} />}
-
+                
+            </div>
 
         </div>
+
     );
 }
 
