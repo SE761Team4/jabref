@@ -175,6 +175,8 @@ public class JabRefFrame extends BorderPane {
     private TabPane tabbedPane;
     private SidePane sidePane;
     private PopOver progressViewPopOver;
+    private ToolBar toolBar;
+    private HBox toolBarJabmapHBox;
     private List<Node> toolbarElements = new ArrayList<>();
 
     public JabRefFrame(Stage mainStage) {
@@ -518,12 +520,15 @@ public class JabRefFrame extends BorderPane {
         Separator toolBarSecondSep;
         Separator toolBarThirdSep;
         Separator toolBarForthSep;
+        Separator lastSeparator;
         HBox toolBarFileHBox;
         HBox toolBarEntryHBox;
         HBox toolBarDoUndoHBox;
         HBox toolBarToolsHBox;
+        HBox webHBox;
+        HBox toDoHBox;
         Region toolBarSecondSpacer;
-        ToolBar toolBar = new ToolBar(
+        toolBar = new ToolBar(
 
                 toolBarFileHBox = new HBox(
                         factory.createIconButton(StandardActions.NEW_LIBRARY, new NewDatabaseAction(this, prefs)),
@@ -532,7 +537,7 @@ public class JabRefFrame extends BorderPane {
 
                 toolBarFirstSep = new Separator(Orientation.VERTICAL),
 
-                new HBox(
+                toolBarJabmapHBox = new HBox(
                         factory.createIconButton(StandardActions.OPEN_JABMAP, new OpenJabMapAction(this, splitPane))
                 ),
 
@@ -569,30 +574,37 @@ public class JabRefFrame extends BorderPane {
 
                 toolBarForthSep = new Separator(Orientation.VERTICAL),
 
-                new HBox(
+                webHBox = new HBox(
                         factory.createIconButton(StandardActions.OPEN_GITHUB, new OpenBrowserAction("https://github.com/JabRef/jabref")),
                         factory.createIconButton(StandardActions.OPEN_FACEBOOK, new OpenBrowserAction("https://www.facebook.com/JabRef/")),
                         factory.createIconButton(StandardActions.OPEN_TWITTER, new OpenBrowserAction("https://twitter.com/jabref_org"))
                 ),
 
-                new Separator(Orientation.VERTICAL),
+                lastSeparator = new Separator(Orientation.VERTICAL),
 
-                new HBox(
+                toDoHBox = new HBox(
                         createTaskIndicator()
                 )
         );
 
         toolbarElements.add(toolBarFileHBox);
-        toolbarElements.add(toolBarDoUndoHBox);
-        toolbarElements.add(toolBarToolsHBox);
         toolbarElements.add(toolBarFirstSep);
+        toolbarElements.add(toolBarJabmapHBox);
         toolbarElements.add(toolBarFirstSpacer);
+
         toolbarElements.add(toolBarSearch);
-        toolbarElements.add(toolBarSecondSep);
-        toolbarElements.add(toolBarThirdSep);
-        toolbarElements.add(toolBarForthSep);
         toolbarElements.add(toolBarSecondSpacer);
+
         toolbarElements.add(toolBarEntryHBox);
+        toolbarElements.add(toolBarSecondSep);
+
+        toolbarElements.add(toolBarDoUndoHBox);
+        toolbarElements.add(toolBarThirdSep);
+        toolbarElements.add(toolBarToolsHBox);
+        toolbarElements.add(toolBarForthSep);
+        toolbarElements.add(webHBox);
+        toolbarElements.add(lastSeparator);
+        toolbarElements.add(toDoHBox);
 
         leftSpacer.setPrefWidth(50);
         leftSpacer.setMinWidth(Region.USE_PREF_SIZE);
@@ -631,6 +643,18 @@ public class JabRefFrame extends BorderPane {
 
     public void showBasePanel(BasePanel bp) {
         tabbedPane.getSelectionModel().select(getTab(bp));
+    }
+
+    public void restoreToolBar() {
+        toolBar.getItems().remove(toolBarJabmapHBox);
+        toolBar.getItems().addAll(toolbarElements.subList(0, 2));
+        toolBar.getItems().add(toolBarJabmapHBox);
+        toolBar.getItems().addAll(toolbarElements.subList(3, toolbarElements.size()));
+    }
+
+    public void hideToolBar() {
+        toolBar.getItems().removeAll(toolbarElements);
+        toolBar.getItems().add(toolBarJabmapHBox);
     }
 
     public void init() {
