@@ -1,16 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, Group, Rect, Image } from 'react-konva';
 import useImage from 'use-image';
 
 
 const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, updateNode, label, bibEntryId, isInSearch: isInSearch}) => {
+  
 
+  const priorityColors = ['none','yellow', 'orange', 'red'];
+  const [bookmarkIcon] = useImage('/assets/bookmarkSmall.png');
+  const [priorityIcon] = useImage('/assets/priority.png');
+
+  const [priorityColor, setPriorityColor] = useState();
+
+  // Set nitial priority icon color 
+  useEffect(() => {
+    if(node.icons){
+      if(node.icons.includes("HIGH_PRIORITY")){
+        setPriorityColor(priorityColors[3]);
+      } else if(node.icons.includes("MEDIUM_PRIORITY")){
+        setPriorityColor(priorityColors[2]);
+      } else if(node.icons.includes("LOW_PRIORITY")){
+        setPriorityColor(priorityColors[1]);
+      }
+    }
+  })
     const handleDragMove = (e) => {
         node.x_pos = e.target.x()
         node.y_pos = e.target.y()
       updateNode(node);
       updateEdges(node.id, e.target.x(), e.target.y());
     }
+
     
     const toggleReadIcon = () => {
       if(node.icons){
@@ -25,10 +45,31 @@ const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, u
         node.icons = newIcons;
         updateNode(node);
       }
-
     }
 
-    const [bookmark] = useImage('/assets/bookmarkSmall.png');
+    const togglePriority = () => {
+      if(node.icons){
+        let newIcons = [];
+        if(node.icons.includes("HIGH_PRIORITY")){
+          newIcons = node.icons.filter((icon) => {return icon !== "HIGH_PRIORITY"});
+          setPriorityColor(priorityColors[0]);
+        } else if(node.icons.includes("MEDIUM_PRIORITY")){
+          newIcons = node.icons.filter((icon) => {return icon !== "MEDIUM_PRIORITY"});
+          newIcons.push("HIGH_PRIORITY");
+          setPriorityColor(priorityColors[3]);
+        } else if(node.icons.includes("LOW_PRIORITY")){
+          newIcons = node.icons.filter((icon) => {return icon !== "LOW_PRIORITY"});
+          newIcons.push("MEDIUM_PRIORITY");
+          setPriorityColor(priorityColors[2]);
+        } else {
+          newIcons.push(...node.icons);
+          newIcons.push("LOW_PRIORITY")
+          setPriorityColor(priorityColors[1])
+        }
+        node.icons = newIcons;
+        updateNode(node);
+      }
+    }
 
     const width = 150
     const height = 70
@@ -75,7 +116,8 @@ const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, u
               offsetY={-height/2 + 20}
           >
               {(node.citationKey && node.icons && (node.icons.includes("TO_READ") || node.icons.includes("READ"))) && 
-                <Image id={`${node.id}_read_status`} image={bookmark} fill={node.icons.includes("READ") ? 'green' : selectedNodeId === node.id ? "#a2b8e5" : "white" } onClick={toggleReadIcon}/>}
+                <Image image={bookmarkIcon} fill={node.icons.includes("READ") ? 'green' : selectedNodeId === node.id ? "#a2b8e5" : "white" } onClick={toggleReadIcon}/>}
+              {node.icons && <Image image={priorityIcon} width={16} height={16} offsetX={-20} fill={priorityColor !== 'none' ? priorityColor : selectedNodeId === node.id ? "#a2b8e5" : "white"} onClick={togglePriority}/>}
           </Group>
       </Group>
     );
