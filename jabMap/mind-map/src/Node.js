@@ -11,13 +11,24 @@ const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, u
       updateNode(node);
       updateEdges(node.id, e.target.x(), e.target.y());
     }
+    
+    const toggleReadIcon = () => {
+      if(node.icons){
+        let newIcons = [];
+        if(node.icons.includes("READ")){
+          newIcons = node.icons.filter((icon) => {return icon !== "READ"});
+          newIcons.push("TO_READ");
+        } else if (node.icons.includes("TO_READ")) {
+          newIcons = node.icons.filter((icon) => {return icon !== "TO_READ"});
+          newIcons.push("READ")
+        }
+        node.icons = newIcons;
+        updateNode(node);
+      }
 
-    const getIcons = () => {
-      
     }
 
     const [bookmark] = useImage('/assets/bookmarkSmall.png');
-
 
     const width = 150
     const height = 70
@@ -63,7 +74,8 @@ const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, u
               offsetX={width/2 -10}
               offsetY={-height/2 + 20}
           >
-              {node.citationKey && <Image image={bookmark}/>}
+              {(node.citationKey && node.icons && (node.icons.includes("TO_READ") || node.icons.includes("READ"))) && 
+                <Image id={`${node.id}_read_status`} image={bookmark} fill={node.icons.includes("READ") ? 'green' : selectedNodeId === node.id ? "#a2b8e5" : "white" } onClick={toggleReadIcon}/>}
           </Group>
       </Group>
     );

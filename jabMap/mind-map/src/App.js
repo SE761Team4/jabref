@@ -5,13 +5,11 @@ import React, {
 } from "react";
 import "./App.css";
 import MindMap from "./MindMap";
-import KonvaReferencesTable from "./KonvaReferencesTable";
 import {makeStyles} from "@material-ui/core/styles";
-import { Layer, Stage, Image } from 'react-konva';
+import { Layer, Stage } from 'react-konva';
 import useWindowDimensions from './WindowDimensions';
 import ToolBar from "./ToolBar";
 import NodeInfoPanel from "./NodeInfoPanel";
-import useImage from 'use-image';
 import ReferencesTable from "./ReferencesTable";
 
 
@@ -37,7 +35,6 @@ function App() {
         if(!linking){
             setSelectedNode(selected);
         } else {
-            // TODO make edge between clicked node and selected
             addEdge(selectedNode, selected);
             setLinking(false);
             setSelectedNode(selected);
@@ -192,7 +189,6 @@ function App() {
     useEffect(() => {
         fetchReferences();
         fetchMap();
-        console.log(selectedNode)
     }, []);
 
     const saveMap = () => {
