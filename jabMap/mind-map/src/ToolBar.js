@@ -35,6 +35,7 @@ const MindMapToolbar = ({addNode, saveMap, deleteNode, searchNodes, linking, set
             e.preventDefault();
             inputRef.current.focus();
         }
+
     }
 
     return(

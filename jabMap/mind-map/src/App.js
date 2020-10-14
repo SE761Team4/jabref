@@ -274,7 +274,22 @@ function App() {
 
     const draggedRow = useRef();
 
-
+    window.addEventListener('keydown',  function(e)  {
+        
+        if(e.shiftKey && e.keyCode===13) {
+            //above
+            addNode(undefined,selectedNode.x_pos,selectedNode.y_pos-200);
+        }
+        else if(e.keyCode=== 13) {
+            //below
+            addNode(undefined,selectedNode.x_pos,selectedNode.y_pos+200);
+        }
+        else if(e.keyCode=== 45)
+        {
+            //insert
+            addNode(undefined,selectedNode.x_pos-200,selectedNode.y_pos+200);
+        }
+    },false);
 
 
     return (
