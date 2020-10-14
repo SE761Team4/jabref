@@ -177,6 +177,7 @@ public class JabRefFrame extends BorderPane {
     private PopOver progressViewPopOver;
     private ToolBar toolBar;
     private HBox toolBarJabmapHBox;
+    private MenuBar menuBar;
     private List<Node> toolbarElements = new ArrayList<>();
 
     public JabRefFrame(Stage mainStage) {
@@ -461,7 +462,8 @@ public class JabRefFrame extends BorderPane {
 
     private void initLayout() {
         setId("frame");
-        VBox head = new VBox(createMenu(), createToolbar());
+        menuBar = createMenu();
+        VBox head = new VBox(menuBar, createToolbar());
         head.setSpacing(0d);
         setTop(head);
 
@@ -1392,6 +1394,14 @@ public class JabRefFrame extends BorderPane {
         splitPane.getItems().addAll(sidePane, tabbedPane);
         SplitPane.setResizableWithParent(sidePane, false);
         setDividerPosition();
+    }
+
+    public void hideJabrefMenu() {
+        menuBar.setManaged(false);
+    }
+
+    public void restoreJabrefMenu() {
+        menuBar.setManaged(true);
     }
 
     public List<Node> getToolBarOfFrame() {

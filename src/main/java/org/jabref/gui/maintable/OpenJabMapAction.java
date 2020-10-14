@@ -48,12 +48,14 @@ public class OpenJabMapAction extends SimpleCommand {
             splitPane.getItems().removeAll(jabMapPane);
             jabRefFrame.restoreAfterJabMapClosed();
             jabRefFrame.restoreToolBar();
+            jabRefFrame.restoreJabrefMenu();
         } else {
             browser.getEngine().reload();
             splitPane.getItems().removeAll(splitPane.getItems());
             browser.setPrefSize(splitPane.getWidth(), splitPane.getHeight());
             splitPane.getItems().add(jabMapPane);
             jabRefFrame.hideToolBar();
+            jabRefFrame.hideJabrefMenu();
         }
 
     }
