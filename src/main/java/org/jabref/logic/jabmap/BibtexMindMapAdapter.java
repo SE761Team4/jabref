@@ -83,6 +83,9 @@ public class BibtexMindMapAdapter extends Converter<List<BibEntry>, MindMap> {
                     if (node.getColour() != null) {
                         newEntry.setField(MindMapField.NODE_COLOUR, node.getColour());
                     }
+                    if (node.getIcons() != null ){
+                        newEntry.setField(MindMapField.NODE_ICONS, node.getIconsString());
+                    }
                     return newEntry;
                 })
                 .collect(Collectors.toList());
