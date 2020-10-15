@@ -79,7 +79,7 @@ const MindMapToolbar = ({ selectedNode, updateNode, addNode, saveMap, deleteNode
             <div className="divider"></div>
 
             <Button size="small" onClick={toggleReadIcon}>
-                <img src="/assets/Read.png" alt="Read Status" className="toolbar-button"/>
+                <img src="/assets/MarkRead.png" alt="Read Status" className="toolbar-button"/>
             </Button>
 
             <PriorityDropdown />

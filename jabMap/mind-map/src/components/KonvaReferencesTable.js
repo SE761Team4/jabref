@@ -40,7 +40,6 @@ const KonvaReferencesTable = ({references, setReferences, addNode, layerRef, sta
         elRefs.current = Array(arrLength).fill().map((_, i) => elRefs.current[i] || createRef());
     }
 
-    //console.log(references)
     //Rendered table using Material UI library
     return(
         <Group>
