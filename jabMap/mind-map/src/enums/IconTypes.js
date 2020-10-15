@@ -1,9 +1,9 @@
 export const IconTypes = {
-    READ : "read",
-    TO_READ : "to read",
-    HIGH_PRIORITY : "high priority",
-    MEDIUM_PRIORITY : "medium priority",
-    LOW_PRIORITY : "low priority",
-    FAVOURITE : "favourite",
-    NOT_FAVOURITE : "not favourite"
+    READ : "Read",
+    TO_READ : "To read",
+    HIGH_PRIORITY : "High priority",
+    MEDIUM_PRIORITY : "Medium priority",
+    LOW_PRIORITY : "Low priority",
+    FAVOURITE : "Favourite",
+    NOT_FAVOURITE : "Not favourite"
 }

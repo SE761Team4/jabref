@@ -10,7 +10,6 @@ const ReferencesTable = ({references, setReferences, draggedRow, addNode}) => {
     const MAX_LENGTH = 20;
     const TABLE_FILL = new Array(Math.floor((windowHeight - (references.length * 20))/20));
     TABLE_FILL.fill("");
-    console.log(TABLE_FILL)
 
     const renderText = (text) => {
         if(text){
