@@ -7,7 +7,6 @@ import { Button } from '@material-ui/core';
 import { IconTypes } from "../enums/IconTypes";
 import PriorityDropdown from "./PriorityDropdown";
 
-
 const MindMapToolbar = ({ selectedNode, updateNode, addNode, saveMap, deleteNode, searchNodes, linking, setLinking, unlinking, setUnlinking}) => {
     //Styles
     const useStyles = makeStyles({

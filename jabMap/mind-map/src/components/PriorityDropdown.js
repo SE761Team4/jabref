@@ -14,11 +14,13 @@ const PriorityDropdown = ({selectedNode, updateNode}) => {
     setAnchorEl(event.currentTarget);
   };
 
+  // Handle closing the priorities dropdown menu
   const handleClose = () => {
     setAnchorEl(null);
   };
 
   const pickPriority = (event) => {
+      // If a node is selected, set the priority to the one chosen in the menu
       if (selectedNode.icons)
       {
         if (event.target.textContent == Priorities.HIGH)
@@ -65,19 +67,19 @@ const PriorityDropdown = ({selectedNode, updateNode}) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={pickPriority}>
-        <img src={"./assets/LowPriority.png"} alt="low-priority" className="menu-buttons"/>
-            <ListItemText primary={Priorities.LOW} />
-        </MenuItem>
-        <MenuItem onClick={pickPriority}>
-            <img src={"./assets/MediumPriority.png"} alt="medium-priority" className="menu-buttons"/>
-            <ListItemText primary={Priorities.MEDIUM} />
-        </MenuItem>
-        <MenuItem onClick={pickPriority}>
-          <img src={"/assets/HighPriority.png"} alt="high-priority" className="menu-buttons"/>
-            <ListItemText primary={Priorities.HIGH} />
-        </MenuItem>
-      </Menu>
+          <MenuItem onClick={pickPriority}>
+              <img src="/assets/LowPriority.png" alt="low-priority" className="menu-buttons" id="low-priority"></img>
+              <ListItemText primary={Priorities.LOW} />
+          </MenuItem>
+          <MenuItem onClick={pickPriority}>
+              <img src="/assets/MediumPriority.png" alt="medium-priority" className="menu-buttons" id="medium-priority"></img>
+              <ListItemText primary={Priorities.MEDIUM} />
+          </MenuItem>
+          <MenuItem onClick={pickPriority}>
+              <img src="/assets/HighPriority.png" alt="high-priority" className="menu-buttons" id="high-priority"></img>
+              <ListItemText primary={Priorities.HIGH} />
+          </MenuItem>
+    </Menu>
     </div>
   );
 }
