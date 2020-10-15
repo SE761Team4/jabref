@@ -1,25 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { Text, Group, Rect, Image } from 'react-konva';
 import useImage from 'use-image';
-
+import { IconTypes } from "../enums/IconTypes";
 
 const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, updateNode, label, bibEntryId, isInSearch: isInSearch}) => {
   
-
   const priorityColors = ['none','yellow', 'orange', 'red'];
-  const [bookmarkIcon] = useImage('/assets/bookmarkSmall.png');
+  const [readIcon] = useImage('/assets/Read.png');
+  const [toReadIcon] = useImage('/assets/ToRead.png');
   const [priorityIcon] = useImage('/assets/priority.png');
+  const [favouritedIcon] = useImage('/assets/Favourited.png');
+  const [notFavouriteIcon] = useImage('/assets/NotFavourited.png');
+
+  const nodeWidth = 170;
+  const nodeHeight = 80;
 
   const [priorityColor, setPriorityColor] = useState();
 
-  // Set nitial priority icon color 
+  // Set initial priority icon color 
   useEffect(() => {
-    if(node.icons){
-      if(node.icons.includes("HIGH_PRIORITY")){
+    if(node.icons) {
+      if (node.icons.includes("HIGH_PRIORITY")) {
         setPriorityColor(priorityColors[3]);
-      } else if(node.icons.includes("MEDIUM_PRIORITY")){
+      } else if(node.icons.includes("MEDIUM_PRIORITY")) {
         setPriorityColor(priorityColors[2]);
-      } else if(node.icons.includes("LOW_PRIORITY")){
+      } else if(node.icons.includes("LOW_PRIORITY")) {
         setPriorityColor(priorityColors[1]);
       }
     }
@@ -30,22 +35,40 @@ const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, u
       updateNode(node);
       updateEdges(node.id, e.target.x(), e.target.y());
     }
-
     
-    const toggleReadIcon = () => {
+    const toggleFavouritedIcon = () => {
+
       if(node.icons){
         let newIcons = [];
-        if(node.icons.includes("READ")){
-          newIcons = node.icons.filter((icon) => {return icon !== "READ"});
-          newIcons.push("TO_READ");
-        } else if (node.icons.includes("TO_READ")) {
-          newIcons = node.icons.filter((icon) => {return icon !== "TO_READ"});
-          newIcons.push("READ")
+        if(node.icons.includes(IconTypes.FAVOURITE)){
+          newIcons = node.icons.filter((icon) => {return icon !== IconTypes.FAVOURITE});
+          newIcons.push(IconTypes.NOT_FAVOURITE);
+        } else {
+          newIcons = node.icons.filter((icon) => {return icon !== IconTypes.NOT_FAVOURITE});
+          newIcons.push(IconTypes.FAVOURITE)
         }
         node.icons = newIcons;
         updateNode(node);
       }
     }
+
+        
+    const toggleReadIcon = () => {
+
+      if(node.icons){
+        let newIcons = [];
+        if(node.icons.includes(IconTypes.READ)){
+          newIcons = node.icons.filter((icon) => {return icon !== IconTypes.READ});
+          newIcons.push(IconTypes.TO_READ);
+        } else {
+          newIcons = node.icons.filter((icon) => {return icon !== IconTypes.TO_READ});
+          newIcons.push(IconTypes.READ)
+        }
+        node.icons = newIcons;
+        updateNode(node);
+      }
+    }
+
 
     const togglePriority = () => {
       if(node.icons){
@@ -71,8 +94,7 @@ const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, u
       }
     }
 
-    const width = 150
-    const height = 70
+
     return (
       <Group
         id={node.id}
@@ -93,10 +115,10 @@ const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, u
         <Rect
           //codes of this rect is to cover the edge under rect
           radius={{"x" : 50, "y" : 30}}
-          width={width}
-          height={height}
-          offsetX={width/2}
-          offsetY={height/2}
+          width={nodeWidth}
+          height={nodeHeight}
+          offsetX={nodeWidth/2}
+          offsetY={nodeHeight/2}
           cornerRadius={20}
           fill={"white"}          
           strokeWidth={4}
@@ -104,32 +126,36 @@ const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, u
 
         <Rect
           radius={{"x" : 50, "y" : 30}}
-          width={width}
-          height={height}
-          offsetX={width/2}
-          offsetY={height/2}
+          width={nodeWidth}
+          height={nodeHeight}
+          offsetX={nodeWidth/2}
+          offsetY={nodeHeight/2}
           cornerRadius={20}
           fill={isInSearch ? "#3f51b5" : (selectedNodeId === node.id ? "#a2b8e5" : node.colour==undefined?"white":node.colour+"80")}
           stroke={node.colour === undefined ? "#6E6E6E" : node.colour}
           strokeWidth={4}
         />
         <Text text={node.label}
-          offsetX={width/2}
-          offsetY={height/2 + 10}
+          offsetX={nodeWidth/2}
+          offsetY={nodeHeight/2 + 10}
         align="center"
         verticalAlign="middle"
-        width={width}
-        height={height}
+        width={nodeWidth}
+        height={nodeHeight}
         />
           <Group
-              width={width}
-              height={height}
-              offsetX={width/2 -10}
-              offsetY={-height/2 + 20}
+              width={nodeWidth}
+              height={nodeHeight}
+              offsetX={nodeWidth/2 -10}
+              offsetY={-nodeHeight/2 + 20}
           >
-              {(node.citationKey && node.icons && (node.icons.includes("TO_READ") || node.icons.includes("READ"))) && 
-                <Image image={bookmarkIcon} fill={node.icons.includes("READ") ? 'green' : selectedNodeId === node.id ? "#a2b8e5" : "white" } onClick={toggleReadIcon}/>}
-              {node.icons && <Image image={priorityIcon} width={16} height={16} offsetX={-20} fill={priorityColor !== 'none' ? priorityColor : selectedNodeId === node.id ? "#a2b8e5" : "white"} onClick={togglePriority}/>}
+            <Image image={node.icons.includes(IconTypes.READ) ? readIcon : toReadIcon} width={24} height={24} offsetX={-50} onClick={toggleReadIcon}/> 
+
+            {node.icons && <Image image={priorityIcon} width={24} height={24} offsetX={-20} fill={priorityColor !== 'none' ? priorityColor : selectedNodeId === node.id ? "#a2b8e5" : "white"} onClick={togglePriority}/>}
+
+            <Image image={node.icons.includes(IconTypes.FAVOURITE) ? favouritedIcon : notFavouriteIcon} width={24} height={24} offsetX={-80} onClick={toggleFavouritedIcon}/> 
+
+
           </Group>
       </Group>
     );

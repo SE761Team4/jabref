@@ -1,0 +1,48 @@
+.toolbar-proportions {
+	width: 100%;
+    box-sizing: border-box;
+}
+
+
+.search-bar {
+	border: none;
+	border-bottom: 0.1em solid grey;
+} 
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
+.buttons-container {
+	display: flex;
+	flex-direction: row;
+	padding: '0.5em';
+
+}
+
+.search-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	width: 100%;
+}
+
+.toolbar-button {
+	height: 30px;
+	width: 30px;
+	margin: 0 10px;
+}
+
+.trash-button {
+	height: 22px;
+	width: 22px;
+}
+
+.divider {
+  border-left: 0.1em solid grey;
+  height: 32px;
+  margin: 20px;
+}
