@@ -35,7 +35,7 @@ public class OpenJabMapAction extends SimpleCommand {
         WebEngine webEngine = browser.getEngine();
 
         // webEngine.load("http://google.com");
-        webEngine.load(getClass().getResource("build/index.html").toString());
+        webEngine.load(getClass().getResource("jabmap/index.html").toString());
         browser.setPrefSize(jabMapPane.getWidth(), jabMapPane.getHeight());
         jabMapPane.getChildren().add(browser);
     }

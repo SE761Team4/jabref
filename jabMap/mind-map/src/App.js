@@ -46,7 +46,7 @@ function App() {
      * Get mind map nodes and edges from Jabref to load a saved map.
      */
     const fetchMap = async () => {
-        fetch("/libraries/current/map")
+        fetch("http://localhost:9898/libraries/current/map")
             .then((res) => res.json())
             .then((data) => {
                 setNodes(data.nodes.map(node => {
@@ -81,7 +81,7 @@ function App() {
      * Get references from Jabref to be displayed in the sidebar.
      */
     const fetchReferences = async () => {
-        fetch("/libraries/current/entries")
+        fetch("http://localhost:9898/libraries/current/entries")
             .then((res) => res.json())
             .then((data) => {
                 setReferences(data);
@@ -105,7 +105,7 @@ function App() {
             "nodes": nodes,
             "edges": convertedEdges
         });
-        fetch('/libraries/current/map', {
+        fetch('http://localhost:9898/libraries/current/map', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
