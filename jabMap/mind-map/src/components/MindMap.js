@@ -1,20 +1,14 @@
-import React from "react";
+import React
+    from "react";
 import "../App.css";
-import Node from "./Node";
-import Edge from "./Edge";
-import { makeStyles } from '@material-ui/core/styles';
-import { Group } from 'react-konva';
+import Node
+    from "./Node";
+import Edge
+    from "./Edge";
+import {Group} from 'react-konva';
 
 
 const MindMap = ({nodes, edges, updateEdges, setSelectedNode, selectedNodeId, updateNode}) => {
-    const useStyles = makeStyles({
-        canvas: {
-            left: "25%",
-            position: "absolute"
-        },
-    });
-    const classes = useStyles();
-
     return (
         <Group x={310}>
             {edges.map((edge) =>

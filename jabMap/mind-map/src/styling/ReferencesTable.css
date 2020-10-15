@@ -6,7 +6,6 @@
     overflow-y: auto;
     box-sizing: border-box;
     cursor: pointer;
-    overflow: hidden;
 }
 .table-striped > tbody > tr:nth-child(odd) > td,
 .table-striped > tbody > tr:nth-child(odd) > th {

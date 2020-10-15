@@ -1,65 +1,50 @@
-import React from "react";
+import React
+    from "react";
+import {
+    Table,
+    TableRow
+} from "@material-ui/core";
 import "../styling/ReferencesTable.css";
-import useWindowDimensions from "../WindowDimensions";
-import Typography from "@material-ui/core/Typography";
-import Card from "@material-ui/core/Card";
+import useWindowDimensions
+    from "../WindowDimensions";
+import Typography
+    from "@material-ui/core/Typography";
+import Card
+    from "@material-ui/core/Card";
 
-const ReferencesTable = ({references, setReferences, draggedRow, addNode}) => {
+const ReferencesTable = ({references, draggedRow}) => {
 
-    const {windowHeight, windowWidth} = useWindowDimensions();
-    const MAX_LENGTH = 20;
-    const TABLE_FILL = new Array(Math.floor((windowHeight - (references.length * 20))/20));
-    TABLE_FILL.fill("");
-    console.log(TABLE_FILL)
-
-    const renderText = (text) => {
-        if(text){
-            if(text.length > MAX_LENGTH) {
-                return `${text.substring(0, MAX_LENGTH - 3)}...` 
-            } else {
-                return text;
-            }
-        }
-
-    }
-
+    const {windowHeight, } = useWindowDimensions();
     return (
-        <div className="table-proportions" style={{maxHeight: windowHeight}}>
+        <div className="table-proportions"style={{height:windowHeight, backgroundColor: "#f9f9f9"}}>
             <Card style={{width: "99.5%"}}>
-                <Typography gutterBottom variant="h4" component="h4" style={{textAlign:"center", marginTop: "15px"}}>
+                <Typography gutterBottom variant="h4" component="h4" style={{textAlign:"center"}}>
                     References
                 </Typography>
                 <div>
-                    <table key="reference-table" hover="true" size="small" className="table-striped">
-                        <thead key="table-header">
-                        <tr key="table-header-row">
+                    <Table hover size="sm" className="table-striped">
+                        <thead>
+                        <tr>
                             <th>Title</th>
                             <th>Author</th>
                             <th>Year</th>
                         </tr>
                         </thead>
-                        <tbody key="table-body">
+                        <tbody>
                         {references &&
                         references.map((ref) => (
-                            <tr key={ref.title}
-                            draggable={true}
-                            onDragStart={e => {
-                                draggedRow.current = ref
-                            }}>
-                                <td key={ref.title + "-title"} className="displayedText">{renderText(ref.title)}<p className="fullText">{ref.title}</p></td>
-                                <td key={ref.title + "-author"} className="displayedText">{renderText(ref.author)}<p className="fullText">{ref.author}</p></td>
-                                <td key={ref.title + "-year"}>{renderText(ref.year)}</td>
-                            </tr>
-                        ))}
-                        {TABLE_FILL.map((item) => (
-                            <tr>
-                                <td className="displayedText">{item}</td>
-                                <td className="displayedText"> </td>
-                                <td className="displayedText"> </td>
-                            </tr>
+                            <TableRow key={ref}
+                                      draggable={true}
+                                      onDragStart={e => {
+                                          draggedRow.current = ref
+                                      }}>
+                                <td className="displayedText">{ref.title}</td>
+                                <td className="displayedText">{ref.author}</td>
+                                <td className="displayedText">{ref.year}</td>
+                            </TableRow>
                         ))}
                         </tbody>
-                    </table>
+                    </Table>
                 </div>
             </Card>
         </div>
