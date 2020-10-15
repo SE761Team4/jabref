@@ -55,6 +55,10 @@ const MindMapToolbar = ({ selectedNode, updateNode, addNode, saveMap, deleteNode
             <IconButton size="small" onClick={() => setLinking(!linking)} color={linking ? 'primary' : 'default'} >
                 <img src="/assets/Link.png" alt="Link" className="toolbar-button "/>
             </IconButton>
+
+            <IconButton size="small" onClick={() => setLinking(!linking)} color={linking ? 'primary' : 'default'} >
+                <img src="/assets/Unlink.png" alt="Unlink" className="toolbar-button "/>
+            </IconButton>
             <div className="divider"></div>
 
             <IconButton size="small" onClick={toggleReadIcon}>
