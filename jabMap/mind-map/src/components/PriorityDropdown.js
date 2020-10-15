@@ -19,30 +19,35 @@ const PriorityDropdown = ({selectedNode, updateNode}) => {
   };
 
   const pickPriority = (event) => {
-      if (event.target.textContent == Priorities.HIGH)
+      console.log(selectedNode)
+      if (selectedNode.icons) 
       {
-        let newIcons = [];
-        newIcons = selectedNode.icons.filter((icon) => {return icon !== IconTypes.MEDIUM_PRIORITY && icon !== IconTypes.LOW_PRIORITY});
-        newIcons.push(IconTypes.HIGH_PRIORITY);
-        selectedNode.icons = newIcons;
-        updateNode(selectedNode);
+        if (event.target.textContent == Priorities.HIGH)
+        {
+          let newIcons = [];
+          newIcons = selectedNode.icons.filter((icon) => {return icon !== IconTypes.MEDIUM_PRIORITY && icon !== IconTypes.LOW_PRIORITY});
+          newIcons.push(IconTypes.HIGH_PRIORITY);
+          selectedNode.icons = newIcons;
+          updateNode(selectedNode);
+        }
+        else if (event.target.textContent == Priorities.MEDIUM)
+        {
+          let newIcons = [];
+          newIcons = selectedNode.icons.filter((icon) => {return icon !== IconTypes.HIGH_PRIORITY && icon !== IconTypes.LOW_PRIORITY});
+          newIcons.push(IconTypes.MEDIUM_PRIORITY);
+          selectedNode.icons = newIcons;
+          updateNode(selectedNode);      
       }
-      else if (event.target.textContent == Priorities.MEDIUM)
-      {
-        let newIcons = [];
-        newIcons = selectedNode.icons.filter((icon) => {return icon !== IconTypes.HIGH_PRIORITY && icon !== IconTypes.LOW_PRIORITY});
-        newIcons.push(IconTypes.MEDIUM_PRIORITY);
-        selectedNode.icons = newIcons;
-        updateNode(selectedNode);      
-    }
-      else if (event.target.textContent == Priorities.LOW)
-      {
-        let newIcons = [];
-        newIcons = selectedNode.icons.filter((icon) => {return icon !== IconTypes.MEDIUM_PRIORITY && icon !== IconTypes.HIGH_PRIORITY});
-        newIcons.push(IconTypes.LOW_PRIORITY);
-        selectedNode.icons = newIcons;
-        updateNode(selectedNode);      
-    }
+        else if (event.target.textContent == Priorities.LOW)
+        {
+          let newIcons = [];
+          newIcons = selectedNode.icons.filter((icon) => {return icon !== IconTypes.MEDIUM_PRIORITY && icon !== IconTypes.HIGH_PRIORITY});
+          newIcons.push(IconTypes.LOW_PRIORITY);
+          selectedNode.icons = newIcons;
+          updateNode(selectedNode);       
+        }
+      }
+
       handleClose();
   }
 
