@@ -24,7 +24,7 @@ const ReferencesTable = ({references, setReferences, draggedRow, addNode}) => {
     return (
         <div className="table-proportions" style={{maxHeight: windowHeight - 70}}>
             <Card style={{width: "99.5%"}}>
-                <Typography gutterBottom variant="h4" component="h4" style={{textAlign:"center"}}>
+                <Typography gutterBottom variant="h4" component="h4" style={{textAlign:"center", marginTop: "15px"}}>
                     References
                 </Typography>
                 <div>

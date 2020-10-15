@@ -304,6 +304,7 @@ function App() {
                 addNode={addNode}
                 references={references}
                 setReferences={setReferences}
+                className="references"
             />
 
             <div className="map-container">

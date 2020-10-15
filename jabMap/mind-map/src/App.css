@@ -45,5 +45,9 @@
 .map-container {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 75%;
+}
+
+.references {
+  width: 25%;
 }

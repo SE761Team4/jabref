@@ -1,0 +1,15 @@
+.priority-menu {
+    align-self: center;
+    height: 100%;
+}
+
+.main-button-icon {
+    height: 30px;
+	width: 30px;
+}
+
+.menu-buttons {
+	height: 30px;
+	width: 30px;
+	margin-right: 10px;
+}
