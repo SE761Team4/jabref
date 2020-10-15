@@ -7,12 +7,14 @@ public enum NodeIcon {
     TO_READ("TO_READ"),
     HIGH_PRIORITY("HIGH_PRIORITY"),
     MEDIUM_PRIORITY("MEDIUM_PRIORITY"),
-    LOW_PRIORITY("LOW_PRIORITY");
+    LOW_PRIORITY("LOW_PRIORITY"),
+    FAVOURITE("FAVOURITE"),
+    NOT_FAVOURITE("NOT_FAVOURITE");
 
     private final String displayName;
 
-    NodeIcon(String displayname) {
-        this.displayName = displayname;
+    NodeIcon(String displayName) {
+        this.displayName = displayName;
     }
 
     public String getName() {
