@@ -61,24 +61,20 @@ const NodeIcons = ({node, updateNode}) => {
         offsetX={NODE_WIDTH/2 -10}
         offsetY={-NODE_HEIGHT/2 + 20}>
 
-        <Image image={node.icons.includes(IconTypes.READ) ? readIcon : toReadIcon} width={24} height={24} offsetX={-50} onClick={toggleReadIcon}/> 
+        <Image image={node.icons.includes(IconTypes.READ) ? readIcon : toReadIcon} width={24} height={24} offsetX={-30} offsetY={10} onClick={toggleReadIcon}/> 
 
-{node.icons.includes(IconTypes.HIGH_PRIORITY) &&
-    <Image image={highPriorityIcon} width={24} height={24} offsetX={-20} onClick={toggleReadIcon}></Image>
+        { node.icons.includes(IconTypes.HIGH_PRIORITY) &&
+        <Image image={highPriorityIcon} width={24} height={24} offsetX={0} offsetY={10} onClick={toggleReadIcon}></Image>}
 
-}
+        {node.icons.includes(IconTypes.MEDIUM_PRIORITY) &&
+            <Image image={medPriorityIcon} width={24} height={24} offsetX={0} offsetY={10} onClick={toggleReadIcon}></Image>
+        }
 
-{node.icons.includes(IconTypes.MEDIUM_PRIORITY) &&
-    <Image image={medPriorityIcon} width={24} height={24} offsetX={-20} onClick={toggleReadIcon}></Image>
+        {node.icons.includes(IconTypes.LOW_PRIORITY) &&
+            <Image image={lowPriorityIcon} width={24} height={24} offsetX={0} offsetY={10} onClick={toggleReadIcon}></Image>
+        }
 
-}
-
-{node.icons.includes(IconTypes.LOW_PRIORITY) &&
-    <Image image={lowPriorityIcon} width={24} height={24} offsetX={-20} onClick={toggleReadIcon}></Image>
-
-}
-
-        <Image image={node.icons.includes(IconTypes.FAVOURITE) ? favouritedIcon : notFavouriteIcon} width={24} height={24} offsetX={-80} onClick={toggleFavouritedIcon}/>   
+        <Image image={node.icons.includes(IconTypes.FAVOURITE) ? favouritedIcon : notFavouriteIcon} width={24} height={24} offsetX={-60} offsetY={10} onClick={toggleFavouritedIcon}/>   
     </Group>
     );
 }
