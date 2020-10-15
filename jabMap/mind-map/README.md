@@ -2,7 +2,7 @@
 
 JabRef is an open-source reference management tool that allows users to collect and organize sources for literature.
 
-JabMap is a MindMap extension for the Jabref tool, that can be be used to visually organize data stored in JabRef.
+JabMap is a MindMap extension for the Jabref tool that can be be used to visually organize data stored in JabRef.
 This MindMap extension is especially useful for linking connected articles and categorizing sources.
 
 ## JabMap Features
@@ -13,8 +13,8 @@ with edges, and individual nodes can have their colour changed, be marked as rea
 
 ## Running JabMap Locally
 
-To run JabMap you must first build and run JabRef from the source. This requires having git installed on your device,
-as well as having JDK 13 or higher.
+To run JabMap you must first build and run JabRef from the source. This requires you to have JDK 13 or higher installed 
+on your device.
 
 Download the SE761Team4 jabref source code and open a terminal window at the jabref location. 
 
@@ -24,24 +24,20 @@ gradlew assemble
 To start JabRef, run the following in the terminal: 
 gradlew run
 
-(Alternatively, JabRef can be set up in intelliJ using these set up instructions: ^^ Insert link)
+(Alternatively, JabRef can be set up in intelliJ using these set up instructions: https://docs.jabref.org/installation)
 
 The JabRef's GUI should now start up. 
 To populate JabRef with dummy data references, select File>Import>Import into new library. Navigate to the jabref folder
 and select map_test.bib.
 JabRef should become populated with dummy data references.
 
+![Alt text](README-Screenshots/Screenshot1.jpg "Optional Title")
 
-^^Screenshot^^
+To open the JabMap tool, click the open JabMap button circled above
 
+You should see a MindMap like the one show below:
 
-To open the JabMap tool, click the open JabMap button shown below:
-
-^^ Screenshot Click *this * button to go to jabmap ^^
-
-You should see a MindMap like the one show below
-
-^^ Screenshot Should see a map like this **
+![Alt text](README-Screenshots/Screenshot2.jpg "Optional Title")
 
 ## How to use JabMap
 
