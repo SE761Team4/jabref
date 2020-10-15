@@ -19,7 +19,6 @@ const PriorityDropdown = ({selectedNode, updateNode}) => {
   };
 
   const pickPriority = (event) => {
-      console.log(selectedNode)
       if (selectedNode.icons) 
       {
         if (event.target.textContent == Priorities.HIGH)
