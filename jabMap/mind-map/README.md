@@ -15,7 +15,7 @@ with edges, and individual nodes can have their colour changed, be marked as rea
 
 ## Running JabMap Locally
 
-To run JabMap you must first build and run JabRef from the source. This requires you to have JDK 13 or higher installed 
+To run JabMap you must first build and run JabRef from the source. This requires you to have JDK 14 installed 
 on your device.
 
 Download the SE761Team4 jabref source code and open a terminal window at the jabref location. 
