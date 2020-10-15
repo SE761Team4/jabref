@@ -11,7 +11,6 @@ import useWindowDimensions from './WindowDimensions';
 import ToolBar from "./components/ToolBar";
 import NodeInfoPanel from "./components/NodeInfoPanel";
 import ReferencesTable from "./components/ReferencesTable";
-import { IconTypes } from "./enums/IconTypes";
 
 function App() {
 
@@ -27,32 +26,18 @@ function App() {
 
     const [linking, setLinking] = useState(false);
 
-    const [unlinking, setUnlinking] = useState(false);
-
     const getNodeById = (id) => {
         return nodes.find(node => (node.id === id));
     };
 
     const handleSelected = (selected) => {
-        if(!linking && !unlinking){
+        if(!linking){
             setSelectedNode(selected);
-        } else if(unlinking){
-            removeEdge(selectedNode, selected);
-            setUnlinking(false);
-
-        } else if (linking) {
+        } else {
             addEdge(selectedNode, selected);
             setLinking(false);
             setSelectedNode(selected);
         }
-    }
-
-    const removeEdge = (startNode, endNode) => {
-
-        let filteredEdges = edges.filter((edge) => { 
-            return (edge.startId === startNode.id && edge.endId === endNode.id) || (edge.startId === endNode.id && edge.endId === startNode.id) 
-        });
-        setEdges(edges.filter((edge) => { return !filteredEdges.includes(edge)}));
     }
 
     const getReferenceById = (id) => {
@@ -227,6 +212,7 @@ function App() {
 
     const addNode = (bibData, x_pos, y_pos) => {
         if (selectedNode.id !== undefined) {
+            console.log(selectedNode)
             let nodeLabel;
             let bibEntryId;
             if (bibData === undefined) {
@@ -246,8 +232,7 @@ function App() {
                 label: nodeLabel,
                 x_pos: x_pos,
                 y_pos: y_pos,
-                citationKey: bibEntryId,
-                icons: [ IconTypes.TO_READ, IconTypes.LOW_PRIORITY, IconTypes.NOT_FAVOURITE ]
+                citationKey: bibEntryId
             }
 
         setNodes([...nodes, newNode]);
@@ -270,7 +255,6 @@ function App() {
 
     }
   }
-
 
 
     const deleteNode = () => {
@@ -305,33 +289,33 @@ function App() {
         }
     },false);
 
-
     return (
-      <div className="container">
-
-            <ReferencesTable
-                draggedRow={draggedRow}
-                addNode={addNode}
-                references={references}
-                setReferences={setReferences}
-                className="references"
-            />
-
-            <div className="map-container">
+        <div
+            className={classes.wrapper}>
+            {/* <ToolBar
+        nodes={nodes}
+        edges={edges}
+        getNodeById={getNodeById}
+        selectedNodeId={selectedNodeId}
+        setNodes={setNodes}
+        setEdges={setEdges}
+        globalNodeIdCounter={globalNodeIdCounter}
+        setGlobalNodeIdCounter={setGlobalNodeIdCounter}
+      /> */}
             <ToolBar
-              selectedNode={selectedNode}
-              updateNode={updateNode}
               addNode={addNode}
               saveMap={saveMap}
               deleteNode={deleteNode}
               searchNodes = {searchNodes}
               linking={linking}
               setLinking={setLinking}
-              unlinking={unlinking}
-              setUnlinking={setUnlinking}
             />
-
-
+            <ReferencesTable
+                draggedRow={draggedRow}
+                addNode={addNode}
+                references={references}
+                setReferences={setReferences}
+            />
             <div
                 onDrop={e => {
                     // register event position
@@ -363,11 +347,8 @@ function App() {
             </div>
             {selectedNode.id ? <NodeInfoPanel node={selectedNode} reference={getReferenceById(selectedNode.citationKey)} updateNode={updateNode} changeNodeColor={changeNodeColor}/> :
                 <NodeInfoPanel node={selectedNode} updateNode={updateNode} />}
-                
-            </div>
 
         </div>
-
     );
 }
 
