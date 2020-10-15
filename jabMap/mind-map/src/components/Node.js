@@ -5,19 +5,10 @@ import { renderText } from '../utils/utilFunctions';
 
 const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, updateNode, label, bibEntryId, isInSearch: isInSearch}) => {
   
-  const priorityColors = ['none','yellow', 'orange', 'red'];
-
   const NODE_WIDTH = 170;
   const NODE_HEIGHT = 80;
 
-  const [priorityColor, setPriorityColor] = useState();
-
-  // Set initial priority icon color 
-  useEffect(() => {
-
-    // console.log(renderText(node.label))
-  }, [node.icons])
-    const handleDragMove = (e) => {
+  const handleDragMove = (e) => {
         node.x_pos = e.target.x()
         node.y_pos = e.target.y()
       updateNode(node);
@@ -42,7 +33,7 @@ const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, u
         }}
       >
         <Rect
-          //codes of this rect is to cover the edge under rect
+          // Codes of this rect is to cover the edge under rect
           radius={{"x" : 50, "y" : 30}}
           width={NODE_WIDTH}
           height={NODE_HEIGHT}

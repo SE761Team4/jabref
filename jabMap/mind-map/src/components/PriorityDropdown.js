@@ -19,32 +19,26 @@ const PriorityDropdown = ({selectedNode, updateNode}) => {
   };
 
   const pickPriority = (event) => {
-      console.log(event.target.textContent)
-      if (event.target.textContent == IconTypes.HIGH_PRIORITY)
+      if (event.target.textContent == Priorities.HIGH)
       {
-          console.log("h")
         let newIcons = [];
-        newIcons = selectedNode.icons.filter((icon) => {return icon !== IconTypes.MEDIUM_PRIORITY || icon !== IconTypes.LOW_PRIORITY});
+        newIcons = selectedNode.icons.filter((icon) => {return icon !== IconTypes.MEDIUM_PRIORITY && icon !== IconTypes.LOW_PRIORITY});
         newIcons.push(IconTypes.HIGH_PRIORITY);
         selectedNode.icons = newIcons;
         updateNode(selectedNode);
       }
-      else if (event.target.textContent == IconTypes.MEDIUM_PRIORITY)
+      else if (event.target.textContent == Priorities.MEDIUM)
       {
-        console.log("med")
-
         let newIcons = [];
-        newIcons = selectedNode.icons.filter((icon) => {return icon !== IconTypes.HIGH_PRIORITY || icon !== IconTypes.LOW_PRIORITY});
+        newIcons = selectedNode.icons.filter((icon) => {return icon !== IconTypes.HIGH_PRIORITY && icon !== IconTypes.LOW_PRIORITY});
         newIcons.push(IconTypes.MEDIUM_PRIORITY);
         selectedNode.icons = newIcons;
         updateNode(selectedNode);      
     }
-      else if (event.target.textContent == IconTypes.LOW_PRIORITY)
+      else if (event.target.textContent == Priorities.LOW)
       {
-        console.log("low")
-
         let newIcons = [];
-        newIcons = selectedNode.icons.filter((icon) => {return icon !== IconTypes.MEDIUM_PRIORITY || icon !== IconTypes.HIGH_PRIORITY});
+        newIcons = selectedNode.icons.filter((icon) => {return icon !== IconTypes.MEDIUM_PRIORITY && icon !== IconTypes.HIGH_PRIORITY});
         newIcons.push(IconTypes.LOW_PRIORITY);
         selectedNode.icons = newIcons;
         updateNode(selectedNode);      
@@ -55,10 +49,8 @@ const PriorityDropdown = ({selectedNode, updateNode}) => {
   return (
     <div className="priority-menu">
       <Button
-        onClick={handleClick}
-      >
+        onClick={handleClick}>
         <img src="/assets/LowPriority.png" className="main-button-icon"></img>
-
       </Button>
       <Menu
         id="customized-menu"
@@ -69,15 +61,15 @@ const PriorityDropdown = ({selectedNode, updateNode}) => {
       >
         <MenuItem onClick={pickPriority}>
         <img src="/assets/LowPriority.png" alt="low-priority" className="menu-buttons" id="low-priority"></img>
-          <ListItemText primary={IconTypes.LOW_PRIORITY} />
+        <ListItemText primary={Priorities.LOW} />
         </MenuItem>
         <MenuItem onClick={pickPriority}>
             <img src="/assets/MediumPriority.png" alt="medium-priority" className="menu-buttons" id="medium-priority"></img>
-          <ListItemText primary={IconTypes.MEDIUM_PRIORITY} />
+        <ListItemText primary={Priorities.MEDIUM} />
         </MenuItem>
         <MenuItem onClick={pickPriority}>
-          <img src="/assets/HighPriority.png" alt="high-priority" className="menu-buttons" id="high-priority"></img>
-          <ListItemText primary={IconTypes.HIGH_PRIORITY} />
+        <img src="/assets/HighPriority.png" alt="high-priority" className="menu-buttons" id="high-priority"></img>
+        <ListItemText primary={Priorities.HIGH} />
         </MenuItem>
       </Menu>
     </div>
