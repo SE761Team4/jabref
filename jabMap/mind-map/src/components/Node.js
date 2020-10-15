@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Text, Group, Rect } from 'react-konva';
 import NodeIcons from './NodeIcons';
 import { renderText } from '../utils/utilFunctions';
