@@ -5,6 +5,7 @@ import { IconTypes } from '../enums/IconTypes';
 
 const NodeIcons = ({node, updateNode}) => {
 
+    // Read in images for node icons
     const [readIcon] = useImage('/assets/Read.png');
     const [toReadIcon] = useImage('/assets/ToRead.png');
     const [highPriorityIcon] = useImage('/assets/HighPriority.png');
@@ -15,10 +16,6 @@ const NodeIcons = ({node, updateNode}) => {
 
     const NODE_WIDTH = 170;
     const NODE_HEIGHT = 80;
-
-    useEffect(() => {
-
-      }, [node.icons])
 
     const toggleFavouritedIcon = () => {
 
@@ -35,7 +32,6 @@ const NodeIcons = ({node, updateNode}) => {
           updateNode(node);
         }
       }
-  
           
       const toggleReadIcon = () => {
   
@@ -53,7 +49,6 @@ const NodeIcons = ({node, updateNode}) => {
         }
       }
   
-
     return (
         <Group
         width={NODE_WIDTH}
@@ -61,24 +56,20 @@ const NodeIcons = ({node, updateNode}) => {
         offsetX={NODE_WIDTH/2 -10}
         offsetY={-NODE_HEIGHT/2 + 20}>
 
-        <Image image={node.icons.includes(IconTypes.READ) ? readIcon : toReadIcon} width={24} height={24} offsetX={-50} onClick={toggleReadIcon}/> 
+        <Image image={node.icons.includes(IconTypes.READ) ? readIcon : toReadIcon} width={24} height={24} offsetX={-30} offsetY={10} onClick={toggleReadIcon}/> 
 
-{node.icons.includes(IconTypes.HIGH_PRIORITY) &&
-    <Image image={highPriorityIcon} width={24} height={24} offsetX={-20} onClick={toggleReadIcon}></Image>
+        { node.icons.includes(IconTypes.HIGH_PRIORITY) &&
+        <Image image={highPriorityIcon} width={24} height={24} offsetX={0} offsetY={10}></Image>}
 
-}
+        {node.icons.includes(IconTypes.MEDIUM_PRIORITY) &&
+            <Image image={medPriorityIcon} width={24} height={24} offsetX={0} offsetY={10}></Image>
+        }
 
-{node.icons.includes(IconTypes.MEDIUM_PRIORITY) &&
-    <Image image={medPriorityIcon} width={24} height={24} offsetX={-20} onClick={toggleReadIcon}></Image>
+        {node.icons.includes(IconTypes.LOW_PRIORITY) &&
+            <Image image={lowPriorityIcon} width={24} height={24} offsetX={0} offsetY={10}></Image>
+        }
 
-}
-
-{node.icons.includes(IconTypes.LOW_PRIORITY) &&
-    <Image image={lowPriorityIcon} width={24} height={24} offsetX={-20} onClick={toggleReadIcon}></Image>
-
-}
-
-        <Image image={node.icons.includes(IconTypes.FAVOURITE) ? favouritedIcon : notFavouriteIcon} width={24} height={24} offsetX={-80} onClick={toggleFavouritedIcon}/>   
+        <Image image={node.icons.includes(IconTypes.FAVOURITE) ? favouritedIcon : notFavouriteIcon} width={24} height={24} offsetX={-60} offsetY={10} onClick={toggleFavouritedIcon}/>   
     </Group>
     );
 }

@@ -14,11 +14,13 @@ const PriorityDropdown = ({selectedNode, updateNode}) => {
     setAnchorEl(event.currentTarget);
   };
 
+  // Handle closing the priorities dropdown menu
   const handleClose = () => {
     setAnchorEl(null);
   };
 
   const pickPriority = (event) => {
+      // If a node is selected, set the priority to the one chosen in the menu
       if (selectedNode.icons) 
       {
         if (event.target.textContent == Priorities.HIGH)
