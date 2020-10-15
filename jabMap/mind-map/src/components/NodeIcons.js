@@ -6,13 +6,13 @@ import { IconTypes } from '../enums/IconTypes';
 const NodeIcons = ({node, updateNode}) => {
 
     // Read in images for node icons
-    const [readIcon] = useImage('/assets/Read.png');
-    const [toReadIcon] = useImage('/assets/ToRead.png');
-    const [highPriorityIcon] = useImage('/assets/HighPriority.png');
-    const [medPriorityIcon] = useImage('/assets/MediumPriority.png');
-    const [lowPriorityIcon] = useImage('/assets/LowPriority.png');
-    const [favouritedIcon] = useImage('/assets/Favourited.png');
-    const [notFavouriteIcon] = useImage('/assets/NotFavourited.png');
+    const [readIcon] = useImage('./assets/Read.png');
+    const [toReadIcon] = useImage('./assets/ToRead.png');
+    const [highPriorityIcon] = useImage('./assets/HighPriority.png');
+    const [medPriorityIcon] = useImage('./assets/MediumPriority.png');
+    const [lowPriorityIcon] = useImage('./assets/LowPriority.png');
+    const [favouritedIcon] = useImage('./assets/Favourited.png');
+    const [notFavouriteIcon] = useImage('./assets/NotFavourited.png');
 
     const NODE_WIDTH = 170;
     const NODE_HEIGHT = 80;
@@ -32,9 +32,9 @@ const NodeIcons = ({node, updateNode}) => {
           updateNode(node);
         }
       }
-          
+
       const toggleReadIcon = () => {
-  
+
         if(node.icons){
           let newIcons = [];
           if(node.icons.includes(IconTypes.READ)){
@@ -48,7 +48,7 @@ const NodeIcons = ({node, updateNode}) => {
           updateNode(node);
         }
       }
-  
+
     return (
         <Group
         width={NODE_WIDTH}
@@ -56,20 +56,18 @@ const NodeIcons = ({node, updateNode}) => {
         offsetX={NODE_WIDTH/2 -10}
         offsetY={-NODE_HEIGHT/2 + 20}>
 
-        <Image image={node.icons.includes(IconTypes.READ) ? readIcon : toReadIcon} width={24} height={24} offsetX={-30} offsetY={10} onClick={toggleReadIcon}/> 
+        <Image image={node.icons.includes(IconTypes.READ) ? readIcon : toReadIcon} width={24} height={24} offsetX={-30} offsetY={10} onClick={toggleReadIcon}/>
 
         { node.icons.includes(IconTypes.HIGH_PRIORITY) &&
-        <Image image={highPriorityIcon} width={24} height={24} offsetX={0} offsetY={10}></Image>}
+        <Image image={highPriorityIcon} width={24} height={24} offsetX={0} offsetY={10}/>}
 
         {node.icons.includes(IconTypes.MEDIUM_PRIORITY) &&
-            <Image image={medPriorityIcon} width={24} height={24} offsetX={0} offsetY={10}></Image>
-        }
+            <Image image={medPriorityIcon} width={24} height={24} offsetX={0} offsetY={10}/>}
 
         {node.icons.includes(IconTypes.LOW_PRIORITY) &&
-            <Image image={lowPriorityIcon} width={24} height={24} offsetX={0} offsetY={10}></Image>
-        }
+            <Image image={lowPriorityIcon} width={24} height={24} offsetX={0} offsetY={10}/>}
 
-        <Image image={node.icons.includes(IconTypes.FAVOURITE) ? favouritedIcon : notFavouriteIcon} width={24} height={24} offsetX={-60} offsetY={10} onClick={toggleFavouritedIcon}/>   
+        <Image image={node.icons.includes(IconTypes.FAVOURITE) ? favouritedIcon : notFavouriteIcon} width={24} height={24} offsetX={-60} offsetY={10} onClick={toggleFavouritedIcon}/>
     </Group>
     );
 }

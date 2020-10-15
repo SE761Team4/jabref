@@ -77,11 +77,11 @@ const MindMapToolbar = ({ selectedNode, updateNode, addNode, saveMap, deleteNode
             </Button>
             <div className="divider"/>
 
+            <PriorityDropdown selectedNode={selectedNode} updateNode={updateNode}/>
+
             <Button size="small" onClick={toggleReadIcon}>
                 <img src={"./assets/MarkRead.png"} alt="Read Status" className="toolbar-button"/>
             </Button>
-
-            <PriorityDropdown selectedNode={selectedNode} updateNode={updateNode}/>
 
             <Button size="small" onClick={toggleFavouritedIcon}>
                 <img src={"./assets/Favourite.png"} alt="Favourite" className="toolbar-button"/>
@@ -98,7 +98,7 @@ const MindMapToolbar = ({ selectedNode, updateNode, addNode, saveMap, deleteNode
             <Button size="small" onClick={() => saveMap()} style={{paddingLeft: '0.5em'}}>
                 <img src={"./assets/Save.png"} alt="Priority" className="toolbar-button save-button"/>
             </Button>
-            
+
             <select style={{ border: 'none', textAlign: 'centre', fontSize: 14, marginRight: 30, marginLeft:30 }} >
                 <option value = "noFilter"> No Filter </option>
                     <option value = "highPriority"> High Priority </option>
