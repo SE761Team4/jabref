@@ -3,7 +3,7 @@ import { Text, Group, Rect } from 'react-konva';
 import NodeIcons from './NodeIcons';
 import { renderText } from '../utils/utilFunctions';
 
-const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, updateNode, label, bibEntryId, isInSearch: isInSearch}) => {
+const Node = ({node, updateEdges, setSelectedNode, selectedNodeId, updateNode, label, bibEntryId, isInSearch: isInSearch}) => {
   
   const NODE_WIDTH = 170;
   const NODE_HEIGHT = 80;

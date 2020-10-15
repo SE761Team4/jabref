@@ -50,7 +50,7 @@ const PriorityDropdown = ({selectedNode, updateNode}) => {
     <div className="priority-menu">
       <Button
         onClick={handleClick}>
-        <img src="/assets/LowPriority.png" className="main-button-icon"></img>
+        <img src="/assets/Priority.png" className="main-button-icon"></img>
       </Button>
       <Menu
         id="customized-menu"

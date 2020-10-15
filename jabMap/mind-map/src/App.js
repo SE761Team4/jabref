@@ -165,7 +165,7 @@ function App() {
                     };
                 }));
             })
-            .catch(console.log);
+            .catch("Error: " + console.log);
     }
 
     const searchNodes = (event) =>{

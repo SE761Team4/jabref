@@ -56,7 +56,8 @@ public class BibtexMindMapAdapter extends Converter<List<BibEntry>, MindMap> {
         }
         // Return blank mind map
         MindMap newMap = new MindMap();
-        newMap.addNode(new MindMapNodeBuilder().withLabel(DEFAULT_MAP_LABEL).withId(-1L).build());
+        List<String> icons = List.of("LOW_PRIORITY", "NOT_FAVOURITE", "TO_READ");
+        newMap.addNode(new MindMapNodeBuilder().withLabel(DEFAULT_MAP_LABEL).withId(-1L).withIcons(icons).build());
         return newMap;
     }
 
