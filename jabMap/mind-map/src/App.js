@@ -37,10 +37,6 @@ function App() {
         if(!linking && !unlinking){
             setSelectedNode(selected);
         } else if(unlinking){
-            console.log('unlinking');
-            console.log(selectedNode);
-            console.log(selected);
-            console.log(nodes);
             removeEdge(selectedNode, selected);
             setUnlinking(false);
 
@@ -231,7 +227,6 @@ function App() {
 
     const addNode = (bibData, x_pos, y_pos) => {
         if (selectedNode.id !== undefined) {
-            console.log(selectedNode)
             let nodeLabel;
             let bibEntryId;
             if (bibData === undefined) {
