@@ -47,17 +47,15 @@ public class OpenJabMapAction extends SimpleCommand {
         if (splitPane.getItems().contains(jabMapPane)) {
             splitPane.getItems().removeAll(jabMapPane);
             jabRefFrame.restoreAfterJabMapClosed();
-            for (int i = 0; i < toolBarNode.size(); i++) {
-                toolBarNode.get(i).setVisible(true);
-            }
+            jabRefFrame.restoreToolBar();
+            jabRefFrame.restoreJabrefMenu();
         } else {
             browser.getEngine().reload();
             splitPane.getItems().removeAll(splitPane.getItems());
             browser.setPrefSize(splitPane.getWidth(), splitPane.getHeight());
             splitPane.getItems().add(jabMapPane);
-            for (int i = 0; i < toolBarNode.size(); i++) {
-                toolBarNode.get(i).setVisible(false);
-            }
+            jabRefFrame.hideToolBar();
+            jabRefFrame.hideJabrefMenu();
         }
 
     }
