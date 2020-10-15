@@ -4,8 +4,10 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import "../styling/PriorityDropdown.css";
+import { Priorities } from "../enums/Priorities";
+import { IconTypes } from "../enums/IconTypes";
 
-export default function CustomizedMenus() {
+const PriorityDropdown = ({selectedNode, updateNode}) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
@@ -15,6 +17,38 @@ export default function CustomizedMenus() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const pickPriority = (event) => {
+      if (selectedNode.icons)
+      {
+        if (event.target.textContent == Priorities.HIGH)
+        {
+          let newIcons = [];
+          newIcons = selectedNode.icons.filter((icon) => {return icon !== IconTypes.MEDIUM_PRIORITY && icon !== IconTypes.LOW_PRIORITY});
+          newIcons.push(IconTypes.HIGH_PRIORITY);
+          selectedNode.icons = newIcons;
+          updateNode(selectedNode);
+        }
+        else if (event.target.textContent == Priorities.MEDIUM)
+        {
+          let newIcons = [];
+          newIcons = selectedNode.icons.filter((icon) => {return icon !== IconTypes.HIGH_PRIORITY && icon !== IconTypes.LOW_PRIORITY});
+          newIcons.push(IconTypes.MEDIUM_PRIORITY);
+          selectedNode.icons = newIcons;
+          updateNode(selectedNode);
+      }
+        else if (event.target.textContent == Priorities.LOW)
+        {
+          let newIcons = [];
+          newIcons = selectedNode.icons.filter((icon) => {return icon !== IconTypes.MEDIUM_PRIORITY && icon !== IconTypes.HIGH_PRIORITY});
+          newIcons.push(IconTypes.LOW_PRIORITY);
+          selectedNode.icons = newIcons;
+          updateNode(selectedNode);
+        }
+      }
+
+      handleClose();
+  }
 
   return (
     <div className="priority-menu">
@@ -31,19 +65,21 @@ export default function CustomizedMenus() {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem>
-        <img src={"./assets/LowPriority.png"} className="menu-buttons"/>
-          <ListItemText primary="Low priority" />
+        <MenuItem onClick={pickPriority}>
+        <img src={"./assets/LowPriority.png"} alt="low-priority" className="menu-buttons"/>
+            <ListItemText primary={Priorities.LOW} />
         </MenuItem>
-        <MenuItem>
-            <img src={"./assets/MediumPriority.png"} className="menu-buttons"/>
-          <ListItemText primary="Medium priority" />
+        <MenuItem onClick={pickPriority}>
+            <img src={"./assets/MediumPriority.png"} alt="medium-priority" className="menu-buttons"/>
+            <ListItemText primary={Priorities.MEDIUM} />
         </MenuItem>
-        <MenuItem>
-          <img src={"/assets/HighPriority.png"} className="menu-buttons"/>
-          <ListItemText primary="High priority" />
+        <MenuItem onClick={pickPriority}>
+          <img src={"/assets/HighPriority.png"} alt="high-priority" className="menu-buttons"/>
+            <ListItemText primary={Priorities.HIGH} />
         </MenuItem>
       </Menu>
     </div>
   );
 }
+
+export default React.memo(PriorityDropdown)

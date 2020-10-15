@@ -3,7 +3,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import Toolbar from '@material-ui/core/Toolbar';
 import '../styling/Toolbar.css';
 import Paper from '@material-ui/core/Paper';
-import { Button, Avatar } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { IconTypes } from "../enums/IconTypes";
 import PriorityDropdown from "./PriorityDropdown";
 
@@ -82,7 +82,7 @@ const MindMapToolbar = ({ selectedNode, updateNode, addNode, saveMap, deleteNode
                 <img src={"./assets/MarkRead.png"} alt="Read Status" className="toolbar-button"/>
             </Button>
 
-            <PriorityDropdown />
+            <PriorityDropdown selectedNode={selectedNode} updateNode={updateNode}/>
 
             <Button size="small" onClick={toggleFavouritedIcon}>
                 <img src={"./assets/Favourite.png"} alt="Favourite" className="toolbar-button"/>
@@ -99,9 +99,7 @@ const MindMapToolbar = ({ selectedNode, updateNode, addNode, saveMap, deleteNode
             <Button size="small" onClick={() => saveMap()} style={{paddingLeft: '0.5em'}}>
                 <img src={"./assets/Save.png"} alt="Priority" className="toolbar-button save-button"/>
             </Button>
-
-
-
+            
             <select style={{ border: 'none', textAlign: 'centre', fontSize: 14, marginRight: 30, marginLeft:30 }} >
                 <option value = "noFilter"> No Filter </option>
                     <option value = "highPriority"> High Priority </option>
