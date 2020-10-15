@@ -146,8 +146,8 @@ const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, u
           <Group
               width={nodeWidth}
               height={nodeHeight}
-              offsetX={nodeWidth/2 -10}
-              offsetY={-nodeHeight/2 + 20}
+              offsetX={nodeWidth/2 -25}
+              offsetY={-nodeHeight/2 + 30}
           >
             <Image image={node.icons.includes(IconTypes.READ) ? readIcon : toReadIcon} width={24} height={24} offsetX={-50} onClick={toggleReadIcon}/> 
 
