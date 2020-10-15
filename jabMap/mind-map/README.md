@@ -26,7 +26,7 @@ gradlew assemble
 To start JabRef, run the following in the terminal: 
 gradlew run
 
-(Alternatively, JabRef can be set up in intelliJ using these set up instructions: https://docs.jabref.org/installation)
+(Alternatively, JabRef can be set up in intelliJ using these set up instructions: https://devdocs.jabref.org/getting-into-the-code/guidelines-for-setting-up-a-local-workspace)
 
 The JabRef's GUI should now start up. 
 To populate JabRef with dummy data references, select File>Import>Import into new library. Navigate to the jabref folder
