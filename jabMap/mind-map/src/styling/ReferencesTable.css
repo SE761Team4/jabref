@@ -24,3 +24,24 @@
     padding-right:0;
 }
 
+.displayedText {
+    height: 20%;
+}
+.displayedText .fullText {
+    visibility: hidden;
+    width: 120px;
+    background-color: #6E6E6E;
+    opacity: 90%;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+
+    /*Position tooltip*/
+    position: absolute;
+    z-index: 1;
+}
+
+.displayedText:hover .fullText {
+    visibility: visible;
+}
+

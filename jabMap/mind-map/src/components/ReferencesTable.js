@@ -7,6 +7,19 @@ import Card from "@material-ui/core/Card";
 const ReferencesTable = ({references, setReferences, draggedRow, addNode}) => {
 
     const {windowHeight, windowWidth} = useWindowDimensions();
+    const MAX_LENGTH = 20;
+
+    const renderText = (text) => {
+        console.log(text)
+        if(text){
+            if(text.length > MAX_LENGTH) {
+                return `${text.substring(0, MAX_LENGTH - 3)}...` 
+            } else {
+                return text;
+            }
+        }
+
+    }
 
     return (
         <div className="table-proportions" style={{maxHeight: windowHeight - 70}}>
@@ -31,9 +44,9 @@ const ReferencesTable = ({references, setReferences, draggedRow, addNode}) => {
                             onDragStart={e => {
                                 draggedRow.current = ref
                             }}>
-                                <td key={ref.title + "-title"}>{ref.title}</td>
-                                <td key={ref.title + "-author"}>{ref.author}</td>
-                                <td key={ref.title + "-year"}>{ref.year}</td>
+                                <td key={ref.title + "-title"} className="displayedText">{renderText(ref.title)}<p className="fullText">{ref.title}</p></td>
+                                <td key={ref.title + "-author"} className="displayedText">{renderText(ref.author)}<p className="fullText">{ref.author}</p></td>
+                                <td key={ref.title + "-year"}>{renderText(ref.year)}</td>
                             </tr>
                         ))}
                         </tbody>
