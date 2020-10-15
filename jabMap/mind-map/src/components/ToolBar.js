@@ -31,7 +31,6 @@ const MindMapToolbar = ({ selectedNode, updateNode, addNode, saveMap, deleteNode
 
     const toggleReadIcon = () => {
 
-        console.log(selectedNode.icons)
         if(selectedNode.icons){
           let newIcons = [];
           if(selectedNode.icons.includes(IconTypes.READ)){
@@ -45,6 +44,23 @@ const MindMapToolbar = ({ selectedNode, updateNode, addNode, saveMap, deleteNode
           updateNode(selectedNode);
         }
       }
+
+      const toggleFavouritedIcon = () => {
+
+        if(selectedNode.icons){
+          let newIcons = [];
+          if(selectedNode.icons.includes(IconTypes.FAVOURITE)){
+            newIcons = selectedNode.icons.filter((icon) => {return icon !== IconTypes.FAVOURITE});
+            newIcons.push(IconTypes.NOT_FAVOURITE);
+          } else {
+            newIcons = selectedNode.icons.filter((icon) => {return icon !== IconTypes.NOT_FAVOURITE});
+            newIcons.push(IconTypes.FAVOURITE)
+          }
+          selectedNode.icons = newIcons;
+          updateNode(selectedNode);
+        }
+      }
+  
 
     return(
         <Toolbar className = 'toolbar-proportions' component = { Paper }>
@@ -68,7 +84,7 @@ const MindMapToolbar = ({ selectedNode, updateNode, addNode, saveMap, deleteNode
 
             <PriorityDropdown />
 
-            <Button size="small" onClick={deleteNode}>
+            <Button size="small" onClick={toggleFavouritedIcon}>
                 <img src="/assets/Favourite.png" alt="Favourite" className="toolbar-button"/>
             </Button>
             <div className="divider"></div>
