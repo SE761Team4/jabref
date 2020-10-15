@@ -1,18 +1,17 @@
 import {makeStyles} from "@material-ui/core/styles";
-import React
-    , {
+import React, {
     useEffect,
     useRef,
     useState
 } from "react";
-import { CirclePicker } from 'react-color';
+import {CirclePicker} from 'react-color';
 import Card
     from "@material-ui/core/Card";
 import {
     Table,
     TableBody,
     TableCell,
-    TableRow,
+    TableRow
 } from "@material-ui/core";
 import Typography
     from "@material-ui/core/Typography";
@@ -20,8 +19,6 @@ import TextField
     from "@material-ui/core/TextField";
 
 const NodeInfoPanel = ({node, reference, updateNode, changeNodeColor}) => {
-
-    //Styles
     const useStyles = makeStyles({
        panel: {
             position: "absolute",

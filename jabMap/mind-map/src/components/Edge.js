@@ -1,5 +1,6 @@
-import React from 'react';
-import { Line, Shape } from 'react-konva';
+import React
+    from 'react';
+import {Shape} from 'react-konva';
 
 
 const Edge = ({x1, y1, x2, y2}) => {
@@ -9,7 +10,6 @@ const Edge = ({x1, y1, x2, y2}) => {
     }
 
     return (
-        // <Line  points={[x1, y1, x2, y2]} stroke="blue"/>
         <Shape stroke={"#50618F"}
                 strokeWidth={6}
                 lineCap={"round"}

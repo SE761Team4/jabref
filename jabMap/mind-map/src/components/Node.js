@@ -4,7 +4,7 @@ import NodeIcons from './NodeIcons';
 import { renderText } from '../utils/utilFunctions';
 
 const Node = ({node, updateEdges, setSelectedNode, selectedNodeId, updateNode, label, bibEntryId, isInSearch: isInSearch}) => {
-  
+
   const NODE_WIDTH = 170;
   const NODE_HEIGHT = 80;
 
@@ -14,7 +14,7 @@ const Node = ({node, updateEdges, setSelectedNode, selectedNodeId, updateNode, l
       updateNode(node);
       updateEdges(node.id, e.target.x(), e.target.y());
     }
-    
+
     return (
       <Group
         id={node.id}
@@ -40,7 +40,7 @@ const Node = ({node, updateEdges, setSelectedNode, selectedNodeId, updateNode, l
           offsetX={NODE_WIDTH/2}
           offsetY={NODE_HEIGHT/2}
           cornerRadius={20}
-          fill={"white"}          
+          fill={"white"}
           strokeWidth={4}
         />
 
@@ -63,7 +63,7 @@ const Node = ({node, updateEdges, setSelectedNode, selectedNodeId, updateNode, l
         width={NODE_WIDTH}
         height={NODE_HEIGHT}
         />
-        <NodeIcons node={node} updateNode={updateNode}></NodeIcons> 
+        <NodeIcons node={node} updateNode={updateNode}></NodeIcons>
       </Group>
     );
   };

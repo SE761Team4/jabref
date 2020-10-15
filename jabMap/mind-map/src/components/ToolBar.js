@@ -1,21 +1,15 @@
-import React, {useRef } from "react";
-import {makeStyles} from "@material-ui/core/styles";
-import Toolbar from '@material-ui/core/Toolbar';
+import React, {useRef} from "react";
+import Toolbar
+    from '@material-ui/core/Toolbar';
 import '../styling/Toolbar.css';
-import Paper from '@material-ui/core/Paper';
-import { Button } from '@material-ui/core';
-import { IconTypes } from "../enums/IconTypes";
-import PriorityDropdown from "./PriorityDropdown";
+import Paper
+    from '@material-ui/core/Paper';
+import {Button} from '@material-ui/core';
+import {IconTypes} from "../enums/IconTypes";
+import PriorityDropdown
+    from "./PriorityDropdown";
 
 const MindMapToolbar = ({ selectedNode, updateNode, addNode, saveMap, deleteNode, searchNodes, linking, setLinking, unlinking, setUnlinking}) => {
-    //Styles
-    const useStyles = makeStyles({
-        toolbar: {
-            width: "100%",
-            textAlign: "center"
-        }
-    });
-    const classes = useStyles();
 
     const inputRef = useRef(null);
 
@@ -99,18 +93,7 @@ const MindMapToolbar = ({ selectedNode, updateNode, addNode, saveMap, deleteNode
                 <img src={"./assets/Save.png"} alt="Priority" className="toolbar-button save-button"/>
             </Button>
 
-            <select style={{ border: 'none', textAlign: 'centre', fontSize: 14, marginRight: 30, marginLeft:30 }} >
-                <option value = "noFilter"> No Filter </option>
-                    <option value = "highPriority"> High Priority </option>
-                    <option value = "favourites"> Low Priority </option>
-                    <option value = "favourites"> Favourites </option>
-                </select>
-
             <input className="search-bar" id="outlined-basic" onChange={searchNodes}  ref={inputRef } placeholder="Search..." />
-
-            <Button size="small" onClick={() => saveMap()} style={{paddingLeft: '0.5em'}}>
-                <img src={"./assets/Exit.png"} alt="Priority" className="toolbar-button"/>
-            </Button>
         </div>
 
     </Toolbar>
