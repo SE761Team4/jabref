@@ -60,44 +60,44 @@ const MindMapToolbar = ({ selectedNode, updateNode, addNode, saveMap, deleteNode
           updateNode(selectedNode);
         }
       }
-  
+
 
     return(
         <Toolbar className = 'toolbar-proportions' component = { Paper }>
         <div className="buttons-container">
 
             <Button size="small" aria-label = "add" onClick={() => addNode()} >
-                <img src="/assets/Add.png" alt="Add" className="toolbar-button"/>
+                <img src={"./assets/Add.png"} alt="Add" className="toolbar-button"/>
             </Button>
             <Button size="small" onClick={() => setLinking(!linking)} color={linking ? 'primary' : 'default'} >
-                <img src="/assets/Link.png" alt="Link" className="toolbar-button "/>
+                <img src={"./assets/Link.png"} alt="Link" className="toolbar-button "/>
             </Button>
 
             <Button size="small" onClick={() => setUnlinking(!unlinking)} color={linking ? 'primary' : 'default'} >
-                <img src="/assets/Unlink.png" alt="Unlink" className="toolbar-button "/>
+                <img src={"./assets/Unlink.png"} alt="Unlink" className="toolbar-button "/>
             </Button>
-            <div className="divider"></div>
+            <div className="divider"/>
 
             <Button size="small" onClick={toggleReadIcon}>
-                <img src="/assets/MarkRead.png" alt="Read Status" className="toolbar-button"/>
+                <img src={"./assets/MarkRead.png"} alt="Read Status" className="toolbar-button"/>
             </Button>
 
             <PriorityDropdown />
 
             <Button size="small" onClick={toggleFavouritedIcon}>
-                <img src="/assets/Favourite.png" alt="Favourite" className="toolbar-button"/>
+                <img src={"./assets/Favourite.png"} alt="Favourite" className="toolbar-button"/>
             </Button>
-            <div className="divider"></div>
+            <div className="divider"/>
 
             <Button size="small" onClick={deleteNode}>
-                <img src="/assets/Trash.png" alt="Delete Node" className="trash-button"/>
+                <img src={"./assets/Trash.png"} alt="Delete Node" className="trash-button"/>
             </Button>
         </div>
 
         <div className="search-container">
 
             <Button size="small" onClick={() => saveMap()} style={{paddingLeft: '0.5em'}}>
-                <img src="/assets/Save.png" alt="Priority" className="toolbar-button save-button"/>
+                <img src={"./assets/Save.png"} alt="Priority" className="toolbar-button save-button"/>
             </Button>
 
 
@@ -112,7 +112,7 @@ const MindMapToolbar = ({ selectedNode, updateNode, addNode, saveMap, deleteNode
             <input className="search-bar" id="outlined-basic" onChange={searchNodes}  ref={inputRef } placeholder="Search..." />
 
             <Button size="small" onClick={() => saveMap()} style={{paddingLeft: '0.5em'}}>
-                <img src="/assets/Exit.png" alt="Priority" className="toolbar-button"/>
+                <img src={"./assets/Exit.png"} alt="Priority" className="toolbar-button"/>
             </Button>
         </div>
 

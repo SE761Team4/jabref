@@ -49,8 +49,8 @@ function App() {
 
     const removeEdge = (startNode, endNode) => {
 
-        let filteredEdges = edges.filter((edge) => { 
-            return (edge.startId === startNode.id && edge.endId === endNode.id) || (edge.startId === endNode.id && edge.endId === startNode.id) 
+        let filteredEdges = edges.filter((edge) => {
+            return (edge.startId === startNode.id && edge.endId === endNode.id) || (edge.startId === endNode.id && edge.endId === startNode.id)
         });
         setEdges(edges.filter((edge) => { return !filteredEdges.includes(edge)}));
     }
@@ -136,7 +136,7 @@ function App() {
     const classes = useStyles();
 
     const fetchMap = async () => {
-        fetch("/libraries/current/map")
+        fetch("http://localhost:9898/libraries/current/map")
             .then((res) => res.json())
             .then((data) => {
                 //setNodes(data.nodes);
@@ -192,7 +192,7 @@ function App() {
     }
 
     const fetchReferences = async () => {
-        fetch("/libraries/current/entries")
+        fetch("http://localhost:9898/libraries/current/entries")
             .then((res) => res.json())
             .then((data) => {
                 setReferences(data);
@@ -216,7 +216,7 @@ function App() {
             "nodes": nodes,
             "edges": convertedEdges
         });
-        fetch('/libraries/current/map', {
+        fetch('http://localhost:9898/libraries/current/map', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -289,7 +289,7 @@ function App() {
     const draggedRow = useRef();
 
     window.addEventListener('keydown',  function(e)  {
-        
+
         if(e.shiftKey && e.keyCode===13) {
             //above
             addNode(undefined,selectedNode.x_pos,selectedNode.y_pos-200);
@@ -363,7 +363,7 @@ function App() {
             </div>
             {selectedNode.id ? <NodeInfoPanel node={selectedNode} reference={getReferenceById(selectedNode.citationKey)} updateNode={updateNode} changeNodeColor={changeNodeColor}/> :
                 <NodeInfoPanel node={selectedNode} updateNode={updateNode} />}
-                
+
             </div>
 
         </div>

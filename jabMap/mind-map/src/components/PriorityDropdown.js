@@ -21,7 +21,7 @@ export default function CustomizedMenus() {
       <Button
         onClick={handleClick}
       >
-        <img src="/assets/LowPriority.png" className="main-button-icon"></img>
+        <img src={"./assets/LowPriority.png"} className="main-button-icon"/>
 
       </Button>
       <Menu
@@ -32,15 +32,15 @@ export default function CustomizedMenus() {
         onClose={handleClose}
       >
         <MenuItem>
-        <img src="/assets/LowPriority.png" className="menu-buttons"></img>
+        <img src={"./assets/LowPriority.png"} className="menu-buttons"/>
           <ListItemText primary="Low priority" />
         </MenuItem>
         <MenuItem>
-            <img src="/assets/MediumPriority.png" className="menu-buttons"></img>
+            <img src={"./assets/MediumPriority.png"} className="menu-buttons"/>
           <ListItemText primary="Medium priority" />
         </MenuItem>
         <MenuItem>
-          <img src="/assets/HighPriority.png"className="menu-buttons"></img>
+          <img src={"/assets/HighPriority.png"} className="menu-buttons"/>
           <ListItemText primary="High priority" />
         </MenuItem>
       </Menu>

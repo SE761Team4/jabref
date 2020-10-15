@@ -34,9 +34,8 @@ public class OpenJabMapAction extends SimpleCommand {
         browser = new WebView();
         WebEngine webEngine = browser.getEngine();
 
-        // gwl for next step, please modify here to show jabmap index.html
-         webEngine.load("http://google.com");
-//        webEngine.load(getClass().getResource("build/index.html").toString());
+        // webEngine.load("http://google.com");
+        webEngine.load(getClass().getResource("build/index.html").toString());
         browser.setPrefSize(jabMapPane.getWidth(), jabMapPane.getHeight());
         jabMapPane.getChildren().add(browser);
     }
@@ -47,16 +46,16 @@ public class OpenJabMapAction extends SimpleCommand {
         if (splitPane.getItems().contains(jabMapPane)) {
             splitPane.getItems().removeAll(jabMapPane);
             jabRefFrame.restoreAfterJabMapClosed();
-            for (int i = 0; i < toolBarNode.size(); i++) {
-                toolBarNode.get(i).setVisible(true);
+            for (Node node : toolBarNode) {
+                node.setVisible(true);
             }
         } else {
             browser.getEngine().reload();
             splitPane.getItems().removeAll(splitPane.getItems());
             browser.setPrefSize(splitPane.getWidth(), splitPane.getHeight());
             splitPane.getItems().add(jabMapPane);
-            for (int i = 0; i < toolBarNode.size(); i++) {
-                toolBarNode.get(i).setVisible(false);
+            for (Node node : toolBarNode) {
+                node.setVisible(false);
             }
         }
 
