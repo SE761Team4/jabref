@@ -7,7 +7,7 @@ import { IconButton } from '@material-ui/core';
 import { IconTypes } from "../enums/IconTypes";
 
 
-const MindMapToolbar = ({ selectedNode, updateNode, addNode, saveMap, deleteNode, searchNodes, linking, setLinking}) => {
+const MindMapToolbar = ({ selectedNode, updateNode, addNode, saveMap, deleteNode, searchNodes, linking, setLinking, unlinking, setUnlinking}) => {
     //Styles
     const useStyles = makeStyles({
         toolbar: {
@@ -56,7 +56,7 @@ const MindMapToolbar = ({ selectedNode, updateNode, addNode, saveMap, deleteNode
                 <img src="/assets/Link.png" alt="Link" className="toolbar-button "/>
             </IconButton>
 
-            <IconButton size="small" onClick={() => setLinking(!linking)} color={linking ? 'primary' : 'default'} >
+            <IconButton size="small" onClick={() => setUnlinking(!unlinking)} color={linking ? 'primary' : 'default'} >
                 <img src="/assets/Unlink.png" alt="Unlink" className="toolbar-button "/>
             </IconButton>
             <div className="divider"></div>

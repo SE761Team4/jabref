@@ -27,18 +27,36 @@ function App() {
 
     const [linking, setLinking] = useState(false);
 
+    const [unlinking, setUnlinking] = useState(false);
+
     const getNodeById = (id) => {
         return nodes.find(node => (node.id === id));
     };
 
     const handleSelected = (selected) => {
-        if(!linking){
+        if(!linking && !unlinking){
             setSelectedNode(selected);
-        } else {
+        } else if(unlinking){
+            console.log('unlinking');
+            console.log(selectedNode);
+            console.log(selected);
+            console.log(nodes);
+            removeEdge(selectedNode, selected);
+            setUnlinking(false);
+
+        } else if (linking) {
             addEdge(selectedNode, selected);
             setLinking(false);
             setSelectedNode(selected);
         }
+    }
+
+    const removeEdge = (startNode, endNode) => {
+
+        let filteredEdges = edges.filter((edge) => { 
+            return (edge.startId === startNode.id && edge.endId === endNode.id) || (edge.startId === endNode.id && edge.endId === startNode.id) 
+        });
+        setEdges(edges.filter((edge) => { return !filteredEdges.includes(edge)}));
     }
 
     const getReferenceById = (id) => {
@@ -279,19 +297,6 @@ function App() {
 
 
     return (
-    //     <div
-    //         className={classes.wrapper}>
-    //         {/* <ToolBar
-    //     nodes={nodes}
-    //     edges={edges}
-    //     getNodeById={getNodeById}
-    //     selectedNodeId={selectedNodeId}
-    //     setNodes={setNodes}
-    //     setEdges={setEdges}
-    //     globalNodeIdCounter={globalNodeIdCounter}
-    //     setGlobalNodeIdCounter={setGlobalNodeIdCounter}
-    //   /> */}
-
       <div className="container">
 
             <ReferencesTable
@@ -311,6 +316,8 @@ function App() {
               searchNodes = {searchNodes}
               linking={linking}
               setLinking={setLinking}
+              unlinking={unlinking}
+              setUnlinking={setUnlinking}
             />
 
 
