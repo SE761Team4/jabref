@@ -5,6 +5,8 @@ JabRef is an open-source reference management tool that allows users to collect 
 JabMap is a MindMap extension for the Jabref tool that can be be used to visually organize data stored in JabRef.
 This MindMap extension is especially useful for linking connected articles and categorizing sources.
 
+JabMap implementation can be found in jabref>jabMap>mind-map
+
 ## JabMap Features
 
 When references have been added to JabRef, the user can open the JabMap tool and see the sources in the reference table.
@@ -24,7 +26,7 @@ gradlew assemble
 To start JabRef, run the following in the terminal: 
 gradlew run
 
-(Alternatively, JabRef can be set up in intelliJ using these set up instructions: https://docs.jabref.org/installation)
+(Alternatively, JabRef can be set up in intelliJ using these set up instructions: https://devdocs.jabref.org/getting-into-the-code/guidelines-for-setting-up-a-local-workspace)
 
 The JabRef's GUI should now start up. 
 To populate JabRef with dummy data references, select File>Import>Import into new library. Navigate to the jabref folder
@@ -41,7 +43,7 @@ You should see a MindMap like the one show below:
 
 ## How to use JabMap
 
-###Creating Nodes
+### Creating Nodes
 
 The References table corresponds to the references that have been loaded into JabRef. To create a new node for a reference,
 you can drag and drop the reference from the table onto the map area. 
@@ -50,17 +52,17 @@ To create a label node , you can select an existing node of the MindMap and then
 
 The label and colour of the node can be adjusted in the Node Info bar on the right.
 
-###Deleting Nodes
+### Deleting Nodes
 
 To delete a node, select it and then click the delete icon in the tool bar.
 
-###Linking Nodes
+### Linking Nodes
 
 To link two nodes together, you can select the first node, click the link symbol in the tool bar and then click the second node. 
 
 Unlinking nodes is a similar process: Select the first node, click the unlink button and then click the second node.
 
-###Using Node Icons
+### Using Node Icons
 
 Each node has three icons to represent the priority, read status, and the favourite status of the node.
 
@@ -72,11 +74,11 @@ symbol in the toolbar can be used.
 
 To favourite a node, the star icon in the node can be clicked, or the star icon in the tool bar can be used instead.
 
-###Saving the MindMap
+### Saving the MindMap
 
 The save icon in the toolbar can be used to save the whole MindMap.
 
-###Sorting the MindMap
+### Sorting the MindMap
 
 The filter dropdown and the search box to the right of the toolbar can be used to organise the MindMap.
 
