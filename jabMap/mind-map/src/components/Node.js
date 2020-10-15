@@ -126,10 +126,10 @@ const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, u
 
         <Rect
           radius={{"x" : 50, "y" : 30}}
-          width={width}
-          height={height}
-          offsetX={width/2}
-          offsetY={height/2}
+          width={nodeWidth}
+          height={nodeHeight}
+          offsetX={nodeWidth/2}
+          offsetY={nodeHeight/2}
           cornerRadius={20}
           fill={isInSearch ? "#3f51b5" : (selectedNodeId === node.id ? "#a2b8e5" : node.colour==undefined?"white":node.colour+"80")}
           stroke={node.colour === undefined ? "#6E6E6E" : node.colour}
