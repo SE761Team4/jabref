@@ -11,9 +11,6 @@ import {
     Text
 } from 'react-konva';
 
-
-
-
 const KonvaReferencesTable = ({references, setReferences, addNode, layerRef, stageRef}) => {
 
     //Styles

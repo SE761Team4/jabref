@@ -4,14 +4,14 @@ import React, {
     useState
 } from "react";
 import "./App.css";
-import MindMap from "./MindMap";
+import MindMap from "./components/MindMap";
 import {makeStyles} from "@material-ui/core/styles";
 import { Layer, Stage } from 'react-konva';
 import useWindowDimensions from './WindowDimensions';
-import ToolBar from "./ToolBar";
-import NodeInfoPanel from "./NodeInfoPanel";
-import ReferencesTable from "./ReferencesTable";
-
+import ToolBar from "./components/ToolBar";
+import NodeInfoPanel from "./components/NodeInfoPanel";
+import ReferencesTable from "./components/ReferencesTable";
+import { IconTypes } from "./enums/IconTypes";
 
 function App() {
 
@@ -233,7 +233,8 @@ function App() {
                 label: nodeLabel,
                 x_pos: x_pos,
                 y_pos: y_pos,
-                citationKey: bibEntryId
+                citationKey: bibEntryId,
+                icons: [ IconTypes.TO_READ, IconTypes.LOW_PRIORITY, IconTypes.NOT_FAVOURITE ]
             }
 
         setNodes([...nodes, newNode]);
@@ -291,7 +292,7 @@ function App() {
     //     setGlobalNodeIdCounter={setGlobalNodeIdCounter}
     //   /> */}
 
-      <div class="container">
+      <div className="container">
 
             <ReferencesTable
                 draggedRow={draggedRow}
@@ -300,8 +301,10 @@ function App() {
                 setReferences={setReferences}
             />
 
-            <div class="map-container">
+            <div className="map-container">
             <ToolBar
+              selectedNode={selectedNode}
+              updateNode={updateNode}
               addNode={addNode}
               saveMap={saveMap}
               deleteNode={deleteNode}

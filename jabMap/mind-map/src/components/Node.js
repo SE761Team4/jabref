@@ -14,12 +14,12 @@ const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, u
 
   // Set initial priority icon color 
   useEffect(() => {
-    if(node.icons){
-      if(node.icons.includes("HIGH_PRIORITY")){
+    if(node.icons) {
+      if (node.icons.includes("HIGH_PRIORITY")) {
         setPriorityColor(priorityColors[3]);
-      } else if(node.icons.includes("MEDIUM_PRIORITY")){
+      } else if(node.icons.includes("MEDIUM_PRIORITY")) {
         setPriorityColor(priorityColors[2]);
-      } else if(node.icons.includes("LOW_PRIORITY")){
+      } else if(node.icons.includes("LOW_PRIORITY")) {
         setPriorityColor(priorityColors[1]);
       }
     }
@@ -32,7 +32,7 @@ const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, u
     }
 
     
-    const toggleReadIcon = () => {
+    const toggleReadIcon = (node) => {
       if(node.icons){
         let newIcons = [];
         if(node.icons.includes("READ")){
@@ -115,7 +115,7 @@ const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, u
               offsetX={width/2 -10}
               offsetY={-height/2 + 20}
           >
-              {(node.citationKey && node.icons && (node.icons.includes("TO_READ") || node.icons.includes("READ"))) && 
+              {(node.icons && (node.icons.includes("TO_READ") || node.icons.includes("READ"))) && 
                 <Image image={bookmarkIcon} fill={node.icons.includes("READ") ? 'green' : selectedNodeId === node.id ? "#a2b8e5" : "white" } onClick={toggleReadIcon}/>}
               {node.icons && <Image image={priorityIcon} width={16} height={16} offsetX={-20} fill={priorityColor !== 'none' ? priorityColor : selectedNodeId === node.id ? "#a2b8e5" : "white"} onClick={togglePriority}/>}
           </Group>

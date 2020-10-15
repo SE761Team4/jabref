@@ -1,24 +1,13 @@
 import React, {useRef } from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import Toolbar from '@material-ui/core/Toolbar';
-import './toolbar.css';
+import '../styling/Toolbar.css';
 import Paper from '@material-ui/core/Paper';
 import { IconButton } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import SaveIcon from '@material-ui/icons/Save';
-import FormatColorFillIcon from '@material-ui/icons/FormatColorFill';
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
-import StarBorderIcon from '@material-ui/icons/StarBorder';
-import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
-import HeightIcon from '@material-ui/icons/Height';
-import Input from '@material-ui/core/Input';
-import Avatar from "@material-ui/core/Avatar";
-;
-
-// const Toolbar = ({nodes, edges, setNodes, setEdges, getNodeById, selectedNodeId, globalNodeIdCounter, setGlobalNodeIdCounter}) => {
+import { IconTypes } from "../enums/IconTypes";
 
 
-const MindMapToolbar = ({addNode, saveMap, deleteNode, searchNodes, linking, setLinking}) => {
+const MindMapToolbar = ({ selectedNode, updateNode, addNode, saveMap, deleteNode, searchNodes, linking, setLinking}) => {
     //Styles
     const useStyles = makeStyles({
         toolbar: {
@@ -39,38 +28,55 @@ const MindMapToolbar = ({addNode, saveMap, deleteNode, searchNodes, linking, set
         }
     }
 
+    const toggleReadIcon = () => {
+
+        console.log(selectedNode.icons)
+        if(selectedNode.icons){
+          let newIcons = [];
+          if(selectedNode.icons.includes(IconTypes.READ)){
+            newIcons = selectedNode.icons.filter((icon) => {return icon !== IconTypes.READ});
+            newIcons.push(IconTypes.TO_READ);
+          } else {
+            newIcons = selectedNode.icons.filter((icon) => {return icon !== IconTypes.TO_READ});
+            newIcons.push(IconTypes.READ)
+          }
+          selectedNode.icons = newIcons;
+          updateNode(selectedNode);
+        }
+      }
+
     return(
         <Toolbar className = 'toolbar-proportions' component = { Paper }>
-        <div class="buttons-container">
+        <div className="buttons-container">
             {/*<div style={{  borderRight: '0.1em solid grey', padding: '0.5em' }}>*/}
             <IconButton size="small" aria-label = "add" onClick={() => addNode()} >
-                <img src="/assets/Add.png" alt="Add" class="toolbar-button"/>
+                <img src="/assets/Add.png" alt="Add" className="toolbar-button"/>
             </IconButton>
             <IconButton size="small" onClick={() => setLinking(!linking)} color={linking ? 'primary' : 'default'} >
-                <img src="/assets/Link.png" alt="Add" class="toolbar-button "/>
+                <img src="/assets/Link.png" alt="Link" className="toolbar-button "/>
             </IconButton>
-            <div class="divider"></div>
+            <div className="divider"></div>
+
+            <IconButton size="small" onClick={toggleReadIcon}>
+                <img src="/assets/Read.png" alt="Read Status" className="toolbar-button"/>
+            </IconButton>
+            <IconButton size="small" onClick={deleteNode}>
+                <img src="/assets/LowPriority.png" alt="Priority" className="toolbar-button"/>
+            </IconButton>
+            <IconButton size="small" onClick={deleteNode}>
+                <img src="/assets/Favourite.png" alt="Favourite" className="toolbar-button"/>
+            </IconButton>
+            <div className="divider"></div>
 
             <IconButton size="small" onClick={deleteNode}>
-                <img src="/assets/Read.png" alt="Read Status" class="toolbar-button"/>
-            </IconButton>
-            <IconButton size="small" onClick={deleteNode}>
-                <img src="/assets/LowPriority.png" alt="Priority" class="toolbar-button"/>
-            </IconButton>
-            <IconButton size="small" onClick={deleteNode}>
-                <img src="/assets/Favourite.png" alt="Favourite" class="toolbar-button"/>
-            </IconButton>
-            <div class="divider"></div>
-
-            <IconButton size="small" onClick={deleteNode}>
-                <img src="/assets/Trash.png" alt="Delete Node" class="trash-button"/>
+                <img src="/assets/Trash.png" alt="Delete Node" className="trash-button"/>
             </IconButton>
         </div>
 
-        <div class="search-container">
+        <div className="search-container">
 
             <IconButton size="small" onClick={() => saveMap()} style={{paddingLeft: '0.5em'}}>
-                <img src="/assets/Save.png" alt="Priority" class="toolbar-button save-button"/>
+                <img src="/assets/Save.png" alt="Priority" className="toolbar-button save-button"/>
             </IconButton>
 
 
@@ -82,10 +88,10 @@ const MindMapToolbar = ({addNode, saveMap, deleteNode, searchNodes, linking, set
                     <option value = "favourites"> Favourites </option>
                 </select>
 
-            <input class="search-bar" id="outlined-basic" onChange={searchNodes}  ref={inputRef } placeholder="Search..." />
+            <input className="search-bar" id="outlined-basic" onChange={searchNodes}  ref={inputRef } placeholder="Search..." />
 
             <IconButton size="small" onClick={() => saveMap()} style={{paddingLeft: '0.5em'}}>
-                <img src="/assets/Exit.png" alt="Priority" class="toolbar-button"/>
+                <img src="/assets/Exit.png" alt="Priority" className="toolbar-button"/>
             </IconButton>
         </div>
 
@@ -94,6 +100,7 @@ const MindMapToolbar = ({addNode, saveMap, deleteNode, searchNodes, linking, set
 }
 
 export default React.memo(MindMapToolbar);
+
 
 
 
