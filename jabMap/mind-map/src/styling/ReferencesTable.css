@@ -6,10 +6,16 @@
     overflow-y: auto;
     box-sizing: border-box;
     cursor: pointer;
+    overflow: hidden;
 }
 .table-striped > tbody > tr:nth-child(odd) > td,
 .table-striped > tbody > tr:nth-child(odd) > th {
     background-color: #f9f9f9;
+}
+
+.table-striped {
+    width: 100%;
+    overflow-y: scroll;
 }
 
 .table-striped td {
@@ -24,7 +30,7 @@
 }
 
 .displayedText {
-    height: 20%;
+    height: 20px;
 }
 .displayedText .fullText {
     visibility: hidden;

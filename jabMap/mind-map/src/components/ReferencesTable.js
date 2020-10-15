@@ -8,9 +8,11 @@ const ReferencesTable = ({references, setReferences, draggedRow, addNode}) => {
 
     const {windowHeight, windowWidth} = useWindowDimensions();
     const MAX_LENGTH = 20;
+    const TABLE_FILL = new Array(Math.floor((windowHeight - (references.length * 20))/20));
+    TABLE_FILL.fill("");
+    console.log(TABLE_FILL)
 
     const renderText = (text) => {
-        console.log(text)
         if(text){
             if(text.length > MAX_LENGTH) {
                 return `${text.substring(0, MAX_LENGTH - 3)}...` 
@@ -22,7 +24,7 @@ const ReferencesTable = ({references, setReferences, draggedRow, addNode}) => {
     }
 
     return (
-        <div className="table-proportions" style={{maxHeight: windowHeight - 70}}>
+        <div className="table-proportions" style={{maxHeight: windowHeight}}>
             <Card style={{width: "99.5%"}}>
                 <Typography gutterBottom variant="h4" component="h4" style={{textAlign:"center", marginTop: "15px"}}>
                     References
@@ -47,6 +49,13 @@ const ReferencesTable = ({references, setReferences, draggedRow, addNode}) => {
                                 <td key={ref.title + "-title"} className="displayedText">{renderText(ref.title)}<p className="fullText">{ref.title}</p></td>
                                 <td key={ref.title + "-author"} className="displayedText">{renderText(ref.author)}<p className="fullText">{ref.author}</p></td>
                                 <td key={ref.title + "-year"}>{renderText(ref.year)}</td>
+                            </tr>
+                        ))}
+                        {TABLE_FILL.map((item) => (
+                            <tr>
+                                <td className="displayedText">{item}</td>
+                                <td className="displayedText"> </td>
+                                <td className="displayedText"> </td>
                             </tr>
                         ))}
                         </tbody>
