@@ -35,8 +35,8 @@ const NodeInfoPanel = ({node, reference, updateNode, changeNodeColor}) => {
     const useStyles = makeStyles({
        panel: {
             position: "absolute",
-           top: 74,
-           right: 10,
+           top: '10%',
+           right: '1%',
            width: "300px",
            backgroundColor: "white",
 

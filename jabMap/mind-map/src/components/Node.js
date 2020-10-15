@@ -9,6 +9,9 @@ const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, u
   const priorityColors = ['none','yellow', 'orange', 'red'];
   const [bookmarkIcon] = useImage('/assets/bookmarkSmall.png');
   const [priorityIcon] = useImage('/assets/priority.png');
+  const [favouritedIcon] = useImage('/assets/Favourited.png');
+  const [notFavouriteIcon] = useImage('/assets/Favourite.png');
+
 
   const [priorityColor, setPriorityColor] = useState();
 
@@ -46,6 +49,23 @@ const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, u
         updateNode(node);
       }
     }
+    
+    const toggleFavouritedIcon = () => {
+
+      if(node.icons){
+        let newIcons = [];
+        if(node.icons.includes(IconTypes.FAVOURITE)){
+          newIcons = node.icons.filter((icon) => {return icon !== IconTypes.FAVOURITE});
+          newIcons.push(IconTypes.NOT_FAVOURITE);
+        } else {
+          newIcons = node.icons.filter((icon) => {return icon !== IconTypes.NOT_FAVOURITE});
+          newIcons.push(IconTypes.FAVOURITE)
+        }
+        node.icons = newIcons;
+        updateNode(node);
+      }
+    }
+
 
     const togglePriority = () => {
       if(node.icons){
@@ -115,8 +135,16 @@ const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, u
               offsetX={width/2 -10}
               offsetY={-height/2 + 20}
           >
-              {node.icons && <Image image={bookmarkIcon} fill={node.icons.includes(IconTypes.READ) ? 'green' : selectedNodeId === node.id ? "#a2b8e5" : "white" } onClick={toggleReadIcon}/>}
+              {(node.icons && (node.icons.includes(IconTypes.TO_READ) || node.icons.includes(IconTypes.READ))) && 
+                <Image image={bookmarkIcon} fill={node.icons.includes(IconTypes.READ) ? 'green' : selectedNodeId === node.id ? "#a2b8e5" : "white" } onClick={toggleReadIcon}/>}
+
               {node.icons && <Image image={priorityIcon} width={16} height={16} offsetX={-20} fill={priorityColor !== 'none' ? priorityColor : selectedNodeId === node.id ? "#a2b8e5" : "white"} onClick={togglePriority}/>}
+
+              {node.icons && (node.icons.includes(IconTypes.FAVOURITE)) && <Image image={favouritedIcon} width={16} height={16} offsetX={-20} onClick={toggleFavouritedIcon}/>}
+
+              {node.icons && (node.icons.includes(IconTypes.NOT_FAVOURITE)) && <Image image={notFavouriteIcon} width={16} height={16} offsetX={-20} onClick={toggleFavouritedIcon}/>}
+
+
           </Group>
       </Group>
     );
