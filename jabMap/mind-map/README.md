@@ -1,68 +1,83 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# JabMap: The JabRef MindMapping Tool
 
-## Available Scripts
+JabRef is an open-source reference management tool that allows users to collect and organize sources for literature.
 
-In the project directory, you can run:
+JabMap is a MindMap extension for the Jabref tool that can be be used to visually organize data stored in JabRef.
+This MindMap extension is especially useful for linking connected articles and categorizing sources.
 
-### `yarn start`
+## JabMap Features
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+When references have been added to JabRef, the user can open the JabMap tool and see the sources in the reference table.
+JabMap allows you to create label nodes and nodes containing a reference. Nodes in the MindMap can then be linked together
+with edges, and individual nodes can have their colour changed, be marked as read or unread and be assigned a priority.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Running JabMap Locally
 
-### `yarn test`
+To run JabMap you must first build and run JabRef from the source. This requires you to have JDK 13 or higher installed 
+on your device.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Download the SE761Team4 jabref source code and open a terminal window at the jabref location. 
 
-### `yarn build`
+To set up the project, in the terminal window run:
+gradlew assemble
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+To start JabRef, run the following in the terminal: 
+gradlew run
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+(Alternatively, JabRef can be set up in intelliJ using these set up instructions: https://docs.jabref.org/installation)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The JabRef's GUI should now start up. 
+To populate JabRef with dummy data references, select File>Import>Import into new library. Navigate to the jabref folder
+and select map_test.bib.
+JabRef should become populated with dummy data references.
 
-### `yarn eject`
+![Alt text](README-Screenshots/Screenshot1.jpg "Optional Title")
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+To open the JabMap tool, click the open JabMap button circled above
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+You should see a MindMap like the one show below:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+![Alt text](README-Screenshots/Screenshot2.jpg "Optional Title")
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## How to use JabMap
 
-## Learn More
+###Creating Nodes
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+The References table corresponds to the references that have been loaded into JabRef. To create a new node for a reference,
+you can drag and drop the reference from the table onto the map area. 
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+To create a label node , you can select an existing node of the MindMap and then click the '+' symbol in the tool bar. 
 
-### Code Splitting
+The label and colour of the node can be adjusted in the Node Info bar on the right.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+###Deleting Nodes
 
-### Analyzing the Bundle Size
+To delete a node, select it and then click the delete icon in the tool bar.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+###Linking Nodes
 
-### Making a Progressive Web App
+To link two nodes together, you can select the first node, click the link symbol in the tool bar and then click the second node. 
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+Unlinking nodes is a similar process: Select the first node, click the unlink button and then click the second node.
 
-### Advanced Configuration
+###Using Node Icons
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+Each node has three icons to represent the priority, read status, and the favourite status of the node.
 
-### Deployment
+To set a priority on a node, the priority symbol can be clicked to change colour. Alternatively, the priority can be changed
+by selecting a node and using the priority icon in the tool bar.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+To change the read status of a node, the read symbol on a node can be clicked, or the node can be selected and the read
+symbol in the toolbar can be used.
 
-### `yarn build` fails to minify
+To favourite a node, the star icon in the node can be clicked, or the star icon in the tool bar can be used instead.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+###Saving the MindMap
+
+The save icon in the toolbar can be used to save the whole MindMap.
+
+###Sorting the MindMap
+
+The filter dropdown and the search box to the right of the toolbar can be used to organise the MindMap.
+
+
