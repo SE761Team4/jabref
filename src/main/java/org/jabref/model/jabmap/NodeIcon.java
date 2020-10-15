@@ -13,8 +13,8 @@ public enum NodeIcon {
 
     private final String displayName;
 
-    NodeIcon(String displayname) {
-        this.displayName = displayname;
+    NodeIcon(String displayName) {
+        this.displayName = displayName;
     }
 
     public String getName() {
