@@ -1,6 +1,5 @@
 .toolbar-proportions {
 	width: 100%;
-	height: 20% !important;
     box-sizing: border-box;
 }
 
@@ -46,9 +45,4 @@ button:focus {
   border-left: 0.1em solid grey;
   height: 32px;
   margin: 20px;
-}
-
-.priority-dropdown {
-	height: 100%;
-
 }
