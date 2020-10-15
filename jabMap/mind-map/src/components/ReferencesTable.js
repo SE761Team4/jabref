@@ -5,7 +5,6 @@ import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import { renderText } from '../utils/utilFunctions';
 
-
 const ReferencesTable = ({references, setReferences, draggedRow, addNode}) => {
 
     const {windowHeight, windowWidth} = useWindowDimensions();

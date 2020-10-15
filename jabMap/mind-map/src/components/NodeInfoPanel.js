@@ -5,14 +5,6 @@ import React
     useRef,
     useState
 } from "react";
-import InputLabel
-    from "@material-ui/core/InputLabel";
-import FormControl
-    from "@material-ui/core/FormControl";
-import Input
-    from "@material-ui/core/Input";
-import FormHelperText
-    from "@material-ui/core/FormHelperText";
 import { CirclePicker } from 'react-color';
 import Card
     from "@material-ui/core/Card";
@@ -20,9 +12,7 @@ import {
     Table,
     TableBody,
     TableCell,
-    TableHead,
     TableRow,
-    CardHeader
 } from "@material-ui/core";
 import Typography
     from "@material-ui/core/Typography";
