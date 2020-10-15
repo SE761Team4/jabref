@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Text, Group, Rect, Image } from 'react-konva';
 import useImage from 'use-image';
-
+import { IconTypes } from "../enums/IconTypes";
 
 const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, updateNode, label, bibEntryId, isInSearch: isInSearch}) => {
   
@@ -115,8 +115,9 @@ const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, u
               offsetX={width/2 -10}
               offsetY={-height/2 + 20}
           >
-              {(node.icons && (node.icons.includes("TO_READ") || node.icons.includes("READ"))) && 
-                <Image image={bookmarkIcon} fill={node.icons.includes("READ") ? 'green' : selectedNodeId === node.id ? "#a2b8e5" : "white" } onClick={toggleReadIcon}/>}
+              {(node.icons && (node.icons.includes(IconTypes.TO_READ) || node.icons.includes(IconTypes.READ))) && 
+                <Image image={bookmarkIcon} fill={node.icons.includes(IconTypes.READ) ? 'green' : selectedNodeId === node.id ? "#a2b8e5" : "white" } onClick={toggleReadIcon}/>}
+                
               {node.icons && <Image image={priorityIcon} width={16} height={16} offsetX={-20} fill={priorityColor !== 'none' ? priorityColor : selectedNodeId === node.id ? "#a2b8e5" : "white"} onClick={togglePriority}/>}
           </Group>
       </Group>

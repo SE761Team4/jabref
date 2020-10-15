@@ -26,14 +26,14 @@ const ReferencesTable = ({references, setReferences, draggedRow, addNode}) => {
                         <tbody key="table-body">
                         {references &&
                         references.map((ref) => (
-                            <tr key={ref.id}
+                            <tr key={ref.title}
                             draggable={true}
                             onDragStart={e => {
                                 draggedRow.current = ref
                             }}>
-                                <td key={ref.id + "-title"}>{ref.title}</td>
-                                <td key={ref.id + "-author"}>{ref.author}</td>
-                                <td key={ref.id + "-year"}>{ref.year}</td>
+                                <td key={ref.title + "-title"}>{ref.title}</td>
+                                <td key={ref.title + "-author"}>{ref.author}</td>
+                                <td key={ref.title + "-year"}>{ref.year}</td>
                             </tr>
                         ))}
                         </tbody>
