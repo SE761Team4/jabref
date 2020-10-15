@@ -16,6 +16,10 @@ const NodeIcons = ({node, updateNode}) => {
     const NODE_WIDTH = 170;
     const NODE_HEIGHT = 80;
 
+    useEffect(() => {
+
+      }, [node.icons])
+
     const toggleFavouritedIcon = () => {
 
         if(node.icons){

@@ -19,8 +19,10 @@ const PriorityDropdown = ({selectedNode, updateNode}) => {
   };
 
   const pickPriority = (event) => {
+      console.log(event.target.textContent)
       if (event.target.textContent == IconTypes.HIGH_PRIORITY)
       {
+          console.log("h")
         let newIcons = [];
         newIcons = selectedNode.icons.filter((icon) => {return icon !== IconTypes.MEDIUM_PRIORITY || icon !== IconTypes.LOW_PRIORITY});
         newIcons.push(IconTypes.HIGH_PRIORITY);
@@ -29,6 +31,8 @@ const PriorityDropdown = ({selectedNode, updateNode}) => {
       }
       else if (event.target.textContent == IconTypes.MEDIUM_PRIORITY)
       {
+        console.log("med")
+
         let newIcons = [];
         newIcons = selectedNode.icons.filter((icon) => {return icon !== IconTypes.HIGH_PRIORITY || icon !== IconTypes.LOW_PRIORITY});
         newIcons.push(IconTypes.MEDIUM_PRIORITY);
@@ -37,6 +41,8 @@ const PriorityDropdown = ({selectedNode, updateNode}) => {
     }
       else if (event.target.textContent == IconTypes.LOW_PRIORITY)
       {
+        console.log("low")
+
         let newIcons = [];
         newIcons = selectedNode.icons.filter((icon) => {return icon !== IconTypes.MEDIUM_PRIORITY || icon !== IconTypes.HIGH_PRIORITY});
         newIcons.push(IconTypes.LOW_PRIORITY);
@@ -63,15 +69,15 @@ const PriorityDropdown = ({selectedNode, updateNode}) => {
       >
         <MenuItem onClick={pickPriority}>
         <img src="/assets/LowPriority.png" alt="low-priority" className="menu-buttons" id="low-priority"></img>
-          <ListItemText primary={Priorities.LOW} />
+          <ListItemText primary={IconTypes.LOW_PRIORITY} />
         </MenuItem>
         <MenuItem onClick={pickPriority}>
             <img src="/assets/MediumPriority.png" alt="medium-priority" className="menu-buttons" id="medium-priority"></img>
-          <ListItemText primary={Priorities.MEDIUM} />
+          <ListItemText primary={IconTypes.MEDIUM_PRIORITY} />
         </MenuItem>
         <MenuItem onClick={pickPriority}>
           <img src="/assets/HighPriority.png" alt="high-priority" className="menu-buttons" id="high-priority"></img>
-          <ListItemText primary={Priorities.HIGH} />
+          <ListItemText primary={IconTypes.HIGH_PRIORITY} />
         </MenuItem>
       </Menu>
     </div>

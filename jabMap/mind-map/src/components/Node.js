@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Text, Group, Rect } from 'react-konva';
 import NodeIcons from './NodeIcons';
+import { renderText } from '../utils/utilFunctions';
 
 const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, updateNode, label, bibEntryId, isInSearch: isInSearch}) => {
   
@@ -13,16 +14,9 @@ const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, u
 
   // Set initial priority icon color 
   useEffect(() => {
-    if(node.icons) {
-      if (node.icons.includes("HIGH_PRIORITY")) {
-        setPriorityColor(priorityColors[3]);
-      } else if(node.icons.includes("MEDIUM_PRIORITY")) {
-        setPriorityColor(priorityColors[2]);
-      } else if(node.icons.includes("LOW_PRIORITY")) {
-        setPriorityColor(priorityColors[1]);
-      }
-    }
-  })
+
+    // console.log(renderText(node.label))
+  }, [node.icons])
     const handleDragMove = (e) => {
         node.x_pos = e.target.x()
         node.y_pos = e.target.y()
@@ -70,7 +64,7 @@ const Node = ({node, id, colors, updateEdges, setSelectedNode, selectedNodeId, u
           stroke={node.colour === undefined ? "#6E6E6E" : node.colour}
           strokeWidth={4}
         />
-        <Text text={node.label}
+        <Text text={renderText(node.label)}
           offsetX={NODE_WIDTH/2}
           offsetY={NODE_HEIGHT/2 + 10}
         align="center"
