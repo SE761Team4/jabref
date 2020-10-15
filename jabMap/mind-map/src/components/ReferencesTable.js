@@ -3,25 +3,14 @@ import "../styling/ReferencesTable.css";
 import useWindowDimensions from "../WindowDimensions";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
+import { renderText } from '../utils/utilFunctions';
+
 
 const ReferencesTable = ({references, setReferences, draggedRow, addNode}) => {
 
     const {windowHeight, windowWidth} = useWindowDimensions();
-    const MAX_LENGTH = 20;
     const TABLE_FILL = new Array(Math.floor((windowHeight - (references.length * 20))/20));
     TABLE_FILL.fill("");
-    console.log(TABLE_FILL)
-
-    const renderText = (text) => {
-        if(text){
-            if(text.length > MAX_LENGTH) {
-                return `${text.substring(0, MAX_LENGTH - 3)}...` 
-            } else {
-                return text;
-            }
-        }
-
-    }
 
     return (
         <div className="table-proportions" style={{maxHeight: windowHeight}}>

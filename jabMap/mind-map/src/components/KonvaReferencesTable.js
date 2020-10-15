@@ -74,9 +74,7 @@ const KonvaReferencesTable = ({references, setReferences, addNode, layerRef, sta
                         ref={elRefs.current[index]}
                         position={{x:0, y: index * (height + margin)}}
                         onDragEnd={() => {
-                            //console.log(elRefs.current[index])
                             elRefs.current[index].current.position({x : 0, y : index * (height + margin)})
-                            //console.log(layerRef)
                             layerRef.current.draw()
                             const {x, y} = stageRef.current.getPointerPosition()
                             addNode(reference, x - 300, y, reference.citekey)
